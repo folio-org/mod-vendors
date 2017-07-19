@@ -6,28 +6,16 @@ schemas:
   - vendor: !include schemas/vendor.json
   - error: !include schemas/error.json
 
-
 /vendor:
-  /{id}:
-      uriParameters:
-        id:
-          type: "integer"
-      get:
-        description: "Fetch vendor with \"id\""
-          responses:
-            200:
-              description: "Fetch vendor info"
-              body:
-                application/json:
-                  schema: vendor
-            404:
-              description: "Vendor-info not found"
-              body:
-                application/json:
-                  schema: error
-            500:
-              description: "Vendor-info fetch failed"
-              body:
-                application/json:
-                  schema: error
-
+  /{vendor_id}:
+    uriParameters:
+      vendor_id:
+        type: "integer"
+    get:
+      description: "Fetch vendor with (vendor_id)"
+      responses:
+        200:
+          description: "Fetch vendor info"
+          body:
+            application/json:
+              schema: vendor

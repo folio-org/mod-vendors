@@ -16,6 +16,13 @@
         <!-- Maven plugins -->
         <fabric8-vertx-maven-plugin.version>1.0.5</fabric8-vertx-maven-plugin.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>folio-nexus</id>
+            <name>FOLIO Maven repository</name>
+            <url>https://repository.folio.org/repository/maven-folio</url>
+        </repository>
+    </repositories>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -31,6 +38,11 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.folio</groupId>
+            <artifactId>domain-models-runtime</artifactId>
+            <version>11.0.0</version>
         </dependency>
     </dependencies>
     <build>
