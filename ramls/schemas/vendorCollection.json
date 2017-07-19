@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "users": {
+      "type": "array",
+      "id": "vendorData",
+      "items": {
+        "type": "object",
+        "$ref": "vendor"
+      }
+    },
+    "total_records": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "users",
+    "total_records"
+  ]
+}

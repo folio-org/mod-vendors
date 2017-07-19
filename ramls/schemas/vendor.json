@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "access_provider": {
+      "type": "boolean"
+    },
+    "code": {
+      "type": "string"
+    },
+    "financial_sys_code": {
+      "type": "string"
+    },
+    "governmental": {
+      "type": "boolean"
+    },
+    
+    "liable_for_vat": {
+      "type": "boolean"
+    },
+    "licensor": {
+      "type": "boolean"
+    },
+    "material_supplier": {
+      "type": "boolean"
+    },
+    "name": {
+      "type": "string"
+    },
+    "national_tax_id": {
+      "type": "string"
+    },
+    "tax_percentage": {
+      "type": "string"
+    }
+  }
+}
