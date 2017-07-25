@@ -1,21 +1,24 @@
 #%RAML 0.8
 title: "Vendor-Module"
+baseUri: http://github.com/org/folio/lsp-apis
 version: v1
 
 schemas:
   - vendor: !include schemas/vendor.json
-  - error: !include schemas/error.json
 
 /vendor:
   /{vendor_id}:
-    uriParameters:
-      vendor_id:
-        type: "integer"
     get:
-      description: "Fetch vendor with (vendor_id)"
+      description: Fetch vendor with vendor ID
       responses:
         200:
-          description: "Fetch vendor info"
+          description: Fetch vendor info
           body:
             application/json:
               schema: vendor
+
+
+    post:
+      description: Unimplemented action
+      body:
+        application/json:

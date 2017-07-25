@@ -1,72 +1,99 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.folio</groupId>
-    <artifactId>prototype-acq</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>prototype-acquisitions</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://spdx.org/licenses/Apache-2.0</url>
+        </license>
+    </licenses>
+
     <properties>
+        <aspectj.version>1.8.9</aspectj.version>
+        <module_name>acquisitions-postgres</module_name>
+        <http.port>8081</http.port>
         <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
+        <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
+        <log_path>${basedir}/logs/acquisitions.log</log_path>
+        <gclog_path>${basedir}/logs/gclogs/*.log</gclog_path>
+        <filebeat_log_path>${basedir}/logs/filebeat</filebeat_log_path>
+        <filebeat_registry_file>${basedir}/logs/filebeat/registry</filebeat_registry_file>
+        <logstash_instance>ec2-52-41-57-165.us-west-2.compute.amazonaws.com:5044</logstash_instance>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <!-- vert.x properties -->
-        <vertx.version>3.4.0</vertx.version>
-        
-        <!-- Maven plugins -->
-        <fabric8-vertx-maven-plugin.version>1.0.5</fabric8-vertx-maven-plugin.version>
     </properties>
+
     <repositories>
         <repository>
             <id>folio-nexus</id>
-            <name>FOLIO Maven repository</name>
+            <name>FOLIO Maven Repository</name>
             <url>https://repository.folio.org/repository/maven-folio</url>
         </repository>
     </repositories>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-dependencies</artifactId>
-                <version>${vertx.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
     <dependencies>
+
         <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
+            <groupId>org.folio</groupId>
+            <artifactId>domain-models-api-interfaces</artifactId>
+            <version>13.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.folio</groupId>
             <artifactId>domain-models-runtime</artifactId>
-            <version>11.0.0</version>
+            <version>13.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mysql-postgresql-client</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>3.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>3.9.4</version>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>2.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
+
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>vertx-maven-plugin</artifactId>
-                <version>${fabric8-vertx-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>vmp</id>
-                        <goals>
-                            <goal>initialize</goal>
-                            <goal>package</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <redeploy>true</redeploy>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
@@ -103,13 +130,55 @@
                             </systemProperties>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate_client</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>org.folio.rest.tools.ClientGenerator</mainClass>
+                            <!-- <executable>java</executable> -->
+                            <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>client.generate</key>
+                                    <value>true</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>project.basedir</key>
+                                    <value>${basedir}</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>json.type</key>
+                                    <value>postgres</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>git submodule update</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>git</executable>
+                            <arguments>
+                                <argument>submodule</argument>
+                                <argument>update</argument>
+                                <argument>--init</argument>
+                                <argument>--recursive</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
-                <version>1.9</version>
+                <version>1.8</version>
                 <configuration>
                     <verbose>true</verbose>
                     <showWeaveInfo>false</showWeaveInfo>
@@ -139,18 +208,17 @@
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjrt</artifactId>
-                        <version>1.8.9</version>
+                        <version>${aspectj.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjtools</artifactId>
-                        <version>1.8.9</version>
+                        <version>${aspectj.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.0.1</version>
                 <executions>
@@ -170,22 +238,38 @@
                             </resources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-resources-2</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes/apidocs/raml-util</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${ramlfiles_util_path}</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
-            <!-- Replace the baseUri and the protocols in the RAMLs that have been copied to
-              apidocs directory so that they can be used via the local html api console. -->
+            <!-- replace the baseuri and the protocol in the ramls that are in the
+              apidocs directory so that they can at least be used to check via the html
+              api console on IE -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
                 <executions>
                     <execution>
                         <phase>prepare-package</phase>
                         <configuration>
-                            <target>
-                                <replace token="baseUri: http://api.e-bookmobile.com/{version}"
-                                         value="baseUri: http://localhost:{http.port}"
+                            <tasks>
+                                <replace token="baseUri: http://github.com/org/folio/lsp-apis"
+                                         value="baseUri: http://localhost:${http.port}/apis"
                                          dir="${basedir}/target/classes/apidocs/raml">
                                     <include name="**/*.raml" />
                                 </replace>
@@ -193,7 +277,7 @@
                                          dir="${basedir}/target/classes/apidocs/raml">
                                     <include name="**/*.raml" />
                                 </replace>
-                            </target>
+                            </tasks>
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -203,9 +287,52 @@
             </plugin>
 
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>set-system-properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <properties>
+                        <property>
+                            <name>log4j.configuration</name>
+                            <value>${project.baseUri}src/main/resources/log4j.properties</value>
+                        </property>
+                    </properties>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.17</version>
+                <executions>
+                    <execution>
+                        <id>verify-style</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failsOnError>false</failsOnError>
+                    <failOnViolation>false</failOnViolation>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <configLocation>https://raw.githubusercontent.com/folio-org/raml-module-builder/master/codestyles.xml</configLocation>
+                    <cacheFile>${basedir}/target/cachefile</cacheFile>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -228,7 +355,84 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <preparationGoals>clean verify</preparationGoals>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.9.4</version>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.4.1212</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+
+                    <!-- JDBC connection parameters -->
+                    <jdbc>
+                        <driver>org.postgresql.Driver</driver>
+                        <url>jdbc:postgresql://localhost:5432/jbenito</url>
+                        <user>jbenito</user>
+                        <password>password</password>
+                    </jdbc>
+
+                    <!-- Generator parameters -->
+                    <generator>
+                        <name>org.jooq.util.DefaultGenerator</name>
+                        <database>
+                            <name>org.jooq.util.postgres.PostgresDatabase</name>
+                            <includes>.*</includes>
+                            <excludes></excludes>
+                            <inputSchema>public</inputSchema>
+                        </database>
+                        <target>
+                            <packageName>jooq.models</packageName>
+                            <directory>src/main/java</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>folio-nexus</id>
+            <name>FOLIO Release Repository</name>
+            <url>https://repository.folio.org/repository/maven-releases/</url>
+            <uniqueVersion>false</uniqueVersion>
+            <layout>default</layout>
+        </repository>
+        <snapshotRepository>
+            <id>folio-nexus</id>
+            <name>FOLIO Snapshot Repository</name>
+            <uniqueVersion>true</uniqueVersion>
+            <url>https://repository.folio.org/repository/maven-snapshots/</url>
+            <layout>default</layout>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

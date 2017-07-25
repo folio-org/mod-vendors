@@ -4,8 +4,7 @@
   "additionalProperties": false,
   "properties": {
     "error": {
-      "type": "string",
-      "required": true
+      "type": "string"
     }
   }
 }

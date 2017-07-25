@@ -27,8 +27,7 @@
       "type": "boolean"
     },
     "name": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "national_tax_id": {
       "type": "string"
@@ -36,5 +35,6 @@
     "tax_percentage": {
       "type": "string"
     }
-  }
+  },
+  "required": ["name"]
 }
