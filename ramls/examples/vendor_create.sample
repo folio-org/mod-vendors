@@ -19,6 +19,6 @@
   "contact_info_id": 1,
   "currency_id": 1,
   "interface_id": 1,
-  "language": 1,
-  "vendor_status": 1
+  "language_id": 1,
+  "vendor_status_id": 1
 }

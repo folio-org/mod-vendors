@@ -16,6 +16,7 @@ import org.folio.rest.jaxrs.model.VendorCollection;
 import org.folio.rest.jaxrs.resource.VendorResource;
 import org.folio.rest.jaxrs.resource.support.ResponseWrapper;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -111,10 +112,10 @@ public class VendorAPI implements VendorResource {
 
       // For the sake of this tutorial, let's keep exception handling simple
       catch (Exception e) {
-        response = PutVendorResponse.withBadRequest();
+        response = PutVendorResponse.withJsonBadRequest(ErrorFactory.badRequest());
 
         // TODO: 403 - Forbidden
-        // response = PutVendorResponse.withForbidden();
+//        response = PutVendorResponse.withJsonForbidden(ErrorFactory.forbidden());
       }
 
       AsyncResult<Response> result = Future.succeededFuture(response);
@@ -180,10 +181,10 @@ public class VendorAPI implements VendorResource {
 
       // For the sake of this tutorial, let's keep exception handling simple
       catch (Exception e) {
-        response = GetVendorResponse.withBadRequest();
+        response = GetVendorResponse.withJsonBadRequest(ErrorFactory.badRequest());
 
         // TODO: 403 - Forbidden
-        // response = PutVendorResponse.withForbidden();
+//        response = GetVendorResponse.withJsonForbidden(ErrorFactory.forbidden());
       }
 
       AsyncResult<Response> result = Future.succeededFuture(response);
@@ -201,25 +202,61 @@ public class VendorAPI implements VendorResource {
    */
   @Override
   public void getVendorByVendorId(String vendorId, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
-    System.out.println("Getting Vendor by Vendor Id: " + vendorId);
+    vertxContext.runOnContext(v -> {
+      ResponseWrapper response;
 
-    Vendor sample = new Vendor();
-    sample.setId(1);
-    sample.setAccessProvider(true);
-    sample.setCode("ABC-123");
-    sample.setFinancialSysCode("ABC123");
-    sample.setGovernmental(false);
-    sample.setLiableForVat(true);
-    sample.setName("My Test Vendor");
-    sample.setTaxPercentage(15.0);
+      try (Connection conn = DriverManager.getConnection(url, userName, password)) {
+        // ...
+        DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
+        Integer vID = new Integer(vendorId);
 
-    testJOOQ();
-    testRelationships();
+        // Get the DB record that maps to the vendorId
+        VendorRecord record = db.fetchOne(jooq.models.tables.Vendor.VENDOR, jooq.models.tables.Vendor.VENDOR.ID.eq(vID));
+        if (record == null) {
+          response = GetVendorByVendorIdResponse.withJsonNotFound(ErrorFactory.notFound());
+        }
+        else {
+          Vendor vendor = new Vendor();
+          vendor.setId(record.getId());
+          vendor.setAccessProvider(record.getAccessProvider());
+          vendor.setClaimingInterval(record.getClaimingInterval());
+          vendor.setCode(record.getCode());
+          vendor.setDiscountPercent(record.getDiscountPercent().doubleValue());
+          vendor.setExpectedActivationInterval(record.getExpectedActivationInterval());
+          vendor.setExpectedInvoiceInterval(record.getExpectedInvoiceInterval());
+          vendor.setFinancialSysCode(record.getFinancialSysCode());
+          vendor.setGovernmental(record.getGovernmental());
+          vendor.setLiableForVat(record.getLiableForVat());
+          vendor.setLicensor(record.getLicensor());
+          vendor.setMaterialSupplier(record.getMaterialSupplier());
+          vendor.setName(record.getName());
+          vendor.setNationalTaxId(record.getNationalTaxId());
+          vendor.setRenewalActivationInterval(record.getRenewalActivationInterval());
+          vendor.setSubscriptionInterval(record.getSubscriptionInterval());
+          vendor.setTaxPercentage(record.getTaxPercentage().doubleValue());
 
-    ResponseWrapper response = GetVendorByVendorIdResponse.withJsonOK(sample);
-    AsyncResult<Response> result = Future.succeededFuture(response);
+          // Relationships
+          vendor.setContactInfoId(record.getContactInfoId());
+          vendor.setCurrencyId(record.getCurrencyId());
+          vendor.setInterfaceId(record.getInterfaceId());
+          vendor.setLanguageId(record.getLanguageId());
+          vendor.setVendorStatusId(record.getVendorStatusId());
 
-    asyncResultHandler.handle(result);
+          response = GetVendorByVendorIdResponse.withJsonOK(vendor);
+        }
+      }
+
+      // For the sake of this tutorial, let's keep exception handling simple
+      catch (Exception e) {
+        response = GetVendorByVendorIdResponse.withJsonBadRequest(ErrorFactory.badRequest());
+
+        // TODO: 403 - Forbidden
+//        response = GetVendorByVendorIdResponse.withJsonForbidden(ErrorFactory.forbidden());
+      }
+
+      AsyncResult<Response> result = Future.succeededFuture(response);
+      asyncResultHandler.handle(result);
+    });
   }
 
   /**
@@ -233,7 +270,69 @@ public class VendorAPI implements VendorResource {
    */
   @Override
   public void postVendorByVendorId(String vendorId, Vendor entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+    vertxContext.runOnContext(v -> {
+      ResponseWrapper response;
 
+      try (Connection conn = DriverManager.getConnection(url, userName, password)) {
+        // ...
+        DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
+        Integer vID = new Integer(vendorId);
+
+        if ( !vID.equals(entity.getId()) ) {
+          response = PostVendorByVendorIdResponse.withJsonBadRequest(ErrorFactory.badRequest());
+        }
+        else {
+          // Get the DB record that maps to the vendorId
+          VendorRecord vendorRecord = db.fetchOne(jooq.models.tables.Vendor.VENDOR, jooq.models.tables.Vendor.VENDOR.ID.eq(vID));
+          if (vendorRecord == null) {
+            response = PostVendorByVendorIdResponse.withJsonNotFound(ErrorFactory.notFound());
+          }
+          else {
+            vendorRecord.setAccessProvider(entity.getAccessProvider());
+            vendorRecord.setClaimingInterval(entity.getClaimingInterval());
+            vendorRecord.setCode(entity.getCode());
+
+            BigDecimal discount = new BigDecimal(entity.getDiscountPercent());
+            vendorRecord.setDiscountPercent(discount);
+            vendorRecord.setExpectedActivationInterval(entity.getExpectedActivationInterval());
+            vendorRecord.setExpectedInvoiceInterval(entity.getExpectedInvoiceInterval());
+            vendorRecord.setFinancialSysCode(entity.getFinancialSysCode());
+            vendorRecord.setGovernmental(entity.getGovernmental());
+            vendorRecord.setLiableForVat(entity.getLiableForVat());
+            vendorRecord.setLicensor(entity.getLicensor());
+            vendorRecord.setMaterialSupplier(entity.getMaterialSupplier());
+            vendorRecord.setName(entity.getName());
+            vendorRecord.setNationalTaxId(entity.getNationalTaxId());
+            vendorRecord.setRenewalActivationInterval(entity.getRenewalActivationInterval());
+            vendorRecord.setSubscriptionInterval(entity.getSubscriptionInterval());
+
+            BigDecimal tax = new BigDecimal(entity.getTaxPercentage());
+            vendorRecord.setTaxPercentage(tax);
+
+            // Relationships
+            vendorRecord.setContactInfoId(entity.getContactInfoId());
+            vendorRecord.setCurrencyId(entity.getCurrencyId());
+            vendorRecord.setInterfaceId(entity.getInterfaceId());
+            vendorRecord.setLanguageId(entity.getLanguageId());
+            vendorRecord.setVendorStatusId(entity.getVendorStatusId());
+            vendorRecord.store();
+
+            response = PostVendorByVendorIdResponse.withNoContent();
+          }
+        }
+      }
+
+      // For the sake of this tutorial, let's keep exception handling simple
+      catch (Exception e) {
+        response = PostVendorByVendorIdResponse.withJsonBadRequest(ErrorFactory.badRequest());
+
+        // TODO: 403 - Forbidden
+//        response = PostVendorByVendorIdResponse.withJsonForbidden(ErrorFactory.forbidden());
+      }
+
+      AsyncResult<Response> result = Future.succeededFuture(response);
+      asyncResultHandler.handle(result);
+    });
   }
 
   /**
@@ -246,14 +345,42 @@ public class VendorAPI implements VendorResource {
    */
   @Override
   public void deleteVendorByVendorId(String vendorId, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+    vertxContext.runOnContext(v -> {
+      ResponseWrapper response;
 
+      try (Connection conn = DriverManager.getConnection(url, userName, password)) {
+        // ...
+        DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
+        Integer vID = new Integer(vendorId);
+
+        VendorRecord vendorRecord = db.fetchOne(jooq.models.tables.Vendor.VENDOR, jooq.models.tables.Vendor.VENDOR.ID.eq(vID));
+        if (vendorRecord == null) {
+          response = DeleteVendorByVendorIdResponse.withJsonNotFound(ErrorFactory.notFound());
+        }
+        else {
+          vendorRecord.delete();
+          response = DeleteVendorByVendorIdResponse.withNoContent();
+        }
+      }
+      catch (Exception e) {
+        response = DeleteVendorByVendorIdResponse.withJsonBadRequest(ErrorFactory.badRequest());
+
+        // TODO: 403 - Forbidden
+//        response = DeleteVendorByVendorIdResponse.withJsonForbidden(ErrorFactory.forbidden());
+      }
+
+      AsyncResult<Response> result = Future.succeededFuture(response);
+      asyncResultHandler.handle(result);
+    });
   }
+
+
+
+
+
 
   private void testJOOQ() {
     System.out.println("Test JOOQ");
-    String userName = "jbenito";
-    String password = "password";
-    String url = "jdbc:postgresql://localhost:5432/jbenito";
 
     try (Connection conn = DriverManager.getConnection(url, userName, password)) {
       // ...
@@ -273,9 +400,6 @@ public class VendorAPI implements VendorResource {
 
   private void testRelationships() {
     System.out.println("Test Relationships");
-    String userName = "jbenito";
-    String password = "password";
-    String url = "jdbc:postgresql://localhost:5432/jbenito";
 
     try (Connection conn = DriverManager.getConnection(url, userName, password)) {
       // ...
@@ -295,6 +419,33 @@ public class VendorAPI implements VendorResource {
 //      for (LanguageRecord r: result) {
 //        System.out.println("ID: " + r.getId() + " Code: " + r.getId() + " Description: " + r.getDescription());
 //      }
+    }
+
+    // For the sake of this tutorial, let's keep exception handling simple
+    catch (Exception e) {
+      System.out.println("Error opening DB: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  private void testVendorLanguageRel() {
+    System.out.println("Test Vendor-Language Relationship");
+    String userName = "jbenito";
+    String password = "password";
+    String url = "jdbc:postgresql://localhost:5432/jbenito";
+
+    try (Connection conn = DriverManager.getConnection(url, userName, password)) {
+      // ...
+      DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
+
+      Record record = db.select()
+        .from(jooq.models.tables.Vendor.VENDOR)
+        .join(Language.LANGUAGE).on(jooq.models.tables.Vendor.VENDOR.LANGUAGE_ID.eq(Language.LANGUAGE.ID))
+        .fetchOne();
+
+      VendorRecord vendorRecord = record.into(jooq.models.tables.Vendor.VENDOR);
+      LanguageRecord langRecord = record.into(Language.LANGUAGE);
+      System.out.println("LANG - Code: " + langRecord.getCode() + " Description: " + langRecord.getDescription());
     }
 
     // For the sake of this tutorial, let's keep exception handling simple

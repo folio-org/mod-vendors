@@ -6,5 +6,6 @@
     "error": {
       "type": "string"
     }
-  }
+  },
+  "required": ["error"]
 }
