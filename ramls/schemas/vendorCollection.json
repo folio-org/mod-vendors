@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "users": {
+    "vendors": {
       "type": "array",
       "id": "vendorData",
       "items": {
@@ -16,7 +16,7 @@
   },
   "additionalProperties": false,
   "required": [
-    "users",
+    "vendors",
     "total_records"
   ]
 }

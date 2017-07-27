@@ -3,13 +3,25 @@
   "type": "object",
   "properties": {
     "id": {
-      "type": "integer"
+      "type": ["integer", "null"]
     },
     "access_provider": {
       "type": "boolean"
     },
+    "claiming_interval": {
+      "type": "integer"
+    },
     "code": {
       "type": "string"
+    },
+    "discount_percent": {
+      "type": "number"
+    },
+    "expected_activation_interval": {
+      "type": "integer"
+    },
+    "expected_invoice_interval": {
+      "type": "integer"
     },
     "financial_sys_code": {
       "type": "string"
@@ -32,8 +44,29 @@
     "national_tax_id": {
       "type": "string"
     },
-    "tax_percentage": {
+    "renewal_activation_interval": {
       "type": "string"
+    },
+    "subscription_interval": {
+      "type": "string"
+    },
+    "tax_percentage": {
+      "type": "number"
+    },
+    "contact_info_id": {
+      "type":"integer"
+    },
+    "currency_id": {
+      "type": "integer"
+    },
+    "interface_id": {
+      "type": "integer"
+    },
+    "language_id": {
+      "type": "integer"
+    },
+    "vendor_status_id": {
+      "type": "integer"
     }
   },
   "required": ["name"]
