@@ -8,13 +8,12 @@ documentation:
     content: <b>This documents the CRUD API calls for vendors</b>
 
 schemas:
-  - error: !include schemas/error.json
   - vendor: !include schemas/vendor.json
   - vendorCollection: !include schemas/vendorCollection.json
 
 
 /vendor:
-  put:
+  post:
     description: Create a new vendor
     body:
       application/json:
@@ -28,12 +27,10 @@ schemas:
             schema: vendor
       400:
         body:
-          application/json:
-            schema: error
+          text/plain:
       403:
         body:
-          application/json:
-            schema: error
+          text/plain:
   get:
     description: Get list of vendors
     responses:
@@ -44,12 +41,10 @@ schemas:
             schema: vendorCollection
       400:
         body:
-          application/json:
-            schema: error
+          text/plain:
       403:
         body:
-          application/json:
-            schema: error
+          text/plain:
   /{vendor_id}:
     get:
       description: Fetch vendor with ID
@@ -61,17 +56,14 @@ schemas:
               schema: vendor
         400:
           body:
-            application/json:
-              schema: error
+            text/plain:
         403:
           body:
-            application/json:
-              schema: error
+            text/plain:
         404:
           body:
-            application/json:
-              schema: error
-    post:
+            text/plain:
+    put:
       description: Update vendor with ID
       body:
         application/json:
@@ -80,29 +72,23 @@ schemas:
         204:
         400:
           body:
-            application/json:
-              schema: error
+            text/plain:
         403:
           body:
-            application/json:
-              schema: error
+            text/plain:
         404:
           body:
-            application/json:
-              schema: error
+            text/plain:
     delete:
       description: Delete vendor with ID
       responses:
         204:
         400:
           body:
-            application/json:
-              schema: error
+            text/plain:
         403:
           body:
-            application/json:
-              schema: error
+            text/plain:
         404:
           body:
-            application/json:
-              schema: error
+            text/plain:

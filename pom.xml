@@ -18,12 +18,8 @@
         <http.port>8081</http.port>
         <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
         <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
-        <log_path>${basedir}/logs/acquisitions.log</log_path>
-        <gclog_path>${basedir}/logs/gclogs/*.log</gclog_path>
-        <filebeat_log_path>${basedir}/logs/filebeat</filebeat_log_path>
-        <filebeat_registry_file>${basedir}/logs/filebeat/registry</filebeat_registry_file>
-        <logstash_instance>ec2-52-41-57-165.us-west-2.compute.amazonaws.com:5044</logstash_instance>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
     </properties>
 
     <repositories>
@@ -292,19 +288,33 @@
                 <version>1.0.0</version>
                 <executions>
                     <execution>
+                        <id>initialize-properties</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/resources/db.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>set-system-properties</id>
                         <goals>
                             <goal>set-system-properties</goal>
                         </goals>
+                        <configuration>
+                            <properties>
+                                <property>
+                                    <name>log4j.configuration</name>
+                                    <value>${project.baseUri}src/main/resources/log4j.properties</value>
+                                </property>
+                            </properties>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <properties>
-                        <property>
-                            <name>log4j.configuration</name>
-                            <value>${project.baseUri}src/main/resources/log4j.properties</value>
-                        </property>
-                    </properties>
-                </configuration>
+
             </plugin>
 
             <plugin>
@@ -394,9 +404,9 @@
                     <!-- JDBC connection parameters -->
                     <jdbc>
                         <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/jbenito</url>
-                        <user>jbenito</user>
-                        <password>password</password>
+                        <url>jdbc:postgresql://${db.host}:${db.port}/${db.name}</url>
+                        <user>${db.username}</user>
+                        <password>${db.password}</password>
                     </jdbc>
 
                     <!-- Generator parameters -->
