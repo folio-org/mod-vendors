@@ -11,10 +11,13 @@ import jooq.models.tables.records.DepartmentRecord;
 import jooq.models.tables.records.LanguageRecord;
 import jooq.models.tables.records.PersonRecord;
 import jooq.models.tables.records.VendorRecord;
+import org.folio.rest.jooq.persist.PostgresClient;
 import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.model.VendorCollection;
 import org.folio.rest.jaxrs.resource.VendorResource;
 import org.folio.rest.jaxrs.resource.support.ResponseWrapper;
+import org.folio.rest.jooq.persist.ResultHandler;
+import org.folio.rest.tools.utils.TenantTool;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -25,6 +28,7 @@ import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,60 +48,67 @@ public class VendorAPI implements VendorResource {
   @Override
   public void getVendor(Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
-      ResponseWrapper response;
+      String tenantId = TenantTool.tenantId(okapiHeaders);
+      PostgresClient dbClient = PostgresClient.getInstance(tenantId);
 
-      try (Connection conn = DriverManager.getConnection(url, userName, password)) {
-        // ...
-        DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
-        Result<VendorRecord> result = db.selectFrom(jooq.models.tables.Vendor.VENDOR).fetch();
+      dbClient.execute(new ResultHandler<DSLContext, SQLException>() {
+        @Override
+        public void success(DSLContext db) {
+          Result<VendorRecord> result = db.selectFrom(jooq.models.tables.Vendor.VENDOR).fetch();
+          String sql = db.selectFrom(jooq.models.tables.Vendor.VENDOR).getSQL();
 
-        List<Vendor> vendors = new ArrayList<>();
-        for (VendorRecord record: result) {
-          Vendor vendor = new Vendor();
+          List<Vendor> vendors = new ArrayList<>();
+          for (VendorRecord record: result) {
+            Vendor vendor = new Vendor();
 
-          vendor.setId(record.getId());
-          vendor.setAccessProvider(record.getAccessProvider());
-          vendor.setClaimingInterval(record.getClaimingInterval());
-          vendor.setCode(record.getCode());
-          vendor.setDiscountPercent(record.getDiscountPercent().doubleValue());
-          vendor.setExpectedActivationInterval(record.getExpectedActivationInterval());
-          vendor.setExpectedInvoiceInterval(record.getExpectedInvoiceInterval());
-          vendor.setFinancialSysCode(record.getFinancialSysCode());
-          vendor.setGovernmental(record.getGovernmental());
-          vendor.setLiableForVat(record.getLiableForVat());
-          vendor.setLicensor(record.getLicensor());
-          vendor.setMaterialSupplier(record.getMaterialSupplier());
-          vendor.setName(record.getName());
-          vendor.setNationalTaxId(record.getNationalTaxId());
-          vendor.setRenewalActivationInterval(record.getRenewalActivationInterval());
-          vendor.setSubscriptionInterval(record.getSubscriptionInterval());
-          vendor.setTaxPercentage(record.getTaxPercentage().doubleValue());
+            vendor.setId(record.getId());
+            vendor.setAccessProvider(record.getAccessProvider());
+            vendor.setClaimingInterval(record.getClaimingInterval());
+            vendor.setCode(record.getCode());
+            vendor.setDiscountPercent(record.getDiscountPercent().doubleValue());
+            vendor.setExpectedActivationInterval(record.getExpectedActivationInterval());
+            vendor.setExpectedInvoiceInterval(record.getExpectedInvoiceInterval());
+            vendor.setFinancialSysCode(record.getFinancialSysCode());
+            vendor.setGovernmental(record.getGovernmental());
+            vendor.setLiableForVat(record.getLiableForVat());
+            vendor.setLicensor(record.getLicensor());
+            vendor.setMaterialSupplier(record.getMaterialSupplier());
+            vendor.setName(record.getName());
+            vendor.setNationalTaxId(record.getNationalTaxId());
+            vendor.setRenewalActivationInterval(record.getRenewalActivationInterval());
+            vendor.setSubscriptionInterval(record.getSubscriptionInterval());
+            vendor.setTaxPercentage(record.getTaxPercentage().doubleValue());
 
-          // Relationships
-          vendor.setContactInfoId(record.getContactInfoId());
-          vendor.setCurrencyId(record.getCurrencyId());
-          vendor.setInterfaceId(record.getInterfaceId());
-          vendor.setLanguageId(record.getLanguageId());
-          vendor.setVendorStatusId(record.getVendorStatusId());
+            // Relationships
+            vendor.setContactInfoId(record.getContactInfoId());
+            vendor.setCurrencyId(record.getCurrencyId());
+            vendor.setInterfaceId(record.getInterfaceId());
+            vendor.setLanguageId(record.getLanguageId());
+            vendor.setVendorStatusId(record.getVendorStatusId());
 
-          vendors.add(vendor);
+            vendors.add(vendor);
+          }
+
+          VendorCollection collection = new VendorCollection();
+          collection.setVendors(vendors);
+          collection.setTotalRecords(result.size());
+
+          ResponseWrapper response = GetVendorResponse.withJsonOK(collection);
+          AsyncResult<Response> output = Future.succeededFuture(response);
+          asyncResultHandler.handle(output);
         }
 
-        VendorCollection collection = new VendorCollection();
-        collection.setVendors(vendors);
-        collection.setTotalRecords(result.size());
+        @Override
+        public void failed(SQLException exception) {
+          ResponseWrapper response = GetVendorResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
 
-        response = GetVendorResponse.withJsonOK(collection);
-      }
-      catch (Exception e) {
-        response = GetVendorResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
-
-        // TODO: 403 - Forbidden
+          // TODO: 403 - Forbidden
 //        response = GetVendorResponse.withPlainForbidden(ErrorMessage.FORBIDDEN);
-      }
+          AsyncResult<Response> result = Future.succeededFuture(response);
+          asyncResultHandler.handle(result);
+        }
+      });
 
-      AsyncResult<Response> result = Future.succeededFuture(response);
-      asyncResultHandler.handle(result);
     });
   }
 
