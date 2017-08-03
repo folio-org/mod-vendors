@@ -4,8 +4,6 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import jooq.models.tables.Department;
 import jooq.models.tables.Language;
 import jooq.models.tables.Person;
@@ -13,15 +11,15 @@ import jooq.models.tables.records.DepartmentRecord;
 import jooq.models.tables.records.LanguageRecord;
 import jooq.models.tables.records.PersonRecord;
 import jooq.models.tables.records.VendorRecord;
-import org.folio.rest.jooq.persist.PostgresClient;
 import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.model.VendorCollection;
 import org.folio.rest.jaxrs.resource.VendorResource;
 import org.folio.rest.jaxrs.resource.support.ResponseWrapper;
+import org.folio.rest.jooq.persist.PostgresClient;
 import org.folio.rest.jooq.persist.ResultHandler;
+import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.utils.TenantTool;
 import org.jooq.*;
-import org.jooq.impl.CustomField;
 import org.jooq.impl.DSL;
 
 import javax.ws.rs.core.Response;
@@ -141,7 +139,7 @@ public class VendorAPI implements VendorResource {
           ResponseWrapper response = GetVendorResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
 
           // TODO: 403 - Forbidden
-//        response = GetVendorResponse.withPlainForbidden(ErrorMessage.FORBIDDEN);
+//          response = GetVendorResponse.withPlainUnauthorized(ErrorMessage.FORBIDDEN);
           AsyncResult<Response> result = Future.succeededFuture(response);
           asyncResultHandler.handle(result);
         }
@@ -183,83 +181,67 @@ public class VendorAPI implements VendorResource {
    * @param vertxContext       The Vertx Context Object <code>io.vertx.core.Context</code>
    */
   @Override
-  public void postVendor(String lang, Vendor entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendor(String lang,
+                         Vendor entity,
+                         Map<String, String> okapiHeaders,
+                         Handler<AsyncResult<Response>> asyncResultHandler,
+                         Context vertxContext) throws Exception {
+    vertxContext.runOnContext(v -> {
+      ResponseWrapper response;
 
+      try (Connection conn = DriverManager.getConnection(url, userName, password)) {
+        // ...
+        DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
+
+        VendorRecord vendor = db.newRecord(jooq.models.tables.Vendor.VENDOR);
+        vendor.setAccessProvider(entity.getAccessProvider());
+        vendor.setClaimingInterval(entity.getClaimingInterval());
+        vendor.setCode(entity.getCode());
+
+        BigDecimal discount = new BigDecimal(entity.getDiscountPercent());
+        vendor.setDiscountPercent(discount);
+        vendor.setExpectedActivationInterval(entity.getExpectedActivationInterval());
+        vendor.setExpectedInvoiceInterval(entity.getExpectedInvoiceInterval());
+        vendor.setFinancialSysCode(entity.getFinancialSysCode());
+        vendor.setGovernmental(entity.getGovernmental());
+        vendor.setLiableForVat(entity.getLiableForVat());
+        vendor.setLicensor(entity.getLicensor());
+        vendor.setMaterialSupplier(entity.getMaterialSupplier());
+        vendor.setName(entity.getName());
+        vendor.setNationalTaxId(entity.getNationalTaxId());
+        vendor.setRenewalActivationInterval(entity.getRenewalActivationInterval());
+        vendor.setSubscriptionInterval(entity.getSubscriptionInterval());
+
+        BigDecimal tax = new BigDecimal(entity.getTaxPercentage());
+        vendor.setTaxPercentage(tax);
+
+        // Relationships
+        vendor.setContactInfoId(entity.getContactInfoId());
+        vendor.setCurrencyId(entity.getCurrencyId());
+        vendor.setInterfaceId(entity.getInterfaceId());
+        vendor.setLanguageId(entity.getLanguageId());
+        vendor.setVendorStatusId(entity.getVendorStatusId());
+        vendor.store();
+
+        Vendor vendorDetails = new Vendor();
+        vendorDetails.setId(vendor.getId());
+//        response = PostVendorResponse.withJsonOK(vendorDetails);
+
+        OutStream stream = new OutStream();
+        stream.setData(vendorDetails);
+        response = PostVendorResponse.withJsonCreated("/vendor/" + vendor.getId(), stream);
+      }
+      catch (Exception e) {
+        response = PostVendorResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
+
+        // TODO: 403 - Forbidden
+//        response = PostVendorResponse.withPlainUnauthorized(ErrorMessage.FORBIDDEN);
+      }
+
+      AsyncResult<Response> result = Future.succeededFuture(response);
+      asyncResultHandler.handle(result);
+    });
   }
-
-  //  /**
-//   * Get list of vendors
-//   *
-//   * @param okapiHeaders
-//   * @param asyncResultHandler A <code>Handler<AsyncResult<Response>>></code> handler {@link Handler} which must be called as follows - Note the 'GetPatronsResponse' should be replaced with '[nameOfYourFunction]Response': (example only) <code>asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetPatronsResponse.withJsonOK( new ObjectMapper().readValue(reply.result().body().toString(), Patron.class))));</code> in the final callback (most internal callback) of the function.
-//   * @param vertxContext       The Vertx Context Object <code>io.vertx.core.Context</code>
-//   */
-//  @Override
-//  public void getVendor(Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
-//    vertxContext.runOnContext(v -> {
-//      String tenantId = TenantTool.tenantId(okapiHeaders);
-//      PostgresClient dbClient = PostgresClient.getInstance(tenantId);
-//
-//      dbClient.execute(new ResultHandler<DSLContext, SQLException>() {
-//        @Override
-//        public void success(DSLContext db) {
-//          Result<VendorRecord> result = db.selectFrom(jooq.models.tables.Vendor.VENDOR).fetch();
-//          String sql = db.selectFrom(jooq.models.tables.Vendor.VENDOR).getSQL();
-//          System.out.println(sql);
-//          List<Vendor> vendors = new ArrayList<>();
-//          for (VendorRecord record: result) {
-//            Vendor vendor = new Vendor();
-//
-//            vendor.setId(record.getId());
-//            vendor.setAccessProvider(record.getAccessProvider());
-//            vendor.setClaimingInterval(record.getClaimingInterval());
-//            vendor.setCode(record.getCode());
-//            vendor.setDiscountPercent(record.getDiscountPercent().doubleValue());
-//            vendor.setExpectedActivationInterval(record.getExpectedActivationInterval());
-//            vendor.setExpectedInvoiceInterval(record.getExpectedInvoiceInterval());
-//            vendor.setFinancialSysCode(record.getFinancialSysCode());
-//            vendor.setGovernmental(record.getGovernmental());
-//            vendor.setLiableForVat(record.getLiableForVat());
-//            vendor.setLicensor(record.getLicensor());
-//            vendor.setMaterialSupplier(record.getMaterialSupplier());
-//            vendor.setName(record.getName());
-//            vendor.setNationalTaxId(record.getNationalTaxId());
-//            vendor.setRenewalActivationInterval(record.getRenewalActivationInterval());
-//            vendor.setSubscriptionInterval(record.getSubscriptionInterval());
-//            vendor.setTaxPercentage(record.getTaxPercentage().doubleValue());
-//
-//            // Relationships
-//            vendor.setContactInfoId(record.getContactInfoId());
-//            vendor.setCurrencyId(record.getCurrencyId());
-//            vendor.setInterfaceId(record.getInterfaceId());
-//            vendor.setLanguageId(record.getLanguageId());
-//            vendor.setVendorStatusId(record.getVendorStatusId());
-//
-//            vendors.add(vendor);
-//          }
-//
-//          VendorCollection collection = new VendorCollection();
-//          collection.setVendors(vendors);
-//          collection.setTotalRecords(result.size());
-//
-//          ResponseWrapper response = GetVendorResponse.withJsonOK(collection);
-//          AsyncResult<Response> output = Future.succeededFuture(response);
-//          asyncResultHandler.handle(output);
-//        }
-//
-//        @Override
-//        public void failed(SQLException exception) {
-//          ResponseWrapper response = GetVendorResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
-//
-//          // TODO: 403 - Forbidden
-////        response = GetVendorResponse.withPlainForbidden(ErrorMessage.FORBIDDEN);
-//          AsyncResult<Response> result = Future.succeededFuture(response);
-//          asyncResultHandler.handle(result);
-//        }
-//      });
-//
-//    });
-//  }
 
   /**
    * Fetch vendor with vendor ID
