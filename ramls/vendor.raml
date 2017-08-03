@@ -11,40 +11,31 @@ schemas:
   - vendor: !include schemas/vendor.json
   - vendorCollection: !include schemas/vendorCollection.json
 
+traits:
+  - secured: !include ../raml-util/traits/auth.raml
+  - orderable: !include ../raml-util/traits/orderable.raml
+  - pageable:  !include ../raml-util/traits/pageable.raml
+  - searchable: !include ../raml-util/traits/searchable.raml
+  - language: !include ../raml-util/traits/language.raml
+
+resourceTypes:
+  - collection: !include ../raml-util/rtypes/collection.raml
+  - collection-item: !include ../raml-util/rtypes/item-collection.raml
 
 /vendor:
-  post:
-    description: Create a new vendor
-    body:
-      application/json:
-        example: !include examples/vendor_create.sample
-        schema: vendor
-    responses:
-      200:
-        description: Create-vendor success
-        body:
-          application/json:
-            schema: vendor
-      400:
-        body:
-          text/plain:
-      403:
-        body:
-          text/plain:
+  type:
+    collection:
+      exampleCollection: !include examples/vendor_collection.sample
+      exampleItem: !include examples/vendor_create.sample
+      schemaCollection: vendorCollection
+      schemaItem: vendor
   get:
     description: Get list of vendors
-    responses:
-      200:
-        description: Return a list of the vendors
-        body:
-          application/json:
-            schema: vendorCollection
-      400:
-        body:
-          text/plain:
-      403:
-        body:
-          text/plain:
+    is: [
+      searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
+      orderable: {fieldsList: "field A, field B"},
+      pageable
+    ]
   /{vendor_id}:
     get:
       description: Fetch vendor with ID

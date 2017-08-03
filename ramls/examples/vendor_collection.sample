@@ -1,0 +1,54 @@
+{
+    "vendors":
+        [
+            {
+                "id": 2,
+                "access_provider": false,
+                "claiming_interval": 1,
+                "code": "ABC-XYZ",
+                "discount_percent": 12.5,
+                "expected_activation_interval": 1,
+                "expected_invoice_interval": 1,
+                "financial_sys_code": "FIN-CODE-A12",
+                "governmental": false,
+                "liable_for_vat": true,
+                "licensor": false,
+                "material_supplier": true,
+                "name": "ABC Global Inc.",
+                "national_tax_id": "AB-12-FIN-ID-25",
+                "renewal_activation_interval": "",
+                "subscription_interval": "MONTHLY",
+                "tax_percentage": 0.15,
+                "contact_info_id": 1,
+                "currency_id": 1,
+                "interface_id": 1,
+                "language_id": 1,
+                "vendor_status_id": 1
+            },
+            {
+                "id": 45,
+                "access_provider": false,
+                "claiming_interval": 1,
+                "code": "ABC-XYZ",
+                "discount_percent": 12.5,
+                "expected_activation_interval": 1,
+                "expected_invoice_interval": 1,
+                "financial_sys_code": "FIN-CODE-A12",
+                "governmental": false,
+                "liable_for_vat": true,
+                "licensor": false,
+                "material_supplier": true,
+                "name": "ABC Global Inc.",
+                "national_tax_id": "AB-12-FIN-ID-25",
+                "renewal_activation_interval": "",
+                "subscription_interval": "MONTHLY",
+                "tax_percentage": 0.15,
+                "contact_info_id": 1,
+                "currency_id": 1,
+                "interface_id": 1,
+                "language_id": 1,
+                "vendor_status_id": 1
+            }
+        ],
+    "total_records": 2
+}

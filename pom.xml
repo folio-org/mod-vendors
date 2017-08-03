@@ -19,7 +19,6 @@
         <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
         <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
     </properties>
 
     <repositories>
@@ -411,7 +410,7 @@
 
                     <!-- Generator parameters -->
                     <generator>
-                        <name>org.jooq.util.DefaultGenerator</name>
+                        <name>org.jooq.util.JavaGenerator</name>
                         <database>
                             <name>org.jooq.util.postgres.PostgresDatabase</name>
                             <includes>.*</includes>
