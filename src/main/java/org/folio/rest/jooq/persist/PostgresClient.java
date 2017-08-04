@@ -2,14 +2,11 @@ package org.folio.rest.jooq.persist;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import org.folio.rest.jaxrs.resource.VendorResource;
-import org.folio.rest.persist.Criteria.Order;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class PostgresClient {
@@ -62,14 +59,14 @@ public class PostgresClient {
     return client;
   }
 
-  public void execute(ResultHandler<DSLContext, SQLException> handler) {
+  public void connect(ConnectResultHandler handler) {
     String jdbc_url = String.format("jdbc:postgresql://%s:%s/%s", DB_HOST, DB_PORT, DB_NAME);
 
     try (Connection conn = DriverManager.getConnection(jdbc_url, DB_USERNAME, DB_PASSWORD)) {
       DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
       handler.success(db);
     }
-    catch (SQLException e) {
+    catch (Exception e) {
       handler.failed(e);
     }
   }
@@ -148,17 +145,42 @@ public class PostgresClient {
     return condition;
   }
 
-  public Field<Object> fieldFromName(String field) {
-    if (field == null) {
+  /**
+   * Returns a Field object, when possible
+   *
+   * @param name
+   * @return Field | null
+   */
+  public Field<Object> fieldFromName(String name) {
+    if (name == null) {
       return null;
     }
-    if (field.isEmpty()) {
+    String trimmedName = name.trim();
+    if (trimmedName.isEmpty()) {
       return null;
     }
 
-    Name fieldName = DSL.name(field);
+    Name fieldName = DSL.name(trimmedName);
     Field<Object> fieldObject = DSL.field(fieldName);
     return fieldObject;
   }
 
+  /**
+   * Returns a SortField object, when possible
+   *
+   * @param fieldname
+   * @param isAscending
+   * @return SortField | null
+   */
+  public SortField<Object> sortFieldFromParam(String fieldname, boolean isAscending) {
+    if (fieldname == null) {
+      return null;
+    }
+    String trimmedName = fieldname.trim();
+    Field<Object> orderField = fieldFromName(trimmedName);
+    if (isAscending) {
+      return orderField.asc();
+    }
+    return orderField.desc();
+  }
 }

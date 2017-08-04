@@ -12,6 +12,12 @@
     },
     "total_records": {
       "type": "integer"
+    },
+    "first": {
+      "type": "integer"
+    },
+    "last": {
+      "type": "integer"
     }
   },
   "additionalProperties": false,
