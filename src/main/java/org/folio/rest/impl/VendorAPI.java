@@ -4,6 +4,8 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import jooq.models.tables.records.VendorRecord;
 import org.folio.rest.impl.mapper.VendorMapper;
 import org.folio.rest.jaxrs.model.Vendor;
@@ -22,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 public class VendorAPI implements VendorResource {
+  private static final Logger log = LoggerFactory.getLogger(VendorAPI.class);
+
   private VendorMapper mapper = new VendorMapper();
 
   /**
@@ -104,18 +108,21 @@ public class VendorAPI implements VendorResource {
             vendors.add(vendor);
           }
 
+          // Wrap the result inside a VendorCollection
           VendorCollection collection = new VendorCollection();
           collection.setVendors(vendors);
           collection.setTotalRecords(totalCount);
           collection.setFirst(first);
           collection.setLast(last);
 
+          // Build the response
           Response response = GetVendorResponse.withJsonOK(collection);
           respond(asyncResultHandler, response);
         }
 
         @Override
         public void failed(Exception exception) {
+          log.error(exception.getMessage());
           Response response = GetVendorResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
           respond(asyncResultHandler, response);
         }
@@ -171,12 +178,16 @@ public class VendorAPI implements VendorResource {
 
         @Override
         public void success(DSLContext db) {
+          // Create a new VendorRecord
           VendorRecord vendorRecord = db.newRecord(jooq.models.tables.Vendor.VENDOR);
+
+          // Load the content of entity into the VendorRecord
           mapper.mapEntityToDBRecord(entity, vendorRecord);
 
-          // TODO: Ignore the ID since it's auto-incrementing
+          // Persist the changes into the DB
           vendorRecord.store();
 
+          // Grab the persisted record's ID to be passed unto the response
           Vendor vendorDetails = new Vendor();
           vendorDetails.setId(vendorRecord.getId());
 
@@ -189,6 +200,7 @@ public class VendorAPI implements VendorResource {
 
         @Override
         public void failed(Exception exception) {
+          log.error(exception.getMessage());
           response = PostVendorResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
           respond(asyncResultHandler, response);
         }
@@ -220,21 +232,23 @@ public class VendorAPI implements VendorResource {
         Response response;
         @Override
         public void success(DSLContext db) {
-          // Get the DB record that maps to the vendorId
+          // Find the DB record that corresponds to the 'vendorId'
           VendorRecord record = db.fetchOne(jooq.models.tables.Vendor.VENDOR, jooq.models.tables.Vendor.VENDOR.ID.eq(vID));
           if (record == null) {
+            log.warn("VendorRecord with " + vendorId + " does not exist");
             response = GetVendorByVendorIdResponse.withPlainNotFound(ErrorMessage.NOT_FOUND);
           }
           else {
+            // Map the fetched record's data into a Vendor object (which is expected by the API)
             Vendor vendor = mapper.mapDBRecordToEntity(record);
             response = GetVendorByVendorIdResponse.withJsonOK(vendor);
           }
-
           respond(asyncResultHandler, response);
         }
 
         @Override
         public void failed(Exception exception) {
+          log.error(exception.getMessage());
           ResponseWrapper response = GetVendorByVendorIdResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
           respond(asyncResultHandler, response);
         }
@@ -268,8 +282,10 @@ public class VendorAPI implements VendorResource {
 
         @Override
         public void success(DSLContext db) {
+          // Find the DB record that corresponds to the 'vendorId'
           VendorRecord vendorRecord = db.fetchOne(jooq.models.tables.Vendor.VENDOR, jooq.models.tables.Vendor.VENDOR.ID.eq(vID));
           if (vendorRecord == null) {
+            log.warn("VendorRecord with " + vendorId + " does not exist");
             response = DeleteVendorByVendorIdResponse.withPlainNotFound(ErrorMessage.NOT_FOUND);
           }
           else {
@@ -281,6 +297,7 @@ public class VendorAPI implements VendorResource {
 
         @Override
         public void failed(Exception exception) {
+          log.error(exception.getMessage());
           response = DeleteVendorByVendorIdResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
           respond(asyncResultHandler, response);
         }
@@ -332,12 +349,14 @@ public class VendorAPI implements VendorResource {
         @Override
         public void success(DSLContext db) {
           if ( !vID.equals(entity.getId()) ) {
+            log.warn("The vendorId specified in endpoint does not match the one in the PUT body");
             response = PutVendorByVendorIdResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
           }
           else {
             // Get the DB record that maps to the vendorId
             VendorRecord vendorRecord = db.fetchOne(jooq.models.tables.Vendor.VENDOR, jooq.models.tables.Vendor.VENDOR.ID.eq(vID));
             if (vendorRecord == null) {
+              log.warn("VendorRecord with " + vendorId + " does not exist");
               response = PutVendorByVendorIdResponse.withPlainNotFound(ErrorMessage.NOT_FOUND);
             }
             else {
@@ -352,6 +371,7 @@ public class VendorAPI implements VendorResource {
 
         @Override
         public void failed(Exception exception) {
+          log.error(exception.getMessage());
           response = PutVendorByVendorIdResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
           respond(asyncResultHandler, response);
         }
