@@ -46,6 +46,8 @@ public class PostgresClient {
   private String DB_PASSWORD;
   private String DB_TENANT;
 
+  private Schema tenant_schema;
+
   public static PostgresClient getInstance(String tenantId)
   {
     PostgresClient client = new PostgresClient();

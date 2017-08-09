@@ -19,6 +19,8 @@
         <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
         <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <flyway.version>4.2.0</flyway.version>
+        <postgres.driver.version>9.4.1212</postgres.driver.version>
     </properties>
 
     <repositories>
@@ -313,7 +315,6 @@
                         </configuration>
                     </execution>
                 </executions>
-
             </plugin>
 
             <plugin>
@@ -394,7 +395,7 @@
                     <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>9.4.1212</version>
+                        <version>${postgres.driver.version}</version>
                     </dependency>
                 </dependencies>
 
@@ -403,7 +404,7 @@
                     <!-- JDBC connection parameters -->
                     <jdbc>
                         <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://${db.host}:${db.port}/${db.name}</url>
+                        <url>${db.url}</url>
                         <user>${db.username}</user>
                         <password>${db.password}</password>
                     </jdbc>
@@ -415,7 +416,7 @@
                             <name>org.jooq.util.postgres.PostgresDatabase</name>
                             <includes>.*</includes>
                             <excludes></excludes>
-                            <inputSchema>public</inputSchema>
+                            <inputSchema>${db.schema}</inputSchema>
                         </database>
                         <target>
                             <packageName>jooq.models</packageName>
@@ -423,6 +424,29 @@
                         </target>
                     </generator>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+                <configuration>
+                    <sqlMigrationSeparator>__</sqlMigrationSeparator>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
+                    <url>${db.url}</url>
+                    <user>${db.username}</user>
+                    <password>${db.password}</password>
+                    <schemas>${db.schema}</schemas>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgres.driver.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
