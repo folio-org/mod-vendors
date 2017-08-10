@@ -2,42 +2,45 @@ package org.folio.rest.jooq.persist;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import org.folio.rest.persist.LoadConfs;
 import org.jooq.*;
+import org.jooq.conf.MappedSchema;
+import org.jooq.conf.RenderMapping;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Properties;
 
 public class PostgresClient {
 
   /**
    * Convenience consts - can use a regular string to represent the operator
    */
-  public static final String   OP_IS_NOT_NULL     = "IS NOT NULL"; //[{"field":"'ebook_url'","value":null,"op":"IS NOT NULL"}]
-  public static final String   OP_IS_NULL         = "IS NULL"; //[{"field":"'ebook_url'","value":null,"op":"IS NULL"}]
-  public static final String   OP_IS_TRUE         = "IS TRUE";
-  public static final String   OP_IS_NOT_TRUE     = "IS NOT TRUE";
-  public static final String   OP_IS_FALSE        = "IS FALSE";
-  public static final String   OP_IS_NOT_FALSE    = "IS NOT FALSE";
-  public static final String   OP_SIMILAR_TO      = "SIMILAR TO"; // [{"field":"'rush'","value":"ru(s|t)h","op":"SIMILAR TO"}]
-  public static final String   OP_NOT_SIMILAR_TO  = "NOT SIMILAR TO";
-  public static final String   OP_NOT_EQUAL       = "!=";
-  public static final String   OP_EQUAL           = "="; //[{"field":"'rush'","value":"false","op":"="}]
-  public static final String   OP_LIKE            = "LIKE"; //[{"field":"'po_line_status'->>'value'","value":"SENT%","op":"like"}]
-  public static final String   OP_GREATER_THAN    = ">"; //non-array values only --> [{"field":"'fund_distributions'->'amount'->>'sum'","value":120,"op":">"}]
-  public static final String   OP_GREATER_THAN_EQ = ">=";
-  public static final String   OP_LESS_THAN       = "<";
-  public static final String   OP_LESS_THAN_EQ    = "<=";
-  public static final String   OP_NOT             = "NOT"; //[{"field":"'po_line_status'->>'value'","value":"fa(l|t)se","op":"SIMILAR TO"}, {"op":"NOT"}]
-  public static final String   OP_OR              = "OR";
-  public static final String   OP_AND             = "AND";
+  private static final String   OP_IS_NOT_NULL     = "IS NOT NULL"; //[{"field":"'ebook_url'","value":null,"op":"IS NOT NULL"}]
+  private static final String   OP_IS_NULL         = "IS NULL"; //[{"field":"'ebook_url'","value":null,"op":"IS NULL"}]
+  private static final String   OP_IS_TRUE         = "IS TRUE";
+  private static final String   OP_IS_NOT_TRUE     = "IS NOT TRUE";
+  private static final String   OP_IS_FALSE        = "IS FALSE";
+  private static final String   OP_IS_NOT_FALSE    = "IS NOT FALSE";
+  private static final String   OP_SIMILAR_TO      = "SIMILAR TO"; // [{"field":"'rush'","value":"ru(s|t)h","op":"SIMILAR TO"}]
+  private static final String   OP_NOT_SIMILAR_TO  = "NOT SIMILAR TO";
+  private static final String   OP_NOT_EQUAL       = "!=";
+  private static final String   OP_EQUAL           = "="; //[{"field":"'rush'","value":"false","op":"="}]
+  private static final String   OP_LIKE            = "LIKE"; //[{"field":"'po_line_status'->>'value'","value":"SENT%","op":"like"}]
+  private static final String   OP_GREATER_THAN    = ">"; //non-array values only --> [{"field":"'fund_distributions'->'amount'->>'sum'","value":120,"op":">"}]
+  private static final String   OP_GREATER_THAN_EQ = ">=";
+  private static final String   OP_LESS_THAN       = "<";
+  private static final String   OP_LESS_THAN_EQ    = "<=";
+  private static final String   OP_NOT             = "NOT"; //[{"field":"'po_line_status'->>'value'","value":"fa(l|t)se","op":"SIMILAR TO"}, {"op":"NOT"}]
+  private static final String   OP_OR              = "OR";
+  private static final String   OP_AND             = "AND";
 
-  private static String KEY_HOST = "db.host";
-  private static String KEY_PORT = "db.port";
-  private static String KEY_NAME = "db.name";
-  private static String KEY_USERNAME = "db.username";
-  private static String KEY_PASSWORD = "db.password";
+  private static String KEY_HOST = "host";
+  private static String KEY_PORT = "port";
+  private static String KEY_NAME = "database";
+  private static String KEY_USERNAME = "username";
+  private static String KEY_PASSWORD = "password";
 
   private String DB_HOST;
   private String DB_PORT;
@@ -46,17 +49,15 @@ public class PostgresClient {
   private String DB_PASSWORD;
   private String DB_TENANT;
 
-  private Schema tenant_schema;
-
   public static PostgresClient getInstance(String tenantId)
   {
     PostgresClient client = new PostgresClient();
-    Properties properties = PropertyLoader.loadPropertiesFromResource("/db.properties");
-    client.DB_HOST = properties.getProperty(KEY_HOST);
-    client.DB_PORT = properties.getProperty(KEY_PORT);
-    client.DB_NAME = properties.getProperty(KEY_NAME);
-    client.DB_USERNAME = properties.getProperty(KEY_USERNAME);
-    client.DB_PASSWORD = properties.getProperty(KEY_PASSWORD);
+    JsonObject props = LoadConfs.loadConfig("/postgres-conf.json");
+    client.DB_HOST = props.getString(KEY_HOST);
+    client.DB_PORT = Integer.toString(props.getInteger(KEY_PORT));
+    client.DB_NAME = props.getString(KEY_NAME);
+    client.DB_USERNAME = props.getString(KEY_USERNAME);
+    client.DB_PASSWORD = props.getString(KEY_PASSWORD);
     client.DB_TENANT = tenantId;
     return client;
   }
@@ -65,7 +66,12 @@ public class PostgresClient {
     String jdbc_url = String.format("jdbc:postgresql://%s:%s/%s", DB_HOST, DB_PORT, DB_NAME);
 
     try (Connection conn = DriverManager.getConnection(jdbc_url, DB_USERNAME, DB_PASSWORD)) {
-      DSLContext db = DSL.using(conn, SQLDialect.POSTGRES);
+      RenderMapping tenantMapping = new RenderMapping().withSchemata(
+        new MappedSchema().withInput("TENANT").withOutput(DB_TENANT)
+      );
+      Settings settings = new Settings().withRenderMapping(tenantMapping);
+
+      DSLContext db = DSL.using(conn, SQLDialect.POSTGRES, settings);
       handler.success(db);
     }
     catch (Exception e) {

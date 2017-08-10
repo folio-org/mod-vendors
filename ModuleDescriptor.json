@@ -44,8 +44,5 @@
         }
       ]
     }
-  ],
-  "launchDescriptor": {
-    "exec": "java -Dport=%p -jar mod-vendor/target/okapi-test-module-fat.jar"
-  }
+  ]
 }
