@@ -5,14 +5,38 @@
     "id": {
       "type": ["integer", "null"]
     },
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "vendor_status": {
+      "type": "string"
+    },
+    "language": {
+      "type": "integer"
+    },
+    "erp_code": {
+      "type": "string"
+    },
+    "payment_method": {
+      "type": "string"
+    },
     "access_provider": {
+      "type": "boolean"
+    },
+    "governmental": {
+      "type": "boolean"
+    },
+    "licensor": {
+      "type": "boolean"
+    },
+    "material_supplier": {
       "type": "boolean"
     },
     "claiming_interval": {
       "type": "integer"
-    },
-    "code": {
-      "type": "string"
     },
     "discount_percent": {
       "type": "number"
@@ -23,51 +47,112 @@
     "expected_invoice_interval": {
       "type": "integer"
     },
-    "financial_sys_code": {
-      "type": "string"
+    "renewal_activation_interval": {
+      "type": "integer"
     },
-    "governmental": {
-      "type": "boolean"
+    "subscription_interval": {
+      "type": "integer"
     },
     "liable_for_vat": {
       "type": "boolean"
     },
-    "licensor": {
-      "type": "boolean"
-    },
-    "material_supplier": {
-      "type": "boolean"
-    },
-    "name": {
-      "type": "string"
-    },
-    "national_tax_id": {
-      "type": "string"
-    },
-    "renewal_activation_interval": {
-      "type": "string"
-    },
-    "subscription_interval": {
+    "tax_id": {
       "type": "string"
     },
     "tax_percentage": {
       "type": "number"
     },
-    "contact_info_id": {
-      "type":"integer"
+    "vendor_names": {
+      "id": "vendor_name",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_name.json"
+      }
     },
-    "currency_id": {
-      "type": "integer"
+    "vendor_currencies": {
+      "id": "vendor_currency",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_currency.json"
+      }
     },
-    "interface_id": {
-      "type": "integer"
+    "vendor_interfaces": {
+      "id": "vendor_interface",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_interface.json"
+      }
     },
-    "language_id": {
-      "type": "integer"
+    "agreements": {
+      "id": "agreement",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "agreement.json"
+      }
     },
-    "vendor_status_id": {
-      "type": "integer"
+    "accounts": {
+      "id": "library_vendor_acct",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "library_vendor_acct.json"
+      }
+    },
+    "edi_info": {
+      "type": "object",
+      "$ref": "edi_info.json"
+    },
+    "job": {
+      "type": "object",
+      "$ref": "job.json"
+    },
+    "addresses": {
+      "id": "vendor_address",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_address.json"
+      }
+    },
+    "phone_numbers": {
+      "id": "vendor_phone",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_phone.json"
+      }
+    },
+    "emails": {
+      "id": "vendor_email",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_email.json"
+      }
+    },
+    "contacts": {
+      "id": "vendor_contact_person",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_contact_person.json"
+      }
+    },
+    "notes": {
+      "id": "note",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "note.json"
+      }
     }
   },
-  "required": ["name"]
+  "additionalProperties": false,
+  "required": [
+    "name"
+  ]
 }

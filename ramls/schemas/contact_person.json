@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": ["integer", "null"]
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "phone_number": {
+      "type": "object",
+      "$ref": "phone_number.json"
+    },
+    "email": {
+      "type": "object",
+      "$ref": "email.json"
+    },
+    "address": {
+      "type": "object",
+      "$ref": "address.json"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "first_name",
+    "last_name",
+    "phone_number",
+    "email",
+    "address"
+  ]
+}

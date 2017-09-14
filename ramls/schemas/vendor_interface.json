@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": ["integer", "null"]
+    },
+    "name": {
+      "type": "string"
+    },
+    "uri": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "available": {
+      "type": "string"
+    },
+    "delivery_method": {
+      "type": "string"
+    },
+    "statistics_format": {
+      "type": "string"
+    },
+    "locally_stored": {
+      "type": "string"
+    },
+    "online_location": {
+      "type": "string"
+    },
+    "statistics_notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": []
+}
