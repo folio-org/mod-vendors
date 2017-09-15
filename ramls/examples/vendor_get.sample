@@ -1,0 +1,134 @@
+{
+	"id": null,
+	"name": "GOBI",
+	"code": "AQ-GOBI",
+	"vendor_status": "Active",
+	"language": "English",
+	"erp_code": "AQ-GOBI-HIST",
+	"payment_method": "EFT",
+	"access_provider": true,
+	"governmental": true,
+	"licensor": true,
+	"material_supplier": true,
+	"claiming_interval": 30,
+	"discount_percent": 10,
+	"expected_activation_interval": 1,
+	"expected_invoice_interval": 5,
+	"renewal_activation_interval": 14,
+	"subscription_interval": 365,
+	"liable_for_vat": false,
+	"tax_id": "TX-GOBI-HIST",
+	"tax_percentage": 5,
+	"vendor_names": [
+		{
+			"id": null,
+			"value": "YBP",
+			"description": "AKA"
+		},
+		{
+			"id": null,
+			"value": "Yankee Book Peddler",
+			"description": "Formerly known as"
+		},
+	],
+	"vendor_currencies": [
+		{
+			"id": 1,
+			"currency": "USD"
+		},
+		{
+			"id": 15,
+			"currency": "CAD"
+		},
+		{
+			"id": 27,
+			"currency": "GBP"
+		},
+		{
+			"id": 30,
+			"currency": "EUR"
+		}
+	],
+	"vendor_interfaces": [
+		{
+			"id": null,
+			"name": "Sales Portal",
+			"uri": "https://www.gobi3.com/Pages/Login.aspx",
+			"username": "my_user",
+			"password": "my_password",
+			"notes": "This is the store-front for GOBI.",
+			"available": true,
+			"delivery_method": "Online",
+			"statistics_format": PDF,
+			"locally_stored": "",
+			"online_location": "",
+			"statistics_notes": ""
+		}
+	],
+	"agreements": [
+		{
+			"id": null,
+			"discount": 7.5,
+			"name": "History Follower Incentive",
+			"notes": "",
+			"reference_url": "http://my_sample_agreement.com"
+		}
+	],
+	"accounts": [
+		{
+			"id": null,
+			"name": "History Account",
+			"payment_method": "EFT",
+			"account_no": "GOBI-HIST-12",
+			"lib_ven_acct_status": "Active",
+			"description": "",
+			"contact_info": "",
+			"appsystem_no": "FIN-GOBI-HIST-12",
+			"notes": "",
+			"library_code": "My Library"
+			"library_edi_code": "MY-LIB-1"
+		}
+	],
+	"edi_info": {
+		"vendor_edi_code": "AQ-GOBI-HIST",
+		"vendor_edi_type": "014/EAN",
+		"lib_edi_code": "MY-LIB-1",
+		"lib_edi_type": "014/EAN",
+		"edi_naming_convention": "",
+		"prorate_tax": true,
+		"prorate_fees": true,
+		"send_acct_num": true,
+		"support_order": true,
+		"support_invoice": true,
+		"notes": "",
+		"ftp_format": "SFTP",
+		"ftp_mode": "ASCII",
+		"ftp_conn_mode": "Active",
+		"ftp_port": "22",
+		"server_address": "http://127.0.0.1",
+		"username": "edi_username",
+		"password": "edi_password",
+		"order_directory": "/path/to/order/directory",
+		"invoice_directory": "/path/to/invoice/directory",
+		"send_to_emails": "email1@site.com, email2@site.com",
+		"notify_all_edi": true,
+		"notify_invoice_only": true,
+		"notify_error_only": false
+	},
+	"job": {
+		"is_scheduled": false,
+		"start_date": "<date (with timezone)>",
+		"time": "<time (with timezone)>",
+		"is_monday": false,
+		"is_tuesday": false,
+		"is_wednesday": false,
+		"is_thursday": false,
+		"is_friday": false,
+		"is_saturday": false,
+		"is_sunday": false,
+		"scheduling_notes": ""
+	},
+	"addresses": {
+	
+	}
+}

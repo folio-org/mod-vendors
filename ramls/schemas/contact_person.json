@@ -5,6 +5,9 @@
     "id": {
       "type": ["integer", "null"]
     },
+    "prefix": {
+      "type": "string"
+    },
     "first_name": {
       "type": "string"
     },

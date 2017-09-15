@@ -15,7 +15,7 @@
       "type": "string"
     },
     "language": {
-      "type": "integer"
+      "type": "string"
     },
     "erp_code": {
       "type": "string"

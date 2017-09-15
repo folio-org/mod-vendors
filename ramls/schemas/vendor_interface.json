@@ -21,7 +21,7 @@
       "type": "string"
     },
     "available": {
-      "type": "string"
+      "type": "boolean"
     },
     "delivery_method": {
       "type": "string"

@@ -5,18 +5,26 @@
     "id": {
       "type": ["integer", "null"]
     },
-    "country_code": {
+    "value": {
       "type": "string"
     },
-    "area_code": {
+    "language": {
       "type": "string"
     },
-    "phone_number": {
-      "type": "string"
+    "categories": {
+      "id": "category",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "category.json"
+      }
     },
+    "notes": {
+      "type": "string"
+    }
   },
   "additionalProperties": false,
   "required": [
-    "phone_number"
+    "value"
   ]
 }

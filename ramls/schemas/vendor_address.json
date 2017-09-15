@@ -19,6 +19,9 @@
     },
     "language": {
       "type": "string"
+    },
+    "san_code": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
