@@ -1,5 +1,6 @@
 .idea/
 *.iml
+.vertx/
 node_modules/
 /target
 /src/main/java/jooq/*

@@ -5,11 +5,32 @@ version: v1
 
 documentation:
   - title: Vendors Module
-    content: <b>This module is responsible for implementing the Vendor-CRUD interface.</b>
+    content: <b>This module implements the Vendor-CRUD interface.</b>
 
 schemas:
+  - address: !include schemas/address.json
+  - agreement: !include schemas/agreement.json
+  - category: !include schemas/category.json
+  - contact_category: !include schemas/contact_category.json
+  - contact_person: !include schemas/contact_person.json
+  - edi_info: !include schemas/edi_info.json
+  - email: !include schemas/email.json
+  - error: !include schemas/error.json
+  - job: !include schemas/job.json
+  - library_vendor_acct: !include schemas/library_vendor_acct.json
+  - note: !include schemas/note.json
+  - phone_number: !include schemas/phone_number.json
+  - vendor_address: !include schemas/vendor_address.json
+  - vendor_contact_person: !include schemas/vendor_contact_person.json
+  - vendor_currency: !include schemas/vendor_currency.json
+  - vendor_email: !include schemas/vendor_email.json
+  - vendor_interface: !include schemas/vendor_interface.json
+  - vendor_name: !include schemas/vendor_name.json
+  - vendor_phone: !include schemas/vendor_phone.json
+  - vendor_url: !include schemas/vendor_url.json
   - vendor: !include schemas/vendor.json
   - vendorCollection: !include schemas/vendorCollection.json
+
 
 traits:
   - secured: !include ../raml-util/traits/auth.raml
@@ -26,7 +47,7 @@ resourceTypes:
   type:
     collection:
       exampleCollection: !include examples/vendor_collection.sample
-      exampleItem: !include examples/vendor_create.sample
+      exampleItem: !include examples/vendor_post.sample
       schemaCollection: vendorCollection
       schemaItem: vendor
   get:
@@ -39,5 +60,5 @@ resourceTypes:
   /{vendor_id}:
     type:
       collection-item:
-        exampleItem: !include examples/vendor_create.sample
+        exampleItem: !include examples/vendor_get.sample
         schema: vendor

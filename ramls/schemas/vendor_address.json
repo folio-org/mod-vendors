@@ -7,14 +7,14 @@
     },
     "address": {
       "type": "object",
-      "$ref": "address.json"
+      "$ref": "address"
     },
     "categories": {
       "id": "category",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "category.json"
+        "$ref": "category"
       }
     },
     "language": {

@@ -67,7 +67,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_name.json"
+        "$ref": "vendor_name"
       }
     },
     "vendor_currencies": {
@@ -75,7 +75,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_currency.json"
+        "$ref": "vendor_currency"
       }
     },
     "vendor_interfaces": {
@@ -83,7 +83,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_interface.json"
+        "$ref": "vendor_interface"
       }
     },
     "agreements": {
@@ -91,7 +91,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "agreement.json"
+        "$ref": "agreement"
       }
     },
     "accounts": {
@@ -99,23 +99,23 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "library_vendor_acct.json"
+        "$ref": "library_vendor_acct"
       }
     },
     "edi_info": {
       "type": "object",
-      "$ref": "edi_info.json"
+      "$ref": "edi_info"
     },
     "job": {
       "type": "object",
-      "$ref": "job.json"
+      "$ref": "job"
     },
     "addresses": {
       "id": "vendor_address",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_address.json"
+        "$ref": "vendor_address"
       }
     },
     "phone_numbers": {
@@ -123,7 +123,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_phone.json"
+        "$ref": "vendor_phone"
       }
     },
     "emails": {
@@ -131,7 +131,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_email.json"
+        "$ref": "vendor_email"
       }
     },
     "contacts": {
@@ -139,7 +139,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_contact_person.json"
+        "$ref": "vendor_contact_person"
       }
     },
     "notes": {
@@ -147,7 +147,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "note.json"
+        "$ref": "note"
       }
     }
   },

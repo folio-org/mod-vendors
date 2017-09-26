@@ -1,22 +1,35 @@
 /**
+ * Initialization
+ */
+set client_encoding to 'UTF8';
+set standard_conforming_strings to on;
+set check_function_bodies to false;
+set client_min_messages to warning;
+
+/**
+ * Import third-party modules that will allow for UUID generation, if it is not installed yet.
+ */
+create extension if not exists "uuid-ossp";
+
+/**
  * The following tables all relate to Contacts. These may need to be decoupled from the Vendors module
  * and encapsulated into its own Contacts module.
  */
 
 create table "phone_number" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "country_code" varchar(25),
   "area_code" varchar(25),
   "phone_number" varchar(25) not null
 );
 
 create table "email" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "email" varchar(255) not null
 );
 
 create table "address" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "address_line_1" varchar(255),
   "address_line_2" varchar(255),
   "city" varchar(100),
@@ -26,15 +39,15 @@ create table "address" (
 );
 
 create table "contact_person" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "prefix" varchar(100),
   "first_name" varchar(255) not null,
   "last_name" varchar(255),
   "language" varchar(255),
   "notes" text,
-  "phone_number_id" integer references "phone_number",
-  "email_id" integer references "email",
-  "address_id" integer references "address"
+  "phone_number_id" uuid references "phone_number",
+  "email_id" uuid references "email",
+  "address_id" uuid references "address"
 );
 
 
@@ -44,7 +57,7 @@ create table "contact_person" (
  */
 
 create table "category" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "value" varchar(100) not null
 );
 
@@ -52,7 +65,7 @@ insert into "category" ("value") values
 ('Returns'), ('Payments'), ('Customer Service'), ('Shipments');
 
 create table "contact_category" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "value" varchar(100) not null
 );
 
@@ -61,7 +74,7 @@ insert into "contact_category" ("value") values
 ('General'), ('Journals'), ('Licenses'), ('Primary'), ('Sales'), ('Serials');
 
 create table "edi_type" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -70,7 +83,7 @@ insert into "edi_type" ("code") values
 ('014/EAN'), ('31B/US-SAN'), ('091/Vendor-assigned'), ('092/Customer-assigned');
 
 create table "payment_method" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -79,7 +92,7 @@ insert into "payment_method" ("code") values
 ('EFT'), ('Bank Draft'), ('Paper Check'), ('Credit Card/P-Card'), ('Deposit Account'), ('Cash');
 
 create table "statistics_format" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -88,7 +101,7 @@ insert into "statistics_format" ("code") values
 ('Delimited'), ('Excel'), ('CSV'), ('PDF'), ('ASCII'), ('HTML'), ('Other');
 
 create table "delivery_method" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -97,7 +110,7 @@ insert into "delivery_method" ("code") values
 ('Online'), ('FTP'), ('Email');
 
 create table "ftp_format" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -106,7 +119,7 @@ insert into "ftp_format" ("code") values
 ('SFTP'), ('FTP');
 
 create table "ftp_mode" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -115,7 +128,7 @@ insert into "ftp_mode" ("code") values
 ('ASCII'), ('BINARY');
 
 create table "vendor_status" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -124,7 +137,7 @@ insert into "vendor_status" ("code") values
 ('Active'), ('Pending'), ('Inactive');
 
 create table "lib_ven_acct_status" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "code" varchar(25) not null,
   "description" varchar(100)
 );
@@ -134,7 +147,7 @@ insert into "lib_ven_acct_status" ("code") values
 
 
 create table "edi_info" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "vendor_edi_code" varchar(100),
   "vendor_edi_type" varchar(100),           -- This pulls values from the "code" field of "edi_type"
   "lib_edi_code" varchar(100),
@@ -162,7 +175,7 @@ create table "edi_info" (
 );
 
 create table "vendor" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "name" varchar(255) not null,
   "code" varchar(50),
   "vendor_status" varchar(50),                   -- Active, Pending, Inactive
@@ -182,24 +195,24 @@ create table "vendor" (
   "liable_for_vat" bool,
   "tax_id" varchar(50),
   "tax_percentage" decimal,
-  "edi_info_id" integer references "edi_info"
+  "edi_info_id" uuid references "edi_info"
 );
 
 create table "vendor_name" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "value" varchar(255) not null,
   "description" varchar(100),
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_currency" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "currency" varchar(255) not null,
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_interface" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "name" varchar(255),
   "uri" varchar(255) not null,
   "username" varchar(100),
@@ -211,20 +224,20 @@ create table "vendor_interface" (
   "locally_stored" varchar(255),
   "online_location" varchar(255),
   "statistics_notes" text,
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "agreement" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "discount" decimal,
   "name" varchar(255),
   "notes" text,
   "reference_url" varchar(255) not null,
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "library_vendor_acct" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "name" varchar(255),
   "payment_method" varchar(100),                 -- e.g. EFT, Bank Draft, Paper Check, Credit Card/P-Card, Deposit Account, Cash
   "account_no" varchar(100) not null,
@@ -235,19 +248,19 @@ create table "library_vendor_acct" (
   "notes" text,
   "library_code" varchar(100),
   "library_edi_code" varchar(100),
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "note" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "description" varchar(255) not null,
   "timestamp" timestamp,
-  "user_id" varchar(255),                         -- Weak reference to a user ID
-  "vendor_id" integer references "vendor"
+  "user_id" uuid,                               -- Weak reference to a user ID
+  "vendor_id" uuid references "vendor"
 );
 
 create table "job" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "is_scheduled" boolean,
   "start_date" timestamp,
   "time" time,
@@ -259,66 +272,66 @@ create table "job" (
   "is_saturday" boolean,
   "is_sunday" boolean,
   "scheduling_notes" text,
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_address" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "language" varchar(255),
   "address" varchar(255),                        -- Weak reference to an "address"
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_address_categories" (
-  "vendor_address_id" integer references "vendor_address",
-  "category_id" integer references "category"
+  "vendor_address_id" uuid references "vendor_address",
+  "category_id" uuid references "category"
 );
 
 create table "vendor_phone" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "language" varchar(255),
   "phone_number" varchar(255),                   -- Weak reference to a "phone_number"
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_phone_categories" (
-  "vendor_phone_id" integer references "vendor_phone",
-  "category_id" integer references "category"
+  "vendor_phone_id" uuid references "vendor_phone",
+  "category_id" uuid references "category"
 );
 
 create table "vendor_email" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "language" varchar(255),
   "email" varchar(255),                          -- Weak reference to an "email"
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_email_categories" (
-  "vendor_email_id" integer references "vendor_email",
-  "category_id" integer references "category"
+  "vendor_email_id" uuid references "vendor_email",
+  "category_id" uuid references "category"
 );
 
 create table "vendor_contact" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "language" varchar(255),
-  "contact_person_id" varchar(255),             -- Weak reference to a "contact_person_id"
-  "vendor_id" integer references "vendor"
+  "contact_person_id" uuid,                     -- Weak reference to a "contact_person_id"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_contact_categories" (
-  "vendor_contact_id" integer references "vendor_contact",
-  "category_id" integer references "contact_category"
+  "vendor_contact_id" uuid references "vendor_contact",
+  "category_id" uuid references "contact_category"
 );
 
 create table "vendor_url" (
-  "id" bigserial primary key,
+  "id" uuid default uuid_generate_v4() primary key,
   "value" varchar(2000) not null,
   "language" varchar(255),
   "notes" text,
-  "vendor_id" integer references "vendor"
+  "vendor_id" uuid references "vendor"
 );
 
 create table "vendor_url_categories" (
-  "vendor_url_id" integer references "vendor_url",
-  "category_id" integer references "category"
+  "vendor_url_id" uuid references "vendor_url",
+  "category_id" uuid references "category"
 );

@@ -14,7 +14,7 @@
     "city": {
       "type": "string"
     },
-    "province": {
+    "region": {
       "type": "string"
     },
     "postal_code": {

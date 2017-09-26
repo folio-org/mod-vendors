@@ -13,9 +13,9 @@
     },
     "phone_number": {
       "type": "string"
-    },
+    }
   },
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": [
     "phone_number"
   ]

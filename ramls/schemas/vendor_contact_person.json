@@ -10,14 +10,14 @@
     },
     "contact_person": {
       "type": "object",
-      "$ref": "contact_person.json"
+      "$ref": "contact_person"
     },
     "categories": {
       "id": "contact_category",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "contact_category.json"
+        "$ref": "contact_category"
       }
     }
   },

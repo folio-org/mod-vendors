@@ -22,15 +22,15 @@
     },
     "phone_number": {
       "type": "object",
-      "$ref": "phone_number.json"
+      "$ref": "phone_number"
     },
     "email": {
       "type": "object",
-      "$ref": "email.json"
+      "$ref": "email"
     },
     "address": {
       "type": "object",
-      "$ref": "address.json"
+      "$ref": "address"
     }
   },
   "additionalProperties": false,

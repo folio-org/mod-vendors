@@ -7,14 +7,14 @@
     },
     "email": {
       "type": "object",
-      "$ref": "email.json"
+      "$ref": "email"
     },
     "categories": {
       "id": "category",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "category.json"
+        "$ref": "category"
       }
     },
     "language": {

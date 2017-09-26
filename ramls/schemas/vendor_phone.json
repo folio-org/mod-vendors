@@ -7,14 +7,14 @@
     },
     "phone_number": {
       "type": "object",
-      "$ref": "phone_number.json"
+      "$ref": "phone_number"
     },
     "categories": {
       "id": "category",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "category.json"
+        "$ref": "category"
       }
     },
     "language": {
