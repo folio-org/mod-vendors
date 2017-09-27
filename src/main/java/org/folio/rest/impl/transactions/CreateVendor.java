@@ -53,6 +53,7 @@ public class CreateVendor {
           persistVendorCurrencies(db, vendorRecord);
           persistVendorInterfaces(db, vendorRecord);
           persistVendorAgreements(db, vendorRecord);
+          persistVendorAccounts(db, vendorRecord);
           persistVendorJob(db, vendorRecord);
           persistVendorAddresses(db, vendorRecord);
           persistVendorPhoneNumbers(db, vendorRecord);
