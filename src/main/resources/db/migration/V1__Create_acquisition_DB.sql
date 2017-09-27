@@ -25,7 +25,7 @@ create table "phone_number" (
 
 create table "email" (
   "id" uuid default uuid_generate_v4() primary key,
-  "email" varchar(255) not null
+  "value" varchar(255) not null
 );
 
 create table "address" (
@@ -33,12 +33,12 @@ create table "address" (
   "address_line_1" varchar(255),
   "address_line_2" varchar(255),
   "city" varchar(100),
-  "province" varchar(100),
+  "region" varchar(100),
   "postal_code" varchar(100),
   "country" varchar(100)
 );
 
-create table "contact_person" (
+create table "person" (
   "id" uuid default uuid_generate_v4() primary key,
   "prefix" varchar(100),
   "first_name" varchar(255) not null,
@@ -279,10 +279,11 @@ create table "vendor_address" (
   "id" uuid default uuid_generate_v4() primary key,
   "language" varchar(255),
   "address" varchar(255),                        -- Weak reference to an "address"
+  "san_code" varchar(255),
   "vendor_id" uuid references "vendor"
 );
 
-create table "vendor_address_categories" (
+create table "vendor_address_category" (
   "vendor_address_id" uuid references "vendor_address",
   "category_id" uuid references "category"
 );
@@ -294,7 +295,7 @@ create table "vendor_phone" (
   "vendor_id" uuid references "vendor"
 );
 
-create table "vendor_phone_categories" (
+create table "vendor_phone_category" (
   "vendor_phone_id" uuid references "vendor_phone",
   "category_id" uuid references "category"
 );
@@ -306,7 +307,7 @@ create table "vendor_email" (
   "vendor_id" uuid references "vendor"
 );
 
-create table "vendor_email_categories" (
+create table "vendor_email_category" (
   "vendor_email_id" uuid references "vendor_email",
   "category_id" uuid references "category"
 );
@@ -314,11 +315,11 @@ create table "vendor_email_categories" (
 create table "vendor_contact" (
   "id" uuid default uuid_generate_v4() primary key,
   "language" varchar(255),
-  "contact_person_id" uuid,                     -- Weak reference to a "contact_person_id"
+  "contact_person_id" varchar(255),             -- Weak reference to a "contact_person_id"
   "vendor_id" uuid references "vendor"
 );
 
-create table "vendor_contact_categories" (
+create table "vendor_contact_category" (
   "vendor_contact_id" uuid references "vendor_contact",
   "category_id" uuid references "contact_category"
 );
@@ -331,7 +332,7 @@ create table "vendor_url" (
   "vendor_id" uuid references "vendor"
 );
 
-create table "vendor_url_categories" (
+create table "vendor_url_category" (
   "vendor_url_id" uuid references "vendor_url",
   "category_id" uuid references "category"
 );
