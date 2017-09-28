@@ -1,4 +1,4 @@
-package org.folio.rest.jooq.persist;
+package storage.client;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;

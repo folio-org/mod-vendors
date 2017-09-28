@@ -29,23 +29,23 @@
 			"id": null,
 			"description": "Formerly known as",
 			"value": "Yankee Book Peddler"
-		},
+		}
 	],
 	"vendor_currencies": [
 		{
-			"id": 1,
+			"id": null,
 			"currency": "USD"
 		},
 		{
-			"id": 15,
+			"id": null,
 			"currency": "CAD"
 		},
 		{
-			"id": 27,
+			"id": null,
 			"currency": "GBP"
 		},
 		{
-			"id": 30,
+			"id": null,
 			"currency": "EUR"
 		}
 	],
@@ -117,8 +117,8 @@
 	},
 	"job": {
 		"is_scheduled": false,
-		"start_date": "2008-09-15T15:53:00+05:00",
-		"time": "15:53:00+05:00",
+		"start_date": "2017-08-05T072300",
+		"time": "170030",
 		"is_monday": false,
 		"is_tuesday": false,
 		"is_wednesday": false,
@@ -142,16 +142,16 @@
 			},
 			"categories": [
 				{
-					"id":"b2e6d188-a226-11e7-abc4-cec278b6b50a",
-					"value": "Sales"
+					"id":"e0fb81d2-2fda-474a-9518-38f4209855d4",
+					"value": "Customer Service"
 				},
 				{
-					"id":"afd67ad8-a227-11e7-abc4-cec278b6b50a",
-					"value": "Accounting"
+					"id":"3dd41cdc-c18e-4505-ac8e-4ef8dc4ebe9d",
+					"value": "Returns"
 				},
 				{
-					"id":"c3a9e7f2-a227-11e7-abc4-cec278b6b50a",
-					"value": "Serials"
+					"id":"eb09f7e3-b2f8-4a96-8b46-a349d658f6fc",
+					"value": "Payments"
 				}
 			],
 			"language": "en",
@@ -169,16 +169,12 @@
 			},
 			"categories": [
 				{
-					"id":"b2e6d188-a226-11e7-abc4-cec278b6b50a",
-					"value": "Sales"
+					"id":"eb09f7e3-b2f8-4a96-8b46-a349d658f6fc",
+					"value": "Payments"
 				},
 				{
-					"id":"afd67ad8-a227-11e7-abc4-cec278b6b50a",
-					"value": "Accounting"
-				},
-				{
-					"id":"c3a9e7f2-a227-11e7-abc4-cec278b6b50a",
-					"value": "Serials"
+					"id":"dacab8f7-da49-439a-abfa-c7f784247955",
+					"value": "Shipments"
 				}
 			],
 			"language": "en-us"
@@ -193,16 +189,8 @@
 			},
 			"categories": [
 				{
-					"id":"b2e6d188-a226-11e7-abc4-cec278b6b50a",
-					"value": "Sales"
-				},
-				{
-					"id":"afd67ad8-a227-11e7-abc4-cec278b6b50a",
-					"value": "Accounting"
-				},
-				{
-					"id":"c3a9e7f2-a227-11e7-abc4-cec278b6b50a",
-					"value": "Serials"
+					"id":"dacab8f7-da49-439a-abfa-c7f784247955",
+					"value": "Shipments"
 				}
 			],
 			"language": "en-us"
@@ -241,16 +229,8 @@
 			},
 			"categories": [
 				{
-					"id":"b2e6d188-a226-11e7-abc4-cec278b6b50a",
-					"value": "Sales"
-				},
-				{
-					"id":"afd67ad8-a227-11e7-abc4-cec278b6b50a",
+					"id":"baa9386e-020d-4d41-952a-f53e5a0b020f",
 					"value": "Accounting"
-				},
-				{
-					"id":"c3a9e7f2-a227-11e7-abc4-cec278b6b50a",
-					"value": "Serials"
 				}
 			]
 		}

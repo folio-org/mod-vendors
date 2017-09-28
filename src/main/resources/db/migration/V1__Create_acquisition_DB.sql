@@ -163,9 +163,9 @@ create table "edi_info" (
   "ftp_mode" varchar(255),                  -- i.e. ASCII, BINARY
   "ftp_conn_mode" varchar(255),             -- i.e. ACTIVE, PASSIVE
   "ftp_port" varchar(10),                   -- Defaults: 21 (FTP)/22 (SFTP)
-  "server_address" varchar(10),
-  "username" varchar(50),
-  "password" varchar(50),
+  "server_address" varchar(2000),
+  "username" varchar(255),
+  "password" varchar(255),
   "order_directory" varchar(255),
   "invoice_directory" varchar(255),
   "send_to_emails" text,                    -- comma-separated string
@@ -255,7 +255,7 @@ create table "note" (
   "id" uuid default uuid_generate_v4() primary key,
   "description" varchar(255) not null,
   "timestamp" timestamp,
-  "user_id" uuid,                               -- Weak reference to a user ID
+  "user_id" varchar(255),                       -- Weak reference to a user ID
   "vendor_id" uuid references "vendor"
 );
 

@@ -6,10 +6,13 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import org.folio.rest.impl.transactions.CreateVendor;
+import org.folio.rest.impl.transactions.TransactionCompletionHandler;
 import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.resource.VendorResource;
-import org.folio.rest.jooq.persist.ConnectResultHandler;
-import org.folio.rest.jooq.persist.PostgresClient;
+import storage.client.ConnectResultHandler;
+import storage.client.PostgresClient;
+import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.utils.TenantTool;
 import org.jooq.DSLContext;
 
@@ -134,43 +137,31 @@ public class VendorAPI implements VendorResource {
    */
   @Override
   public void postVendor(String lang, Vendor entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
-//    vertxContext.runOnContext(v -> {
-//      String tenantId = TenantTool.tenantId(okapiHeaders);
-//      PostgresClient dbClient = PostgresClient.getInstance(tenantId);
-//
-//      dbClient.connect(new ConnectResultHandler() {
-//        Response response = null;
-//
-//        @Override
-//        public void success(DSLContext db) {
-//          // Create a new VendorRecord
-//          VendorRecord vendorRecord = db.newRecord(jooq.models.tables.Vendor.VENDOR);
-//
-//          // Load the content of entity into the VendorRecord
-//          mapper.mapEntityToDBRecord(entity, vendorRecord);
-//
-//          // Persist the changes into the DB
-//          vendorRecord.store();
-//
-//          // Grab the persisted record's ID to be passed unto the response
-//          Vendor vendorDetails = new Vendor();
-//          vendorDetails.setId(vendorRecord.getId());
-//
-//          OutStream stream = new OutStream();
-//          stream.setData(vendorDetails);
-//
-//          response = PostVendorResponse.withJsonCreated("/vendor/" + vendorRecord.getId(), stream);
-//          respond(asyncResultHandler, response);
-//        }
-//
-//        @Override
-//        public void failed(Exception exception) {
-//          log.error(exception.getMessage());
-//          response = PostVendorResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
-//          respond(asyncResultHandler, response);
-//        }
-//      });
-//    });
+
+    vertxContext.runOnContext(v -> {
+      String tenantId = TenantTool.tenantId(okapiHeaders);
+
+      CreateVendor createTransaction = CreateVendor.newInstance(entity, tenantId);
+      createTransaction.execute(new TransactionCompletionHandler<Vendor>() {
+        Response response = null;
+
+        @Override
+        public void success(Vendor result) {
+          OutStream stream = new OutStream();
+          stream.setData(result);
+
+          response = PostVendorResponse.withJsonCreated("/vendor/" + result.getId(), stream);
+          respond(asyncResultHandler, response);
+        }
+
+        @Override
+        public void failed(Exception e) {
+          log.error(e.getMessage());
+          response = PostVendorResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
+          respond(asyncResultHandler, response);
+        }
+      });
+    });
   }
 
   /**

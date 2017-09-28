@@ -1,7 +1,8 @@
 package org.folio.rest.impl.transactions;
 
-import jooq.models.tables.*;
-import jooq.models.tables.records.*;
+import storage.model.tables.* ;
+import storage.model.tables.records.*;
+import org.folio.rest.impl.utils.StringUtils;
 import org.folio.rest.jaxrs.model.*;
 import org.folio.rest.jaxrs.model.Address;
 import org.folio.rest.jaxrs.model.Agreement;
@@ -15,17 +16,33 @@ import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.model.VendorCurrency;
 import org.folio.rest.jaxrs.model.VendorInterface;
 import org.folio.rest.jaxrs.model.VendorName;
-import org.folio.rest.jooq.persist.ConnectResultHandler;
-import org.folio.rest.jooq.persist.PostgresClient;
+import storage.client.ConnectResultHandler;
+import storage.client.PostgresClient;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
 public class CreateVendor {
+
+  private storage.model.tables.EdiInfo EDI_INFO = storage.model.tables.EdiInfo.EDI_INFO;
+  private storage.model.tables.Vendor VENDOR = storage.model.tables.Vendor.VENDOR;
+  private storage.model.tables.VendorName VENDOR_NAME = storage.model.tables.VendorName.VENDOR_NAME;
+  private storage.model.tables.VendorCurrency VENDOR_CURRENCY = storage.model.tables.VendorCurrency.VENDOR_CURRENCY;
+  private storage.model.tables.VendorInterface VENDOR_INTERFACE = storage.model.tables.VendorInterface.VENDOR_INTERFACE;
+  private storage.model.tables.Agreement AGREEMENT = storage.model.tables.Agreement.AGREEMENT;
+  private storage.model.tables.LibraryVendorAcct LIBRARY_VENDOR_ACCT = LibraryVendorAcct.LIBRARY_VENDOR_ACCT;
+  private storage.model.tables.Job JOB = storage.model.tables.Job.JOB;
+  private storage.model.tables.Address ADDRESS = storage.model.tables.Address.ADDRESS;
+  private storage.model.tables.PhoneNumber PHONE_NUMBER = storage.model.tables.PhoneNumber.PHONE_NUMBER;
+  private storage.model.tables.Email EMAIL = storage.model.tables.Email.EMAIL;
+  private storage.model.tables.VendorContact VENDOR_CONTACT = VendorContact.VENDOR_CONTACT;
+  private storage.model.tables.Note NOTE= storage.model.tables.Note.NOTE;
+
 
   private Vendor entity = null;
   private String tenantId = null;
@@ -39,14 +56,15 @@ public class CreateVendor {
     this.tenantId = tenantId;
   }
 
-  public void execute() {
+  public void execute(TransactionCompletionHandler<Vendor> completionHandler) {
     PostgresClient dbClient = PostgresClient.getInstance(tenantId);
     dbClient.connect(new ConnectResultHandler() {
       @Override
-      public void success(DSLContext db) {
-        db.transaction(() -> {
+      public void success(DSLContext ctx) {
+        ctx.transaction(configuration -> {
+          DSLContext db = DSL.using(configuration);
 
-          // To build the COMPLETE vendor record, we do the following steps:
+          // Persist the COMPLETE vendor record
           EdiInfoRecord ediInfoRecord = persistEdiInfo(db);
           VendorRecord vendorRecord = persistVendor(db, ediInfoRecord);
           persistVendorNames(db, vendorRecord);
@@ -60,12 +78,14 @@ public class CreateVendor {
           persistVendorEmails(db, vendorRecord);
           persistVendorContacts(db, vendorRecord);
           persistNotes(db, vendorRecord);
+
+          completionHandler.success(entity);
         });
       }
 
       @Override
       public void failed(Exception exception) {
-
+        completionHandler.failed(exception);
       }
     });
   }
@@ -73,7 +93,8 @@ public class CreateVendor {
   private EdiInfoRecord persistEdiInfo(DSLContext db) {
     // Persist the EDI Info
     EdiInfo ediInfo = entity.getEdiInfo();
-    EdiInfoRecord ediInfoRecord = db.newRecord(jooq.models.tables.EdiInfo.EDI_INFO);
+
+    EdiInfoRecord ediInfoRecord = db.newRecord(EDI_INFO);
     ediInfoRecord.setVendorEdiCode(ediInfo.getVendorEdiCode());
     ediInfoRecord.setVendorEdiType(ediInfo.getVendorEdiType());
     ediInfoRecord.setLibEdiCode(ediInfo.getLibEdiCode());
@@ -104,7 +125,7 @@ public class CreateVendor {
 
   private VendorRecord persistVendor(DSLContext db, EdiInfoRecord ediInfoRecord) {
     // Persist the vendor metadata
-    VendorRecord vendorRecord = db.newRecord(jooq.models.tables.Vendor.VENDOR);
+    VendorRecord vendorRecord = db.newRecord(VENDOR);
     vendorRecord.setName(entity.getName());
     vendorRecord.setCode(entity.getCode());
     vendorRecord.setVendorStatus(entity.getVendorStatus());
@@ -128,6 +149,9 @@ public class CreateVendor {
     vendorRecord.setTaxPercentage(taxPercentage);
     vendorRecord.setEdiInfoId(ediInfoRecord.getId());
     vendorRecord.store();
+
+    // Update 'entity'
+    entity.setId(vendorRecord.getId().toString());
     return vendorRecord;
   }
 
@@ -135,28 +159,34 @@ public class CreateVendor {
     // Persist the vendor names
     List<VendorName> vendorNames = entity.getVendorNames();
     for (VendorName each: vendorNames) {
-      VendorNameRecord vendorNameRecord = db.newRecord(jooq.models.tables.VendorName.VENDOR_NAME);
+      VendorNameRecord vendorNameRecord = db.newRecord(VENDOR_NAME);
       vendorNameRecord.setValue(each.getValue());
       vendorNameRecord.setDescription(each.getDescription());
       vendorNameRecord.setVendorId(vendorRecord.getId());
       vendorNameRecord.store();
+
+      // Update 'entity'
+      each.setId(vendorNameRecord.getId().toString());
     }
   }
 
   private void persistVendorCurrencies(DSLContext db, VendorRecord vendorRecord) {
     List<VendorCurrency> vendorCurrencies = entity.getVendorCurrencies();
     for (VendorCurrency each: vendorCurrencies) {
-      VendorCurrencyRecord vendorCurrencyRecord = db.newRecord(jooq.models.tables.VendorCurrency.VENDOR_CURRENCY);
+      VendorCurrencyRecord vendorCurrencyRecord = db.newRecord(VENDOR_CURRENCY);
       vendorCurrencyRecord.setCurrency(each.getCurrency());
       vendorCurrencyRecord.setVendorId(vendorRecord.getId());
       vendorCurrencyRecord.store();
+
+      // Update 'entity'
+      each.setId(vendorCurrencyRecord.getId().toString());
     }
   }
 
   private void persistVendorInterfaces(DSLContext db, VendorRecord vendorRecord) {
     List<VendorInterface> vendorInterface = entity.getVendorInterfaces();
     for (VendorInterface each: vendorInterface) {
-      VendorInterfaceRecord vendorInterfaceRecord = db.newRecord(jooq.models.tables.VendorInterface.VENDOR_INTERFACE);
+      VendorInterfaceRecord vendorInterfaceRecord = db.newRecord(VENDOR_INTERFACE);
       vendorInterfaceRecord.setName(each.getName());
       vendorInterfaceRecord.setUri(each.getUri());
       vendorInterfaceRecord.setUsername(each.getUsername());
@@ -168,27 +198,35 @@ public class CreateVendor {
       vendorInterfaceRecord.setLocallyStored(each.getLocallyStored());
       vendorInterfaceRecord.setOnlineLocation(each.getOnlineLocation());
       vendorInterfaceRecord.setStatisticsNotes(each.getStatisticsNotes());
+      vendorInterfaceRecord.setVendorId(vendorRecord.getId());
       vendorInterfaceRecord.store();
+
+      // Update 'entity'
+      each.setId(vendorInterfaceRecord.getId().toString());
     }
   }
 
   private void persistVendorAgreements(DSLContext db, VendorRecord vendorRecord) {
     List<Agreement> agreements = entity.getAgreements();
     for (Agreement each: agreements) {
-      AgreementRecord agreementRecord = db.newRecord(jooq.models.tables.Agreement.AGREEMENT);
+      AgreementRecord agreementRecord = db.newRecord(AGREEMENT);
       BigDecimal agreementDiscount = new BigDecimal(entity.getDiscountPercent());
       agreementRecord.setDiscount(agreementDiscount);
       agreementRecord.setName(each.getName());
       agreementRecord.setNotes(each.getNotes());
       agreementRecord.setReferenceUrl(each.getReferenceUrl());
+      agreementRecord.setVendorId(vendorRecord.getId());
       agreementRecord.store();
+
+      // Update 'entity'
+      each.setId(agreementRecord.getId().toString());
     }
   }
 
   private void persistVendorAccounts(DSLContext db, VendorRecord vendorRecord) {
     List<Account> accounts = entity.getAccounts();
     for (Account each: accounts) {
-      LibraryVendorAcctRecord libraryVendorAcctRecord = db.newRecord(LibraryVendorAcct.LIBRARY_VENDOR_ACCT);
+      LibraryVendorAcctRecord libraryVendorAcctRecord = db.newRecord(LIBRARY_VENDOR_ACCT);
       libraryVendorAcctRecord.setName(each.getName());
       libraryVendorAcctRecord.setPaymentMethod(each.getPaymentMethod());
       libraryVendorAcctRecord.setAccountNo(each.getAccountNo());
@@ -201,16 +239,16 @@ public class CreateVendor {
       libraryVendorAcctRecord.setLibraryEdiCode(each.getLibraryEdiCode());
       libraryVendorAcctRecord.setVendorId(vendorRecord.getId());
       libraryVendorAcctRecord.store();
+
+      // Update 'entity'
+      each.setId(libraryVendorAcctRecord.getId().toString());
     }
   }
 
   private void persistVendorJob(DSLContext db, VendorRecord vendorRecord) {
     Job job = entity.getJob();
-    JobRecord jobRecord = db.newRecord(jooq.models.tables.Job.JOB);
+    JobRecord jobRecord = db.newRecord(JOB);
     jobRecord.setIsScheduled(job.getIsScheduled());
-
-    // TODO: Process the date data properly
-//          jobRecord.setStartDate(job.getStartDate());
     jobRecord.setIsMonday(job.getIsMonday());
     jobRecord.setIsTuesday(job.getIsTuesday());
     jobRecord.setIsWednesday(job.getIsWednesday());
@@ -219,6 +257,13 @@ public class CreateVendor {
     jobRecord.setIsSaturday(job.getIsSaturday());
     jobRecord.setIsSunday(job.getIsSunday());
     jobRecord.setSchedulingNotes(job.getSchedulingNotes());
+    jobRecord.setVendorId(vendorRecord.getId());
+
+    Timestamp startDate = StringUtils.timestampFromString(job.getStartDate().toString(), "yyyy'-'mm'-'dd'T'hhmmss");
+    jobRecord.setStartDate(startDate);
+
+    Time time = StringUtils.timeFromString(job.getTime().toString(), "hhmmss");
+    jobRecord.setTime(time);
     jobRecord.store();
   }
 
@@ -228,7 +273,7 @@ public class CreateVendor {
       /**
        * TODO: Move this over to the Contacts module
        */
-      AddressRecord addressRecord = db.newRecord(jooq.models.tables.Address.ADDRESS);
+      AddressRecord addressRecord = db.newRecord(ADDRESS);
       addressRecord.setAddressLine_1(each.getAddress().getAddressLine1());
       addressRecord.setAddressLine_2(each.getAddress().getAddressLine2());
       addressRecord.setCity(each.getAddress().getCity());
@@ -236,6 +281,9 @@ public class CreateVendor {
       addressRecord.setPostalCode(each.getAddress().getPostalCode());
       addressRecord.setCountry(each.getAddress().getCountry());
       addressRecord.store();
+
+      // Update 'entity'
+      each.setId(addressRecord.getId().toString());
       // ----
 
       VendorAddressRecord vendorAddressRecord = db.newRecord(VendorAddress.VENDOR_ADDRESS);
@@ -250,7 +298,7 @@ public class CreateVendor {
         UUID categoryID = UUID.fromString(eachCategory.getId());
 
         VendorAddressCategory VENDOR_ADDRESS_CATEGORY = VendorAddressCategory.VENDOR_ADDRESS_CATEGORY;
-        DSL.insertInto(VENDOR_ADDRESS_CATEGORY, VENDOR_ADDRESS_CATEGORY.VENDOR_ADDRESS_ID, VENDOR_ADDRESS_CATEGORY.CATEGORY_ID)
+        db.insertInto(VENDOR_ADDRESS_CATEGORY, VENDOR_ADDRESS_CATEGORY.VENDOR_ADDRESS_ID, VENDOR_ADDRESS_CATEGORY.CATEGORY_ID)
           .values(vendorAddressRecord.getId(), categoryID)
           .execute();
       }
@@ -260,11 +308,14 @@ public class CreateVendor {
   private void persistVendorPhoneNumbers(DSLContext db, VendorRecord vendorRecord) {
     List<PhoneNumber> phoneNumbers = entity.getPhoneNumbers();
     for (PhoneNumber each: phoneNumbers) {
-      PhoneNumberRecord phoneNumberRecord = db.newRecord(jooq.models.tables.PhoneNumber.PHONE_NUMBER);
+      PhoneNumberRecord phoneNumberRecord = db.newRecord(PHONE_NUMBER);
       phoneNumberRecord.setCountryCode(each.getPhoneNumber().getCountryCode());
       phoneNumberRecord.setAreaCode(each.getPhoneNumber().getAreaCode());
       phoneNumberRecord.setPhoneNumber(each.getPhoneNumber().getPhoneNumber());
       phoneNumberRecord.store();
+
+      // Update 'entity'
+      each.setId(phoneNumberRecord.getId().toString());
 
       /**
        * TODO: Move this over to the Contacts module
@@ -281,7 +332,7 @@ public class CreateVendor {
         UUID categoryID = UUID.fromString(eachCategory.getId());
 
         VendorPhoneCategory VENDOR_PHONE_CATEGORY = VendorPhoneCategory.VENDOR_PHONE_CATEGORY;
-        DSL.insertInto(VENDOR_PHONE_CATEGORY, VENDOR_PHONE_CATEGORY.VENDOR_PHONE_ID, VENDOR_PHONE_CATEGORY.CATEGORY_ID)
+        db.insertInto(VENDOR_PHONE_CATEGORY, VENDOR_PHONE_CATEGORY.VENDOR_PHONE_ID, VENDOR_PHONE_CATEGORY.CATEGORY_ID)
           .values(vendorPhoneRecord.getId(), categoryID)
           .execute();
       }
@@ -291,9 +342,12 @@ public class CreateVendor {
   private void persistVendorEmails(DSLContext db, VendorRecord vendorRecord) {
     List<Email> emails = entity.getEmails();
     for (Email each: emails) {
-      EmailRecord emailRecord = db.newRecord(jooq.models.tables.Email.EMAIL);
+      EmailRecord emailRecord = db.newRecord(EMAIL);
       emailRecord.setValue(each.getEmail().getValue());
       emailRecord.store();
+
+      // Update 'entity'
+      each.setId(emailRecord.getId().toString());
 
       /**
        * TODO: Move this over to the Contacts module
@@ -310,7 +364,7 @@ public class CreateVendor {
         UUID categoryID = UUID.fromString(eachCategory.getId());
 
         VendorEmailCategory VENDOR_EMAIL_CATEGORY = VendorEmailCategory.VENDOR_EMAIL_CATEGORY;
-        DSL.insertInto(VENDOR_EMAIL_CATEGORY, VENDOR_EMAIL_CATEGORY.VENDOR_EMAIL_ID, VENDOR_EMAIL_CATEGORY.CATEGORY_ID)
+        db.insertInto(VENDOR_EMAIL_CATEGORY, VENDOR_EMAIL_CATEGORY.VENDOR_EMAIL_ID, VENDOR_EMAIL_CATEGORY.CATEGORY_ID)
           .values(vendorEmailRecord.getId(), categoryID)
           .execute();
       }
@@ -323,17 +377,24 @@ public class CreateVendor {
       /**
        * TODO: Move this over to the Contacts module
        */
-      PhoneNumberRecord phoneNumberRecord = db.newRecord(jooq.models.tables.PhoneNumber.PHONE_NUMBER);
+
+      // Get references to the original data passed into the API
+      ContactPerson contact = each.getContactPerson();
+      PhoneNumber_ phoneNumber = contact.getPhoneNumber();
+      Email_ email = contact.getEmail();
+      Address_ address = contact.getAddress();
+
+      PhoneNumberRecord phoneNumberRecord = db.newRecord(PHONE_NUMBER);
       phoneNumberRecord.setCountryCode(each.getContactPerson().getPhoneNumber().getCountryCode());
       phoneNumberRecord.setAreaCode(each.getContactPerson().getPhoneNumber().getAreaCode());
       phoneNumberRecord.setPhoneNumber(each.getContactPerson().getPhoneNumber().getPhoneNumber());
       phoneNumberRecord.store();
 
-      EmailRecord emailRecord = db.newRecord(jooq.models.tables.Email.EMAIL);
+      EmailRecord emailRecord = db.newRecord(EMAIL);
       emailRecord.setValue(each.getContactPerson().getEmail().getValue());
       emailRecord.store();
 
-      AddressRecord addressRecord = db.newRecord(jooq.models.tables.Address.ADDRESS);
+      AddressRecord addressRecord = db.newRecord(ADDRESS);
       addressRecord.setAddressLine_1(each.getContactPerson().getAddress().getAddressLine1());
       addressRecord.setAddressLine_2(each.getContactPerson().getAddress().getAddressLine2());
       addressRecord.setCity(each.getContactPerson().getAddress().getCity());
@@ -352,7 +413,6 @@ public class CreateVendor {
       personRecord.setEmailId(emailRecord.getId());
       personRecord.setAddressId(addressRecord.getId());
       personRecord.store();
-      // -----
 
       VendorContactRecord vendorContactRecord = db.newRecord(VendorContact.VENDOR_CONTACT);
       vendorContactRecord.setLanguage(each.getLanguage());
@@ -360,12 +420,19 @@ public class CreateVendor {
       vendorContactRecord.setVendorId(vendorRecord.getId());
       vendorContactRecord.store();
 
+      // Update 'entity'
+      phoneNumber.setId(phoneNumberRecord.getId().toString());
+      email.setId(emailRecord.getId().toString());
+      address.setId(addressRecord.getId().toString());
+      contact.setId(vendorContactRecord.getId().toString());
+      // -----
+
       List<Category_> categories = each.getCategories();
       for (Category_ eachCategory: categories) {
         UUID categoryID = UUID.fromString(eachCategory.getId());
 
         VendorContactCategory VENDOR_CONTACT_CATEGORY = VendorContactCategory.VENDOR_CONTACT_CATEGORY;
-        DSL.insertInto(VENDOR_CONTACT_CATEGORY, VENDOR_CONTACT_CATEGORY.VENDOR_CONTACT_ID, VENDOR_CONTACT_CATEGORY.CATEGORY_ID)
+        db.insertInto(VENDOR_CONTACT_CATEGORY, VENDOR_CONTACT_CATEGORY.VENDOR_CONTACT_ID, VENDOR_CONTACT_CATEGORY.CATEGORY_ID)
           .values(vendorContactRecord.getId(), categoryID)
           .execute();
       }
@@ -375,17 +442,20 @@ public class CreateVendor {
   private void persistNotes(DSLContext db, VendorRecord vendorRecord) {
     List<Note> notes = entity.getNotes();
     for (Note each: notes) {
-      NoteRecord noteRecord = db.newRecord(jooq.models.tables.Note.NOTE);
+      NoteRecord noteRecord = db.newRecord(NOTE);
       noteRecord.setDescription(each.getDescription());
       noteRecord.setVendorId(vendorRecord.getId());
 
       // TODO: Need to set User ID
-//            noteRecord.setUserId();
+//      noteRecord.setUserId();
 
       long unixTime = System.currentTimeMillis() / 1000L;
       Timestamp currentTime = new Timestamp(unixTime);
       noteRecord.setTimestamp(currentTime);
       noteRecord.store();
+
+      // Update 'entity'
+      each.setId(noteRecord.getId().toString());
     }
   }
 }

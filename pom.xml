@@ -420,7 +420,7 @@
                             <inputSchema>${db.schema}</inputSchema>
                         </database>
                         <target>
-                            <packageName>jooq.models</packageName>
+                            <packageName>storage.model</packageName>
                             <directory>src/main/java</directory>
                         </target>
                     </generator>
