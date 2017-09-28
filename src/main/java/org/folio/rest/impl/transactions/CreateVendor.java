@@ -414,7 +414,7 @@ public class CreateVendor {
       personRecord.setAddressId(addressRecord.getId());
       personRecord.store();
 
-      VendorContactRecord vendorContactRecord = db.newRecord(VendorContact.VENDOR_CONTACT);
+      VendorContactRecord vendorContactRecord = db.newRecord(VENDOR_CONTACT);
       vendorContactRecord.setLanguage(each.getLanguage());
       vendorContactRecord.setContactPersonId(personRecord.getId().toString());
       vendorContactRecord.setVendorId(vendorRecord.getId());
