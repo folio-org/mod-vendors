@@ -11,6 +11,9 @@
     "code": {
       "type": "string"
     },
+    "description": {
+      "type": "string"
+    },
     "vendor_status": {
       "type": "string"
     },

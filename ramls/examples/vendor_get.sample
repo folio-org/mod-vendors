@@ -2,6 +2,7 @@
     "id": "41fcba0a-4c21-4fa7-8e72-06a0a30d84d9",
     "name": "GOBI",
     "code": "AQ-GOBI",
+    "description": "Here's some arbitrary description about this vendor.",
     "vendor_status": "Active",
     "language": "English",
     "erp_code": "AQ-GOBI-HIST",

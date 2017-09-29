@@ -2,6 +2,7 @@
 	"id": null,
 	"name": "GOBI",
 	"code": "AQ-GOBI",
+	"description": "Here's some arbitrary description about this vendor.",
 	"vendor_status": "Active",
 	"language": "English",
 	"erp_code": "AQ-GOBI-HIST",

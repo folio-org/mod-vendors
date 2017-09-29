@@ -27,35 +27,20 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-public class CreateVendor {
-
-  private storage.model.tables.EdiInfo EDI_INFO = storage.model.tables.EdiInfo.EDI_INFO;
-  private storage.model.tables.Vendor VENDOR = storage.model.tables.Vendor.VENDOR;
-  private storage.model.tables.VendorName VENDOR_NAME = storage.model.tables.VendorName.VENDOR_NAME;
-  private storage.model.tables.VendorCurrency VENDOR_CURRENCY = storage.model.tables.VendorCurrency.VENDOR_CURRENCY;
-  private storage.model.tables.VendorInterface VENDOR_INTERFACE = storage.model.tables.VendorInterface.VENDOR_INTERFACE;
-  private storage.model.tables.Agreement AGREEMENT = storage.model.tables.Agreement.AGREEMENT;
-  private storage.model.tables.LibraryVendorAcct LIBRARY_VENDOR_ACCT = LibraryVendorAcct.LIBRARY_VENDOR_ACCT;
-  private storage.model.tables.Job JOB = storage.model.tables.Job.JOB;
-  private storage.model.tables.Address ADDRESS = storage.model.tables.Address.ADDRESS;
-  private storage.model.tables.PhoneNumber PHONE_NUMBER = storage.model.tables.PhoneNumber.PHONE_NUMBER;
-  private storage.model.tables.Email EMAIL = storage.model.tables.Email.EMAIL;
-  private storage.model.tables.VendorContact VENDOR_CONTACT = VendorContact.VENDOR_CONTACT;
-  private storage.model.tables.Note NOTE= storage.model.tables.Note.NOTE;
-
-
+public class CreateVendorTransaction extends BaseTransaction<Vendor> {
   private Vendor entity = null;
   private String tenantId = null;
 
-  public static CreateVendor newInstance (Vendor entity, String tenantId) {
-    return new CreateVendor(entity, tenantId);
+  public static CreateVendorTransaction newInstance (Vendor entity, String tenantId) {
+    return new CreateVendorTransaction(entity, tenantId);
   }
 
-  private CreateVendor(Vendor entity, String tenantId) {
+  private CreateVendorTransaction(Vendor entity, String tenantId) {
     this.entity = entity;
     this.tenantId = tenantId;
   }
 
+  @Override
   public void execute(TransactionCompletionHandler<Vendor> completionHandler) {
     PostgresClient dbClient = PostgresClient.getInstance(tenantId);
     dbClient.connect(new ConnectResultHandler() {

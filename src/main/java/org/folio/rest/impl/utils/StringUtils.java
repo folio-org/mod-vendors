@@ -17,6 +17,11 @@ public class StringUtils {
     }
   }
 
+  public static String stringFromTimestamp(Timestamp input, String pattern) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+    return dateFormat.format(input.toLocalDateTime());
+  }
+
   public static Time timeFromString(String input, String pattern) {
     try {
       SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
@@ -25,5 +30,10 @@ public class StringUtils {
     } catch (ParseException e) {
       return null;
     }
+  }
+
+  public static String stringFromTime(Time input, String pattern) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+    return dateFormat.format(input);
   }
 }

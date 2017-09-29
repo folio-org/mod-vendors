@@ -6,9 +6,11 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import org.folio.rest.impl.transactions.CreateVendor;
+import org.folio.rest.impl.transactions.CreateVendorTransaction;
+import org.folio.rest.impl.transactions.GetVendorsTransaction;
 import org.folio.rest.impl.transactions.TransactionCompletionHandler;
 import org.folio.rest.jaxrs.model.Vendor;
+import org.folio.rest.jaxrs.model.VendorCollection;
 import org.folio.rest.jaxrs.resource.VendorResource;
 import storage.client.ConnectResultHandler;
 import storage.client.PostgresClient;
@@ -21,6 +23,8 @@ import java.util.Map;
 
 public class VendorAPI implements VendorResource {
   private static final Logger log = LoggerFactory.getLogger(VendorAPI.class);
+
+  private Response response = null;
 
   /**
    * Get list of vendors
@@ -46,79 +50,21 @@ public class VendorAPI implements VendorResource {
                         Map<String, String> okapiHeaders,
                         Handler<AsyncResult<Response>> asyncResultHandler,
                         Context vertxContext) throws Exception {
+
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.tenantId(okapiHeaders);
-      PostgresClient dbClient = PostgresClient.getInstance(tenantId);
 
-      dbClient.connect(new ConnectResultHandler() {
+      GetVendorsTransaction getVendorsTransaction = GetVendorsTransaction.newInstance(query, orderBy, order, offset, limit, tenantId);
+      getVendorsTransaction.execute(new TransactionCompletionHandler<VendorCollection>() {
         @Override
-        public void success(DSLContext db) {
-
-          /*
-          // BUILD QUERY
-          // 1. Select the table to get information from
-          SelectWhereStep myQuery = db.selectFrom(jooq.models.tables.Vendor.VENDOR);
-
-          // 2. Add the where condition, if it was provided
-          Condition whereCondition = dbClient.conditionFromParams(query);
-          SelectConditionStep conditionStep = (SelectConditionStep)myQuery;
-          if (whereCondition != null) {
-            conditionStep = myQuery.where(whereCondition);
-          }
-
-          // 3. Specify the order, if it was provided
-          SelectSeekStep1 seekStep = (SelectSeekStep1)conditionStep;
-          SortField<Object> sortField = dbClient.sortFieldFromParam(orderBy, order == Order.asc);
-          if (sortField != null) {
-            seekStep = conditionStep.orderBy(sortField);
-          }
-
-          // 4. Add the limit and the offset if it was provided
-          SelectForUpdateStep updateStep = seekStep.limit(limit).offset(offset);
-
-          // 5. Fetch the results
-          @SuppressWarnings("unchecked") Result<VendorRecord> result = updateStep.fetch();
-
-          // TOTAL RECORD COUNT
-          // Calculate the total record count
-          SelectWhereStep countQuery = db.selectCount().from(jooq.models.tables.Vendor.VENDOR);
-          SelectConditionStep countConditionStep = (SelectConditionStep)countQuery;
-          if (whereCondition != null) {
-            countConditionStep = countQuery.where(whereCondition);
-          }
-          int totalCount = (int)countConditionStep.fetchOne(0,int.class);
-          int first = 0, last = 0;
-
-          // INDEXES
-          // Calculate the start and end index of the result set
-          if (result.size() > 0) {
-            first = limit * offset + 1;
-            last = first + result.size() - 1;
-          }
-
-          List<Vendor> vendors = new ArrayList<>();
-          for (VendorRecord record: result) {
-            Vendor vendor = mapper.mapDBRecordToEntity(record);
-            vendors.add(vendor);
-          }
-
-          // Wrap the result inside a VendorCollection
-          VendorCollection collection = new VendorCollection();
-          collection.setVendors(vendors);
-          collection.setTotalRecords(totalCount);
-          collection.setFirst(first);
-          collection.setLast(last);
-
-          // Build the response
-          Response response = GetVendorResponse.withJsonOK(collection);
+        public void success(VendorCollection result) {
+          response = GetVendorResponse.withJsonOK(result);
           respond(asyncResultHandler, response);
-          */
         }
 
         @Override
-        public void failed(Exception exception) {
-          log.error(exception.getMessage());
-          Response response = GetVendorResponse.withPlainBadRequest(ErrorMessage.BAD_REQUEST);
+        public void failed(Exception e) {
+          response = GetVendorResponse.withPlainInternalServerError(e.getLocalizedMessage());
           respond(asyncResultHandler, response);
         }
       });
@@ -141,10 +87,8 @@ public class VendorAPI implements VendorResource {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.tenantId(okapiHeaders);
 
-      CreateVendor createTransaction = CreateVendor.newInstance(entity, tenantId);
+      CreateVendorTransaction createTransaction = CreateVendorTransaction.newInstance(entity, tenantId);
       createTransaction.execute(new TransactionCompletionHandler<Vendor>() {
-        Response response = null;
-
         @Override
         public void success(Vendor result) {
           OutStream stream = new OutStream();

@@ -178,6 +178,7 @@ create table "vendor" (
   "id" uuid default uuid_generate_v4() primary key,
   "name" varchar(255) not null,
   "code" varchar(50),
+  "description" text,
   "vendor_status" varchar(50),                   -- Active, Pending, Inactive
   "language" varchar(255),
   "erp_code" varchar(50),
