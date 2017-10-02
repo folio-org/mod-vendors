@@ -2,11 +2,14 @@ package org.folio.rest.impl.mapper;
 
 import org.folio.rest.jaxrs.model.*;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.exception.DataAccessException;
+import storage.model.tables.ContactCategory;
 import storage.model.tables.records.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class VendorMapper extends Mapping<Vendor, VendorRecord> {
 
@@ -14,7 +17,7 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
     return new VendorMapper(ctx);
   }
 
-  VendorMapper(DSLContext ctx) {
+  private VendorMapper(DSLContext ctx) {
     this.db = ctx;
   }
 
@@ -59,12 +62,25 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
     List<Note> notes = mapNotesForOutput(dbRecord);
     result.setNotes(notes);
 
+    List<Address> addresses = mapAddressForOutput(dbRecord);
+    result.setAddresses(addresses);
+
+    List<PhoneNumber> phoneNumbers = mapPhoneNumbersForOutput(dbRecord);
+    result.setPhoneNumbers(phoneNumbers);
+
+    List<Email> emails = mapEmailsForOutput(dbRecord);
+    result.setEmails(emails);
+
+    List<Contact> contacts = mapContactsForOutput(dbRecord);
+    result.setContacts(contacts);
+
     return result;
   }
 
   private Vendor mapVendorRecordForOutput(VendorRecord source) {
     Vendor result = new Vendor();
 
+    result.setId(source.getId().toString());
     result.setName(source.getName());
     result.setDescription(source.getDescription());
     result.setCode(source.getCode());
@@ -274,6 +290,276 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
 
         results.add(element);
       }
+    } catch (DataAccessException e) {
+      // DO NOTHING
+    }
+    return results;
+  }
+
+  private List<Address> mapAddressForOutput(VendorRecord dbRecord) {
+    List<Address> results = new ArrayList<>();
+    try {
+      VendorAddressRecord[] source = db.selectFrom(VENDOR_ADDRESS)
+        .where(VENDOR_ADDRESS.VENDOR_ID.eq(dbRecord.getId()))
+        .fetchArray();
+
+      if (source.length == 0) {
+        return results;
+      }
+
+      // Loop through all the associated VendorAddressRecords
+      for (VendorAddressRecord each: source) {
+        Address element = new Address();
+        element.setId(each.getId().toString());
+
+        // TODO: THIS SECTION WILL CHANGE WHEN THE CONTACTS MODULE IS DECOUPLED
+        // Retrieve the actual address information as it lives in another table
+        UUID add_uuid = UUID.fromString(each.getAddress());
+        AddressRecord add_source = db.selectFrom(ADDRESS).where(ADDRESS.ID.eq(add_uuid)).fetchOne();
+        Address_ sub_address = new Address_();
+        sub_address.setId(add_source.getId().toString());
+        sub_address.setAddressLine1(add_source.getAddressLine_1());
+        sub_address.setAddressLine2(add_source.getAddressLine_2());
+        sub_address.setCity(add_source.getCity());
+        sub_address.setRegion(add_source.getRegion());
+        sub_address.setPostalCode(add_source.getPostalCode());
+        sub_address.setCountry(add_source.getCountry());
+        element.setAddress(sub_address);
+        // ------
+
+        // Retrieve all the category records associated with the VendorAddressRecord
+        Record[] category_source = db.select()
+          .from(VENDOR_ADDRESS)
+          .join(VENDOR_ADDRESS_CATEGORY).on(VENDOR_ADDRESS_CATEGORY.VENDOR_ADDRESS_ID.eq(each.getId()))
+          .join(CATEGORY).on(VENDOR_ADDRESS_CATEGORY.CATEGORY_ID.eq(CATEGORY.ID))
+          .where(VENDOR_ADDRESS.ID.eq(each.getId()))
+          .fetchArray();
+
+        List<Category> categoriesForVendor = new ArrayList<>();
+        for (Record each_cat_source: category_source) {
+          CategoryRecord cat_source = each_cat_source.into(CATEGORY);
+
+          Category associatedCategory = new Category();
+          associatedCategory.setId(cat_source.getId().toString());
+          associatedCategory.setValue(cat_source.getValue());
+          categoriesForVendor.add(associatedCategory);
+        }
+        element.setCategories(categoriesForVendor);
+        element.setLanguage(each.getLanguage());
+        element.setSanCode(each.getSanCode());
+
+        results.add(element);
+      }
+
+    } catch (DataAccessException e) {
+      // DO NOTHING
+    }
+    return results;
+  }
+
+  private List<PhoneNumber> mapPhoneNumbersForOutput(VendorRecord dbRecord) {
+    List<PhoneNumber> results = new ArrayList<>();
+    try {
+      VendorPhoneRecord[] source = db.selectFrom(VENDOR_PHONE)
+        .where(VENDOR_PHONE.VENDOR_ID.eq(dbRecord.getId()))
+        .fetchArray();
+
+      if (source.length == 0) {
+        return results;
+      }
+
+      // Loop through all the associated VendorAddressRecords
+      for (VendorPhoneRecord each: source) {
+        PhoneNumber element = new PhoneNumber();
+        element.setId(each.getId().toString());
+
+        // TODO: THIS SECTION WILL CHANGE WHEN THE CONTACTS MODULE IS DECOUPLED
+        // Retrieve the actual phone number information as it lives in another table
+        UUID add_uuid = UUID.fromString(each.getPhoneNumber());
+        PhoneNumberRecord add_source = db.selectFrom(PHONE_NUMBER).where(PHONE_NUMBER.ID.eq(add_uuid)).fetchOne();
+        PhoneNumber_ sub_content = new PhoneNumber_();
+        sub_content.setId(add_source.getId().toString());
+        sub_content.setAreaCode(add_source.getAreaCode());
+        sub_content.setCountryCode(add_source.getCountryCode());
+        sub_content.setPhoneNumber(add_source.getPhoneNumber());
+        element.setPhoneNumber(sub_content);
+        // ------
+
+        // Retrieve all the category records associated with the VendorAddressRecord
+        Record[] category_source = db.select()
+          .from(VENDOR_PHONE)
+          .join(VENDOR_PHONE_CATEGORY).on(VENDOR_PHONE_CATEGORY.VENDOR_PHONE_ID.eq(each.getId()))
+          .join(CATEGORY).on(VENDOR_PHONE_CATEGORY.CATEGORY_ID.eq(CATEGORY.ID))
+          .where(VENDOR_PHONE.ID.eq(each.getId()))
+          .fetchArray();
+
+        List<Category> categoriesForVendor = new ArrayList<>();
+        for (Record each_cat_source: category_source) {
+          CategoryRecord cat_source = each_cat_source.into(CATEGORY);
+
+          Category associatedCategory = new Category();
+          associatedCategory.setId(cat_source.getId().toString());
+          associatedCategory.setValue(cat_source.getValue());
+          categoriesForVendor.add(associatedCategory);
+        }
+        element.setCategories(categoriesForVendor);
+        element.setLanguage(each.getLanguage());
+
+        results.add(element);
+      }
+
+    } catch (DataAccessException e) {
+      // DO NOTHING
+    }
+    return results;
+  }
+
+  private List<Email> mapEmailsForOutput(VendorRecord dbRecord) {
+    List<Email> results = new ArrayList<>();
+    try {
+      VendorEmailRecord[] source = db.selectFrom(VENDOR_EMAIL)
+        .where(VENDOR_EMAIL.VENDOR_ID.eq(dbRecord.getId()))
+        .fetchArray();
+
+      if (source.length == 0) {
+        return results;
+      }
+
+      // Loop through all the associated VendorAddressRecords
+      for (VendorEmailRecord each: source) {
+        Email element = new Email();
+        element.setId(each.getId().toString());
+
+        // TODO: THIS SECTION WILL CHANGE WHEN THE CONTACTS MODULE IS DECOUPLED
+        // Retrieve the actual email information as it lives in another table
+        UUID add_uuid = UUID.fromString(each.getEmail());
+        EmailRecord add_source = db.selectFrom(EMAIL).where(EMAIL.ID.eq(add_uuid)).fetchOne();
+        Email_ sub_content = new Email_();
+        sub_content.setId(add_source.getId().toString());
+        sub_content.setValue(add_source.getValue());
+        element.setEmail(sub_content);
+        // ------
+
+        // Retrieve all the category records associated with the VendorAddressRecord
+        Record[] category_source = db.select()
+          .from(VENDOR_EMAIL)
+          .join(VENDOR_EMAIL_CATEGORY).on(VENDOR_EMAIL_CATEGORY.VENDOR_EMAIL_ID.eq(each.getId()))
+          .join(CATEGORY).on(VENDOR_EMAIL_CATEGORY.CATEGORY_ID.eq(CATEGORY.ID))
+          .where(VENDOR_EMAIL.ID.eq(each.getId()))
+          .fetchArray();
+
+        List<Category> categoriesForVendor = new ArrayList<>();
+        for (Record each_cat_source: category_source) {
+          CategoryRecord cat_source = each_cat_source.into(CATEGORY);
+
+          Category associatedCategory = new Category();
+          associatedCategory.setId(cat_source.getId().toString());
+          associatedCategory.setValue(cat_source.getValue());
+          categoriesForVendor.add(associatedCategory);
+        }
+        element.setCategories(categoriesForVendor);
+        element.setLanguage(each.getLanguage());
+
+        results.add(element);
+      }
+
+    } catch (DataAccessException e) {
+      // DO NOTHING
+    }
+    return results;
+  }
+
+
+  private List<Contact> mapContactsForOutput(VendorRecord dbRecord) {
+    List<Contact> results = new ArrayList<>();
+    try {
+      VendorContactRecord[] source = db.selectFrom(VENDOR_CONTACT)
+        .where(VENDOR_CONTACT.VENDOR_ID.eq(dbRecord.getId()))
+        .fetchArray();
+
+      if (source.length == 0) {
+        return results;
+      }
+
+      // Loop through all the associated VendorAddressRecords
+      for (VendorContactRecord each: source) {
+        Contact element = new Contact();
+        element.setId(each.getId().toString());
+
+        // TODO: THIS SECTION WILL CHANGE WHEN THE CONTACTS MODULE IS DECOUPLED
+        // Retrieve the actual address information as it lives in another table
+        UUID person_uuid = UUID.fromString(each.getContactPersonId());
+
+        Record record_source = db.select()
+          .from(VENDOR_CONTACT)
+          .join(PERSON).on(PERSON.ID.eq(person_uuid))
+          .join(ADDRESS).on(PERSON.ADDRESS_ID.eq(ADDRESS.ID))
+          .join(EMAIL).on(PERSON.EMAIL_ID.eq(EMAIL.ID))
+          .join(PHONE_NUMBER).on(PHONE_NUMBER.ID.eq(PHONE_NUMBER.ID))
+          .where(VENDOR_CONTACT.ID.eq(each.getId()))
+          .fetchAny();
+
+        PersonRecord person_source = record_source.into(PERSON);
+        AddressRecord address_source = record_source.into(ADDRESS);
+        PhoneNumberRecord phone_source = record_source.into(PHONE_NUMBER);
+        EmailRecord email_source = record_source.into(EMAIL);
+
+        Address_ ser_address = new Address_();
+        ser_address.setId(address_source.getId().toString());
+        ser_address.setAddressLine1(address_source.getAddressLine_1());
+        ser_address.setAddressLine2(address_source.getAddressLine_2());
+        ser_address.setCity(address_source.getCity());
+        ser_address.setRegion(address_source.getRegion());
+        ser_address.setPostalCode(address_source.getPostalCode());
+        ser_address.setCountry(address_source.getCountry());
+
+        PhoneNumber_ ser_phone_number = new PhoneNumber_();
+        ser_phone_number.setId(phone_source.getId().toString());
+        ser_phone_number.setAreaCode(phone_source.getAreaCode());
+        ser_phone_number.setCountryCode(phone_source.getCountryCode());
+        ser_phone_number.setPhoneNumber(phone_source.getPhoneNumber());
+
+        Email_ ser_email = new Email_();
+        ser_email.setId(email_source.getId().toString());
+        ser_email.setValue(email_source.getValue());
+
+        ContactPerson ser_contact = new ContactPerson();
+        ser_contact.setId(person_source.getId().toString());
+        ser_contact.setPrefix(person_source.getPrefix());
+        ser_contact.setFirstName(person_source.getFirstName());
+        ser_contact.setLastName(person_source.getLastName());
+        ser_contact.setLanguage(person_source.getLanguage());
+        ser_contact.setNotes(person_source.getNotes());
+        ser_contact.setAddress(ser_address);
+        ser_contact.setEmail(ser_email);
+        ser_contact.setPhoneNumber(ser_phone_number);
+
+        element.setContactPerson(ser_contact);
+        // ------
+
+        // Retrieve all the category records associated with the VendorAddressRecord
+        Record[] category_source = db.select()
+          .from(VENDOR_CONTACT)
+          .join(VENDOR_CONTACT_CATEGORY).on(VENDOR_CONTACT_CATEGORY.VENDOR_CONTACT_ID.eq(each.getId()))
+          .join(CONTACT_CATEGORY).on(VENDOR_CONTACT_CATEGORY.CATEGORY_ID.eq(CONTACT_CATEGORY.ID))
+          .where(VENDOR_CONTACT.ID.eq(each.getId()))
+          .fetchArray();
+
+        List<Category_> categoriesForVendor = new ArrayList<>();
+        for (Record each_cat_source: category_source) {
+          ContactCategoryRecord cat_source = each_cat_source.into(CONTACT_CATEGORY);
+
+          Category_ associatedCategory = new Category_();
+          associatedCategory.setId(cat_source.getId().toString());
+          associatedCategory.setValue(cat_source.getValue());
+          categoriesForVendor.add(associatedCategory);
+        }
+        element.setCategories(categoriesForVendor);
+        element.setLanguage(each.getLanguage());
+
+        results.add(element);
+      }
+
     } catch (DataAccessException e) {
       // DO NOTHING
     }

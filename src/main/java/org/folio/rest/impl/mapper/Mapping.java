@@ -1,8 +1,7 @@
 package org.folio.rest.impl.mapper;
 
 import org.jooq.DSLContext;
-import storage.model.tables.LibraryVendorAcct;
-import storage.model.tables.VendorContact;
+import storage.model.tables.*;
 
 /**
  *
@@ -18,11 +17,21 @@ public abstract class Mapping<S, T> {
   storage.model.tables.Agreement AGREEMENT = storage.model.tables.Agreement.AGREEMENT;
   storage.model.tables.LibraryVendorAcct LIBRARY_VENDOR_ACCT = LibraryVendorAcct.LIBRARY_VENDOR_ACCT;
   storage.model.tables.Job JOB = storage.model.tables.Job.JOB;
+  storage.model.tables.VendorAddress VENDOR_ADDRESS = VendorAddress.VENDOR_ADDRESS;
+  storage.model.tables.VendorAddressCategory VENDOR_ADDRESS_CATEGORY = VendorAddressCategory.VENDOR_ADDRESS_CATEGORY;
   storage.model.tables.Address ADDRESS = storage.model.tables.Address.ADDRESS;
+  storage.model.tables.VendorPhone VENDOR_PHONE = VendorPhone.VENDOR_PHONE;
+  storage.model.tables.VendorPhoneCategory VENDOR_PHONE_CATEGORY = VendorPhoneCategory.VENDOR_PHONE_CATEGORY;
   storage.model.tables.PhoneNumber PHONE_NUMBER = storage.model.tables.PhoneNumber.PHONE_NUMBER;
+  storage.model.tables.VendorEmail VENDOR_EMAIL = VendorEmail.VENDOR_EMAIL;
+  storage.model.tables.VendorEmailCategory VENDOR_EMAIL_CATEGORY = VendorEmailCategory.VENDOR_EMAIL_CATEGORY;
   storage.model.tables.Email EMAIL = storage.model.tables.Email.EMAIL;
   storage.model.tables.VendorContact VENDOR_CONTACT = VendorContact.VENDOR_CONTACT;
-  storage.model.tables.Note NOTE= storage.model.tables.Note.NOTE;
+  storage.model.tables.VendorContactCategory VENDOR_CONTACT_CATEGORY = VendorContactCategory.VENDOR_CONTACT_CATEGORY;
+  storage.model.tables.Note NOTE = storage.model.tables.Note.NOTE;
+  storage.model.tables.Category CATEGORY = Category.CATEGORY;
+  storage.model.tables.ContactCategory CONTACT_CATEGORY = ContactCategory.CONTACT_CATEGORY;
+  storage.model.tables.Person PERSON = Person.PERSON;
 
   DSLContext db;
 
@@ -30,9 +39,7 @@ public abstract class Mapping<S, T> {
     this.db = ctx;
   }
 
-  Mapping() {
-
-  }
+  Mapping() {}
 
   /**
    *

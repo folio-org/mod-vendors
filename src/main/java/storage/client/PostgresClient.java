@@ -11,6 +11,7 @@ import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.UUID;
 
 public class PostgresClient {
 
@@ -92,9 +93,19 @@ public class PostgresClient {
       for (int i = 0; i < params.size(); i++) {
         JsonObject param = params.getJsonObject(i);
         String fieldNameValue = param.getString("field");
-        Object fieldValue = param.getValue("value");
-        String operator = param.getString("operator");
 
+        // For now, disregard hierarchical field names
+        // We determine this by checking for a "." in the 'fieldNameValue'
+        if (fieldNameValue.contains(".")) {
+          continue;
+        }
+
+        // Edge-case
+        Object fieldValue = param.getValue("value");
+        if (fieldNameValue.equals("id")) {
+          fieldValue = UUID.fromString( (String)fieldValue );
+        }
+        String operator = param.getString("op");
         Field<Object> TABLE_FIELD = fieldFromName(fieldNameValue);
 
         Condition pCondition = null;
@@ -106,7 +117,7 @@ public class PostgresClient {
             pCondition = TABLE_FIELD.notEqual(fieldValue);
             break;
           case OP_LIKE:
-            pCondition = TABLE_FIELD.like((String)fieldValue);
+            pCondition = TABLE_FIELD.like(fieldValue.toString());
             break;
           case OP_GREATER_THAN:
             pCondition = TABLE_FIELD.gt(fieldValue);
