@@ -9,14 +9,12 @@ import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.impl.transactions.CreateVendorTransaction;
 import org.folio.rest.impl.transactions.GetVendorsTransaction;
 import org.folio.rest.impl.transactions.TransactionCompletionHandler;
+import org.folio.rest.impl.transactions.UpdateVendorTransaction;
 import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.model.VendorCollection;
 import org.folio.rest.jaxrs.resource.VendorResource;
-import storage.client.ConnectResultHandler;
-import storage.client.PostgresClient;
 import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.utils.TenantTool;
-import org.jooq.DSLContext;
 
 import javax.ws.rs.core.Response;
 import java.util.Map;
@@ -411,7 +409,24 @@ public class VendorAPI implements VendorResource {
    */
   @Override
   public void putVendorByVendorId(String vendorId, String lang, Vendor entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+    vertxContext.runOnContext(v -> {
+      String tenantId = TenantTool.tenantId(okapiHeaders);
 
+      UpdateVendorTransaction updateVendorTransaction = UpdateVendorTransaction.newInstance(entity, tenantId);
+      updateVendorTransaction.execute(new TransactionCompletionHandler<Vendor>() {
+        @Override
+        public void success(Vendor result) {
+          response = PutVendorByVendorIdResponse.withNoContent();
+          respond(asyncResultHandler, response);
+        }
+
+        @Override
+        public void failed(Exception e) {
+          response = PutVendorByVendorIdResponse.withPlainInternalServerError(e.getLocalizedMessage());
+          respond(asyncResultHandler, response);
+        }
+      });
+    });
   }
 
   private static void respond(Handler<AsyncResult<Response>> handler, Response response) {

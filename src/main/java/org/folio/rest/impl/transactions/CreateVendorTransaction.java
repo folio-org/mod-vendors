@@ -75,6 +75,38 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
     });
   }
 
+  private VendorRecord persistVendor(DSLContext db, EdiInfoRecord ediInfoRecord) {
+    // Persist the vendor metadata
+    VendorRecord vendorRecord = db.newRecord(VENDOR);
+    vendorRecord.setName(entity.getName());
+    vendorRecord.setCode(entity.getCode());
+    vendorRecord.setVendorStatus(entity.getVendorStatus());
+    vendorRecord.setLanguage(entity.getLanguage());
+    vendorRecord.setErpCode(entity.getErpCode());
+    vendorRecord.setPaymentMethod(entity.getPaymentMethod());
+    vendorRecord.setAccessProvider(entity.getAccessProvider());
+    vendorRecord.setGovernmental(entity.getGovernmental());
+    vendorRecord.setLicensor(entity.getLicensor());
+    vendorRecord.setMaterialSupplier(entity.getMaterialSupplier());
+    vendorRecord.setClaimingInterval(entity.getClaimingInterval());
+    BigDecimal discount = new BigDecimal(entity.getDiscountPercent());
+    vendorRecord.setDiscountPercent( discount );
+    vendorRecord.setExpectedActivationInterval(entity.getExpectedActivationInterval());
+    vendorRecord.setExpectedInvoiceInterval(entity.getExpectedInvoiceInterval());
+    vendorRecord.setRenewalActivationInterval(entity.getRenewalActivationInterval());
+    vendorRecord.setSubscriptionInterval(entity.getSubscriptionInterval());
+    vendorRecord.setLiableForVat(entity.getLiableForVat());
+    vendorRecord.setTaxId(entity.getTaxId());
+    BigDecimal taxPercentage = new BigDecimal(entity.getTaxPercentage());
+    vendorRecord.setTaxPercentage(taxPercentage);
+    vendorRecord.setEdiInfoId(ediInfoRecord.getId());
+    vendorRecord.store();
+
+    // Update 'entity'
+    entity.setId(vendorRecord.getId().toString());
+    return vendorRecord;
+  }
+
   private EdiInfoRecord persistEdiInfo(DSLContext db) {
     // Persist the EDI Info
     EdiInfo ediInfo = entity.getEdiInfo();
@@ -106,38 +138,6 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
     ediInfoRecord.setNotifyErrorOnly(ediInfo.getNotifyErrorOnly());
     ediInfoRecord.store();
     return ediInfoRecord;
-  }
-
-  private VendorRecord persistVendor(DSLContext db, EdiInfoRecord ediInfoRecord) {
-    // Persist the vendor metadata
-    VendorRecord vendorRecord = db.newRecord(VENDOR);
-    vendorRecord.setName(entity.getName());
-    vendorRecord.setCode(entity.getCode());
-    vendorRecord.setVendorStatus(entity.getVendorStatus());
-    vendorRecord.setLanguage(entity.getLanguage());
-    vendorRecord.setErpCode(entity.getErpCode());
-    vendorRecord.setPaymentMethod(entity.getPaymentMethod());
-    vendorRecord.setAccessProvider(entity.getAccessProvider());
-    vendorRecord.setGovernmental(entity.getGovernmental());
-    vendorRecord.setLicensor(entity.getLicensor());
-    vendorRecord.setMaterialSupplier(entity.getMaterialSupplier());
-    vendorRecord.setClaimingInterval(entity.getClaimingInterval());
-    BigDecimal discount = new BigDecimal(entity.getDiscountPercent());
-    vendorRecord.setDiscountPercent( discount );
-    vendorRecord.setExpectedActivationInterval(entity.getExpectedActivationInterval());
-    vendorRecord.setExpectedInvoiceInterval(entity.getExpectedInvoiceInterval());
-    vendorRecord.setRenewalActivationInterval(entity.getRenewalActivationInterval());
-    vendorRecord.setSubscriptionInterval(entity.getSubscriptionInterval());
-    vendorRecord.setLiableForVat(entity.getLiableForVat());
-    vendorRecord.setTaxId(entity.getTaxId());
-    BigDecimal taxPercentage = new BigDecimal(entity.getTaxPercentage());
-    vendorRecord.setTaxPercentage(taxPercentage);
-    vendorRecord.setEdiInfoId(ediInfoRecord.getId());
-    vendorRecord.store();
-
-    // Update 'entity'
-    entity.setId(vendorRecord.getId().toString());
-    return vendorRecord;
   }
 
   private void persistVendorNames(DSLContext db, VendorRecord vendorRecord) {
@@ -361,6 +361,7 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
     for (Contact each: contacts) {
       /**
        * TODO: Move this over to the Contacts module
+       * TODO: Also, try to normalize the data
        */
 
       // Get references to the original data passed into the API
@@ -431,12 +432,8 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
       noteRecord.setDescription(each.getDescription());
       noteRecord.setVendorId(vendorRecord.getId());
 
-      // TODO: Need to set User ID
-//      noteRecord.setUserId();
-
-      long unixTime = System.currentTimeMillis() / 1000L;
-      Timestamp currentTime = new Timestamp(unixTime);
-      noteRecord.setTimestamp(currentTime);
+      Timestamp timestamp = StringUtils.timestampFromString(each.getTimestamp().toString(), "yyyy'-'mm'-'dd'T'hhmmss");
+      noteRecord.setTimestamp(timestamp);
       noteRecord.store();
 
       // Update 'entity'

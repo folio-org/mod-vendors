@@ -269,6 +269,8 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
       result.setIsSaturday(source.getIsSaturday());
       result.setIsSunday(source.getIsSunday());
       result.setSchedulingNotes(source.getSchedulingNotes());
+      result.setStartDate(source.getStartDate());
+      result.setTime(source.getTime());
       return result;
     }
     catch (DataAccessException e) {
