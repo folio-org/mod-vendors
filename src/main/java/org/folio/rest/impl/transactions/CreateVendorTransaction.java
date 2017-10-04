@@ -24,6 +24,7 @@ import storage.model.tables.records.*;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -244,10 +245,10 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
     jobRecord.setSchedulingNotes(job.getSchedulingNotes());
     jobRecord.setVendorId(vendorRecord.getId());
 
-    Timestamp startDate = StringUtils.timestampFromString(job.getStartDate(), "yyyy'-'mm'-'dd'T'hhmmss");
+    Timestamp startDate = StringUtils.timestampFromString(job.getStartDate(), "yyyy'-'mm'-'dd'T'hh:mm:ssX");
     jobRecord.setStartDate(startDate);
 
-    Time time = StringUtils.timeFromString(job.getTime(), "hhmmss");
+    Time time = StringUtils.timeFromString(job.getTime(), "hh:mm:ssX");
     jobRecord.setTime(time);
     jobRecord.store();
   }
@@ -432,7 +433,12 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
       noteRecord.setDescription(each.getDescription());
       noteRecord.setVendorId(vendorRecord.getId());
 
-      Timestamp timestamp = StringUtils.timestampFromString(each.getTimestamp(), "yyyy'-'mm'-'dd'T'hhmmss");
+      Date now = new Date();
+      Timestamp timestamp = new Timestamp(now.getTime());
+      if (each.getTimestamp() != null && !each.getTimestamp().isEmpty()) {
+        timestamp = StringUtils.timestampFromString(each.getTimestamp(), "yyyy'-'mm'-'dd'T'hh:mm:ssX");
+      }
+
       noteRecord.setTimestamp(timestamp);
       noteRecord.store();
 

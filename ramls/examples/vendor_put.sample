@@ -1,5 +1,5 @@
 {
-  "id": "e28ed477-c0c2-485e-9758-da0f7627a45d",
+  "id": "5d2c1430-bda1-4f91-81b6-ed01befa5d2b",
   "name": "GOBI",
   "code": "AQ-GOBI",
   "vendor_status": "Active",
@@ -21,37 +21,28 @@
   "tax_percentage": 5,
   "vendor_names": [
     {
-      "id": "fab5fe2e-f174-44fb-bad2-2c97869c258f",
+      "id": "3573f812-8d0e-4bb5-a03f-85038fc25865",
       "value": "YBP",
       "description": "AKA"
-    },
-    {
-      "id": "8d4c39cb-9539-4364-9433-80c8439a1679",
-      "value": "Yankee Book Peddler",
-      "description": "Formerly known as"
     }
   ],
   "vendor_currencies": [
     {
-      "id": "06d3831e-b730-46db-9e35-a93e90cbf76c",
+      "id": "2ef2bb27-6969-4754-8fca-d096b65e5034",
       "currency": "USD"
     },
     {
-      "id": "149b5b07-9666-40c1-a0b5-2697d701a0fb",
+      "id": "6adf80a4-fad7-4b50-ac71-91f549129a11",
       "currency": "CAD"
     },
     {
-      "id": "29fd744e-cc84-4089-b600-a53fe52b5607",
-      "currency": "GBP"
-    },
-    {
-      "id": "a9de52a4-1c3a-41f8-946a-ed748980c0f5",
+      "id": "dbab1dae-0186-49a6-b92f-5079ba2a88fd",
       "currency": "EUR"
     }
   ],
   "vendor_interfaces": [
     {
-      "id": "d31ae2f0-4404-477e-9fbb-a1713f4e805f",
+      "id": "d50157ac-bb1e-4aee-9752-d153a9f18750",
       "name": "Sales Portal",
       "uri": "https://www.gobi3.com/Pages/Login.aspx",
       "username": "my_user",
@@ -67,7 +58,7 @@
   ],
   "agreements": [
     {
-      "id": "b79a6e15-d53f-40fc-a99f-8dd2be92aff6",
+      "id": "2b9a6c61-5247-405f-91cd-14781a8324c6",
       "discount": 10,
       "name": "History Follower Incentive",
       "notes": "",
@@ -76,7 +67,7 @@
   ],
   "accounts": [
     {
-      "id": "b3c55a82-e784-4bce-99c4-736a77da51c8",
+      "id": "44477d2c-04a2-4f55-aea5-7b11d005c8f0",
       "name": "History Account",
       "payment_method": "EFT",
       "account_no": "GOBI-HIST-12",
@@ -117,7 +108,7 @@
   },
   "job": {
     "is_scheduled": false,
-    "start_date": "2008-53-15T03:53:00-07",
+    "start_date": "2017-23-05T07:23:00-07",
     "time": "05:00:30-07",
     "is_monday": false,
     "is_tuesday": false,
@@ -130,9 +121,9 @@
   },
   "addresses": [
     {
-      "id": "1e21c0bc-47bb-4819-b52c-4c3549a96270",
+      "id": "a5b4b5fb-f742-4c5f-8037-ccab33d09d9d",
       "address": {
-        "id": "eeda9af4-3bef-493d-8888-a84bcc2c055c",
+        "id": "418496cd-0bb8-405d-a6d3-eb852c14a914",
         "address_line_1": "10 Estes Street",
         "address_line_2": "",
         "city": "Ipswich",
@@ -164,9 +155,9 @@
   ],
   "phone_numbers": [
     {
-      "id": "e6be70f6-301c-414d-b678-ed5d4414aabb",
+      "id": "1db27e77-59ed-4bd1-b99d-0c31a2d3b011",
       "phone_number": {
-        "id": "6b86629c-f4a6-4f0b-9e8e-d72c624f0ad1",
+        "id": "14610942-89d5-44cb-9e71-d98fa6bd3fb1",
         "country_code": "US",
         "area_code": "978",
         "phone_number": "9999999"
@@ -186,9 +177,9 @@
   ],
   "emails": [
     {
-      "id": "1c459145-593b-4659-9ba5-dcb4882c3e7b",
+      "id": "a1a1d87d-3ec4-4edc-aa14-62dc8f233ce6",
       "email": {
-        "id": "ccd72cdb-7d57-4955-af39-0abe6a83564e",
+        "id": "82742739-57bd-4f47-8f57-323842f0e77f",
         "value": "noreply@folio.org"
       },
       "categories": [
@@ -206,27 +197,27 @@
   ],
   "contacts": [
     {
-      "id": "128e728d-ba52-4da2-b314-191a8e57d488",
+      "id": "91e8b40a-77be-482c-ba59-46ba2d4450f7",
       "language": "en-us",
       "contact_person": {
-        "id": "ca5af74c-7c63-44c2-915f-2fa70c7a1f54",
+        "id": "a4443a51-1a5d-4534-8046-c8822750b9ab",
         "prefix": "Director",
         "first_name": "Nick",
         "last_name": "Fury",
         "language": "en-us",
         "notes": "SHIELD's Big Kahuna",
         "phone_number": {
-          "id": "ab5bfc46-1b7b-471b-86c5-a49e77c35bc7",
+          "id": "14610942-89d5-44cb-9e71-d98fa6bd3fb1",
           "country_code": "US",
           "area_code": "978",
           "phone_number": "9999999"
         },
         "email": {
-          "id": "31b5bb8b-42e5-4c01-826d-175ee0e0fc08",
+          "id": "93a157c0-bfd0-48bf-95ae-827957d6b021",
           "value": "noreply@folio.org"
         },
         "address": {
-          "id": "34d4c401-1c7d-433f-9cdb-5305271071ef",
+          "id": "bd2daf19-1d02-450c-ab27-4edbd85e8947",
           "address_line_1": "10 Estes Street",
           "address_line_2": "",
           "city": "Ipswich",
@@ -235,19 +226,8 @@
           "country": "USA"
         }
       },
-      "categories": [
-        {
-          "id": "a20a72c6-c92f-4659-ab20-2e8e8b472da1",
-          "value": "Accounting"
-        }
-      ]
+      "categories": []
     }
   ],
-  "notes": [
-    {
-      "id": "43e30301-e22c-4f13-aef6-61e48856513c",
-      "description": "This is a sample note.",
-      "timestamp": "2008-53-15T03:53:00-07"
-    }
-  ]
+  "notes": []
 }

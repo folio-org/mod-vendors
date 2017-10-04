@@ -6,10 +6,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import org.folio.rest.impl.transactions.CreateVendorTransaction;
-import org.folio.rest.impl.transactions.GetVendorsTransaction;
-import org.folio.rest.impl.transactions.TransactionCompletionHandler;
-import org.folio.rest.impl.transactions.UpdateVendorTransaction;
+import org.folio.rest.impl.transactions.*;
 import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.model.VendorCollection;
 import org.folio.rest.jaxrs.resource.VendorResource;
@@ -117,7 +114,29 @@ public class VendorAPI implements VendorResource {
    */
   @Override
   public void getVendorByVendorId(String vendorId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+    vertxContext.runOnContext(v -> {
+      String tenantId = TenantTool.tenantId(okapiHeaders);
 
+      GetVendorByIdTransaction getVendorByIdTransaction = GetVendorByIdTransaction.newInstance(vendorId, tenantId);
+      getVendorByIdTransaction.execute(new TransactionCompletionHandler<Vendor>() {
+        @Override
+        public void success(Vendor result) {
+          if (result == null) {
+            response = GetVendorByVendorIdResponse.withPlainNotFound("vendor not found");
+          } else {
+            response = GetVendorByVendorIdResponse.withJsonOK(result);
+          }
+          respond(asyncResultHandler, response);
+        }
+
+        @Override
+        public void failed(Exception e) {
+          log.error(e.getMessage());
+          response = GetVendorByVendorIdResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
+          respond(asyncResultHandler, response);
+        }
+      });
+    });
   }
 
   /**

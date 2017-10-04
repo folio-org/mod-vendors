@@ -62,3 +62,8 @@ resourceTypes:
       collection-item:
         exampleItem: !include examples/vendor_get.sample
         schema: vendor
+    put:
+      description: Update vendor with 'vendor_id'
+      body:
+        application/json:
+          example: !include examples/vendor_put.sample

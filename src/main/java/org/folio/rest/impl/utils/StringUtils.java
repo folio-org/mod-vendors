@@ -18,6 +18,9 @@ public class StringUtils {
   }
 
   public static String stringFromTimestamp(Timestamp input, String pattern) {
+    if (input == null) {
+      return null;
+    }
     SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
     Date date = new Date(input.getTime());
     return dateFormat.format(date);
@@ -34,6 +37,9 @@ public class StringUtils {
   }
 
   public static String stringFromTime(Time input, String pattern) {
+    if (input == null) {
+      return null;
+    }
     SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
     Date date = new Date(input.getTime());
     return dateFormat.format(date);

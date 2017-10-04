@@ -1,246 +1,253 @@
 {
-	"id": null,
-	"name": "GOBI",
-	"code": "AQ-GOBI",
-	"description": "Here's some arbitrary description about this vendor.",
-	"vendor_status": "Active",
-	"language": "English",
-	"erp_code": "AQ-GOBI-HIST",
-	"payment_method": "EFT",
-	"access_provider": true,
-	"governmental": true,
-	"licensor": true,
-	"material_supplier": true,
-	"claiming_interval": 30,
-	"discount_percent": 10,
-	"expected_activation_interval": 1,
-	"expected_invoice_interval": 5,
-	"renewal_activation_interval": 14,
-	"subscription_interval": 365,
-	"liable_for_vat": false,
-	"tax_id": "TX-GOBI-HIST",
-	"tax_percentage": 5,
-	"vendor_names": [
-		{
-			"id": null,
-			"description": "AKA",
-			"value": "YBP"
-		},
-		{
-			"id": null,
-			"description": "Formerly known as",
-			"value": "Yankee Book Peddler"
-		}
-	],
-	"vendor_currencies": [
-		{
-			"id": null,
-			"currency": "USD"
-		},
-		{
-			"id": null,
-			"currency": "CAD"
-		},
-		{
-			"id": null,
-			"currency": "GBP"
-		},
-		{
-			"id": null,
-			"currency": "EUR"
-		}
-	],
-	"vendor_interfaces": [
-		{
-			"id": null,
-			"name": "Sales Portal",
-			"uri": "https://www.gobi3.com/Pages/Login.aspx",
-			"username": "my_user",
-			"password": "my_password",
-			"notes": "This is the store-front for GOBI.",
-			"available": true,
-			"delivery_method": "Online",
-			"statistics_format": "PDF",
-			"locally_stored": "",
-			"online_location": "",
-			"statistics_notes": ""
-		}
-	],
-	"agreements": [
-		{
-			"id": null,
-			"discount": 7.5,
-			"name": "History Follower Incentive",
-			"notes": "",
-			"reference_url": "http://my_sample_agreement.com"
-		}
-	],
-	"accounts": [
-		{
-			"id": null,
-			"name": "History Account",
-			"payment_method": "EFT",
-			"account_no": "GOBI-HIST-12",
-			"lib_ven_acct_status": "Active",
-			"description": "This is my account description.",
-			"contact_info": "Some basic contact information note.",
-			"appsystem_no": "FIN-GOBI-HIST-12",
-			"notes": "",
-			"library_code": "My Library",
-			"library_edi_code": "MY-LIB-1"
-		}
-	],
-	"edi_info": {
-		"vendor_edi_code": "AQ-GOBI-HIST",
-		"vendor_edi_type": "014/EAN",
-		"lib_edi_code": "MY-LIB-1",
-		"lib_edi_type": "014/EAN",
-		"edi_naming_convention": "",
-		"prorate_tax": true,
-		"prorate_fees": true,
-		"send_acct_num": true,
-		"support_order": true,
-		"support_invoice": true,
-		"notes": "",
-		"ftp_format": "SFTP",
-		"ftp_mode": "ASCII",
-		"ftp_conn_mode": "Active",
-		"ftp_port": "22",
-		"server_address": "http://127.0.0.1",
-		"username": "edi_username",
-		"password": "edi_password",
-		"order_directory": "/path/to/order/directory",
-		"invoice_directory": "/path/to/invoice/directory",
-		"send_to_emails": "email1@site.com, email2@site.com",
-		"notify_all_edi": true,
-		"notify_invoice_only": true,
-		"notify_error_only": false
-	},
-	"job": {
-		"is_scheduled": false,
-		"start_date": "2017-08-05T072300",
-		"time": "170030",
-		"is_monday": false,
-		"is_tuesday": false,
-		"is_wednesday": false,
-		"is_thursday": false,
-		"is_friday": false,
-		"is_saturday": false,
-		"is_sunday": false,
-		"scheduling_notes": ""
-	},
-	"addresses": [
-		{
-			"id": null,
-			"address": {
-				"id": null,
-				"address_line_1": "10 Estes Street",
-				"address_line_2": "",
-				"city": "Ipswich",
-				"region": "MA",
-				"postal_code": "01938",
-				"country": "USA"
-			},
-			"categories": [
-				{
-					"id":"e0fb81d2-2fda-474a-9518-38f4209855d4",
-					"value": "Customer Service"
-				},
-				{
-					"id":"3dd41cdc-c18e-4505-ac8e-4ef8dc4ebe9d",
-					"value": "Returns"
-				},
-				{
-					"id":"eb09f7e3-b2f8-4a96-8b46-a349d658f6fc",
-					"value": "Payments"
-				}
-			],
-			"language": "en",
-			"san_code": "1234567"
-		}
-	],
-	"phone_numbers": [
-		{
-			"id": null,
-			"phone_number": {
-				"id": null,
-				"country_code": "US",
-				"area_code": "978",
-				"phone_number": "9999999"
-			},
-			"categories": [
-				{
-					"id":"eb09f7e3-b2f8-4a96-8b46-a349d658f6fc",
-					"value": "Payments"
-				},
-				{
-					"id":"dacab8f7-da49-439a-abfa-c7f784247955",
-					"value": "Shipments"
-				}
-			],
-			"language": "en-us"
-		}
-	],
-	"emails": [
-		{
-			"id": null,
-			"email": {
-				"id": null,
-				"value": "noreply@folio.org"
-			},
-			"categories": [
-				{
-					"id":"dacab8f7-da49-439a-abfa-c7f784247955",
-					"value": "Shipments"
-				}
-			],
-			"language": "en-us"
-		}
-	],
-	"contacts": [
-		{
-			"id": null,
-			"language": "en-us",
-			"contact_person": {
-				"id": null,
-				"prefix": "Director",
-				"first_name": "Nick",
-				"last_name": "Fury",
-				"language": "en-us",
-				"notes": "SHIELD's Big Kahuna",
-				"phone_number": {
-					"id": null,
-					"country_code": "US",
-					"area_code": "978",
-					"phone_number": "9999999"
-				},
-				"email": {
-					"id": null,
-					"value": "noreply@folio.org"
-				},
-				"address": {
-					"id": null,
-					"address_line_1": "10 Estes Street",
-					"address_line_2": "",
-					"city": "Ipswich",
-					"region": "MA",
-					"postal_code": "01938",
-					"country": "USA"
-				}
-			},
-			"categories": [
-				{
-					"id":"baa9386e-020d-4d41-952a-f53e5a0b020f",
-					"value": "Accounting"
-				}
-			]
-		}
-	],
-	"notes": [
-		{
-			"id": null,
-			"description": "This is a sample note.",
-			"timestamp": "2017-08-05T072300"
-		}
-	]
+  "id": null,
+  "name": "GOBI",
+  "code": "AQ-GOBI",
+  "vendor_status": "Active",
+  "language": "English",
+  "erp_code": "AQ-GOBI-HIST",
+  "payment_method": "EFT",
+  "access_provider": true,
+  "governmental": true,
+  "licensor": true,
+  "material_supplier": true,
+  "claiming_interval": 30,
+  "discount_percent": 10,
+  "expected_activation_interval": 1,
+  "expected_invoice_interval": 5,
+  "renewal_activation_interval": 14,
+  "subscription_interval": 365,
+  "liable_for_vat": false,
+  "tax_id": "TX-GOBI-HIST",
+  "tax_percentage": 5,
+  "vendor_names": [
+    {
+      "id": null,
+      "description": "AKA",
+      "value": "YBP"
+    },
+    {
+      "id": null,
+      "description": "Formerly known as",
+      "value": "Yankee Book Peddler"
+    }
+  ],
+  "vendor_currencies": [
+    {
+      "id": null,
+      "currency": "USD"
+    },
+    {
+      "id": null,
+      "currency": "CAD"
+    },
+    {
+      "id": null,
+      "currency": "GBP"
+    },
+    {
+      "id": null,
+      "currency": "EUR"
+    }
+  ],
+  "vendor_interfaces": [
+    {
+      "id": null,
+      "name": "Sales Portal",
+      "uri": "https://www.gobi3.com/Pages/Login.aspx",
+      "username": "my_user",
+      "password": "my_password",
+      "notes": "This is the store-front for GOBI.",
+      "available": true,
+      "delivery_method": "Online",
+      "statistics_format": "PDF",
+      "locally_stored": "",
+      "online_location": "",
+      "statistics_notes": ""
+    }
+  ],
+  "agreements": [
+    {
+      "id": null,
+      "discount": 7.5,
+      "name": "History Follower Incentive",
+      "notes": "",
+      "reference_url": "http://my_sample_agreement.com"
+    }
+  ],
+  "accounts": [
+    {
+      "id": null,
+      "name": "History Account",
+      "payment_method": "EFT",
+      "account_no": "GOBI-HIST-12",
+      "lib_ven_acct_status": "Active",
+      "description": "This is my account description.",
+      "contact_info": "Some basic contact information note.",
+      "appsystem_no": "FIN-GOBI-HIST-12",
+      "notes": "",
+      "library_code": "My Library",
+      "library_edi_code": "MY-LIB-1"
+    }
+  ],
+  "edi_info": {
+    "vendor_edi_code": "AQ-GOBI-HIST",
+    "vendor_edi_type": "014/EAN",
+    "lib_edi_code": "MY-LIB-1",
+    "lib_edi_type": "014/EAN",
+    "edi_naming_convention": "",
+    "prorate_tax": true,
+    "prorate_fees": true,
+    "send_acct_num": true,
+    "support_order": true,
+    "support_invoice": true,
+    "notes": "",
+    "ftp_format": "SFTP",
+    "ftp_mode": "ASCII",
+    "ftp_conn_mode": "Active",
+    "ftp_port": "22",
+    "server_address": "http://127.0.0.1",
+    "username": "edi_username",
+    "password": "edi_password",
+    "order_directory": "/path/to/order/directory",
+    "invoice_directory": "/path/to/invoice/directory",
+    "send_to_emails": "email1@site.com, email2@site.com",
+    "notify_all_edi": true,
+    "notify_invoice_only": true,
+    "notify_error_only": false
+  },
+  "job": {
+    "is_scheduled": false,
+    "start_date": "2008-09-15T15:53:00+05:00",
+    "time": "17:00:30+05:00",
+    "is_monday": false,
+    "is_tuesday": false,
+    "is_wednesday": false,
+    "is_thursday": false,
+    "is_friday": false,
+    "is_saturday": false,
+    "is_sunday": false,
+    "scheduling_notes": ""
+  },
+  "addresses": [
+    {
+      "id": null,
+      "address": {
+        "id": null,
+        "address_line_1": "10 Estes Street",
+        "address_line_2": "",
+        "city": "Ipswich",
+        "region": "MA",
+        "postal_code": "01938",
+        "country": "USA"
+      },
+      "categories": [
+        {
+          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "value": "Returns"
+        },
+        {
+          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "value": "Payments"
+        },
+        {
+          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "value": "Customer Service"
+        },
+        {
+          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "value": "Shipments"
+        }
+      ],
+      "language": "en",
+      "san_code": "1234567"
+    }
+  ],
+  "phone_numbers": [
+    {
+      "id": null,
+      "phone_number": {
+        "id": null,
+        "country_code": "US",
+        "area_code": "978",
+        "phone_number": "9999999"
+      },
+      "categories": [
+        {
+          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "value": "Returns"
+        },
+        {
+          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "value": "Payments"
+        }
+      ],
+      "language": "en-us"
+    }
+  ],
+  "emails": [
+    {
+      "id": null,
+      "email": {
+        "id": null,
+        "value": "noreply@folio.org"
+      },
+      "categories": [
+        {
+          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "value": "Customer Service"
+        },
+        {
+          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "value": "Shipments"
+        }
+      ],
+      "language": "en-us"
+    }
+  ],
+  "contacts": [
+    {
+      "id": null,
+      "language": "en-us",
+      "contact_person": {
+        "id": null,
+        "prefix": "Director",
+        "first_name": "Nick",
+        "last_name": "Fury",
+        "language": "en-us",
+        "notes": "SHIELD's Big Kahuna",
+        "phone_number": {
+          "id": null,
+          "country_code": "US",
+          "area_code": "978",
+          "phone_number": "9999999"
+        },
+        "email": {
+          "id": null,
+          "value": "noreply@folio.org"
+        },
+        "address": {
+          "id": null,
+          "address_line_1": "10 Estes Street",
+          "address_line_2": "",
+          "city": "Ipswich",
+          "region": "MA",
+          "postal_code": "01938",
+          "country": "USA"
+        }
+      },
+      "categories": [
+        {
+          "id": "a20a72c6-c92f-4659-ab20-2e8e8b472da1",
+          "value": "Accounting"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "id": null,
+      "description": "This is a sample note.",
+      "timestamp": "2008-09-15T15:53:00+05:00"
+    }
+  ]
 }

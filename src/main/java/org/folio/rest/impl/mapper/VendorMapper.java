@@ -269,9 +269,9 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
       result.setIsSaturday(source.getIsSaturday());
       result.setIsSunday(source.getIsSunday());
       result.setSchedulingNotes(source.getSchedulingNotes());
-      String startDate = StringUtils.stringFromTimestamp(source.getStartDate(), "yyyy'-'mm'-'dd'T'hhmmss");
+      String startDate = StringUtils.stringFromTimestamp(source.getStartDate(), "yyyy'-'mm'-'dd'T'hh:mm:ssX");
       result.setStartDate(startDate);
-      String time = StringUtils.stringFromTime(source.getTime(), "hhmmss");
+      String time = StringUtils.stringFromTime(source.getTime(), "hh:mm:ssX");
       result.setTime(time);
       return result;
     }
@@ -289,7 +289,7 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
         Note element = new Note();
         element.setId(each.getId().toString());
         element.setDescription(each.getDescription());
-        String timestamp = StringUtils.stringFromTimestamp(each.getTimestamp(), "yyyy'-'mm'-'dd'T'hhmmss");
+        String timestamp = StringUtils.stringFromTimestamp(each.getTimestamp(), "yyyy'-'mm'-'dd'T'hh:mm:ssX");
         element.setTimestamp(timestamp);
 
         results.add(element);
