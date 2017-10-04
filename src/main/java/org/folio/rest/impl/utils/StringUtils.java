@@ -19,7 +19,8 @@ public class StringUtils {
 
   public static String stringFromTimestamp(Timestamp input, String pattern) {
     SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-    return dateFormat.format(input.toLocalDateTime());
+    Date date = new Date(input.getTime());
+    return dateFormat.format(date);
   }
 
   public static Time timeFromString(String input, String pattern) {
@@ -34,6 +35,7 @@ public class StringUtils {
 
   public static String stringFromTime(Time input, String pattern) {
     SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-    return dateFormat.format(input);
+    Date date = new Date(input.getTime());
+    return dateFormat.format(date);
   }
 }

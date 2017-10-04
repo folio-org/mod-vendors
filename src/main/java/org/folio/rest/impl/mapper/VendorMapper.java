@@ -1,10 +1,10 @@
 package org.folio.rest.impl.mapper;
 
+import org.folio.rest.impl.utils.StringUtils;
 import org.folio.rest.jaxrs.model.*;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.exception.DataAccessException;
-import storage.model.tables.ContactCategory;
 import storage.model.tables.records.*;
 
 import java.util.ArrayList;
@@ -269,8 +269,10 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
       result.setIsSaturday(source.getIsSaturday());
       result.setIsSunday(source.getIsSunday());
       result.setSchedulingNotes(source.getSchedulingNotes());
-      result.setStartDate(source.getStartDate());
-      result.setTime(source.getTime());
+      String startDate = StringUtils.stringFromTimestamp(source.getStartDate(), "yyyy'-'mm'-'dd'T'hhmmss");
+      result.setStartDate(startDate);
+      String time = StringUtils.stringFromTime(source.getTime(), "hhmmss");
+      result.setTime(time);
       return result;
     }
     catch (DataAccessException e) {
@@ -287,8 +289,8 @@ public class VendorMapper extends Mapping<Vendor, VendorRecord> {
         Note element = new Note();
         element.setId(each.getId().toString());
         element.setDescription(each.getDescription());
-//      String timestamp = StringUtils.stringFromTimestamp(each.getTimestamp(), "yyyy'-'mm'-'dd'T'hhmmss");
-        element.setTimestamp(each.getTimestamp());
+        String timestamp = StringUtils.stringFromTimestamp(each.getTimestamp(), "yyyy'-'mm'-'dd'T'hhmmss");
+        element.setTimestamp(timestamp);
 
         results.add(element);
       }

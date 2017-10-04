@@ -1,7 +1,5 @@
 package org.folio.rest.impl.transactions;
 
-import storage.model.tables.* ;
-import storage.model.tables.records.*;
 import org.folio.rest.impl.utils.StringUtils;
 import org.folio.rest.jaxrs.model.*;
 import org.folio.rest.jaxrs.model.Address;
@@ -16,10 +14,12 @@ import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.model.VendorCurrency;
 import org.folio.rest.jaxrs.model.VendorInterface;
 import org.folio.rest.jaxrs.model.VendorName;
-import storage.client.ConnectResultHandler;
-import storage.client.PostgresClient;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import storage.client.ConnectResultHandler;
+import storage.client.PostgresClient;
+import storage.model.tables.*;
+import storage.model.tables.records.*;
 
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -244,10 +244,10 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
     jobRecord.setSchedulingNotes(job.getSchedulingNotes());
     jobRecord.setVendorId(vendorRecord.getId());
 
-    Timestamp startDate = StringUtils.timestampFromString(job.getStartDate().toString(), "yyyy'-'mm'-'dd'T'hhmmss");
+    Timestamp startDate = StringUtils.timestampFromString(job.getStartDate(), "yyyy'-'mm'-'dd'T'hhmmss");
     jobRecord.setStartDate(startDate);
 
-    Time time = StringUtils.timeFromString(job.getTime().toString(), "hhmmss");
+    Time time = StringUtils.timeFromString(job.getTime(), "hhmmss");
     jobRecord.setTime(time);
     jobRecord.store();
   }
@@ -432,7 +432,7 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
       noteRecord.setDescription(each.getDescription());
       noteRecord.setVendorId(vendorRecord.getId());
 
-      Timestamp timestamp = StringUtils.timestampFromString(each.getTimestamp().toString(), "yyyy'-'mm'-'dd'T'hhmmss");
+      Timestamp timestamp = StringUtils.timestampFromString(each.getTimestamp(), "yyyy'-'mm'-'dd'T'hhmmss");
       noteRecord.setTimestamp(timestamp);
       noteRecord.store();
 
