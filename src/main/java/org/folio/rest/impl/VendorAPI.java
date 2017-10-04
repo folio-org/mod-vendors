@@ -150,7 +150,29 @@ public class VendorAPI implements VendorResource {
    */
   @Override
   public void deleteVendorByVendorId(String vendorId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+    vertxContext.runOnContext(v -> {
+      String tenantId = TenantTool.tenantId(okapiHeaders);
 
+      DeleteVendorByIdTransaction deleteVendorByIdTransaction = DeleteVendorByIdTransaction.newInstance(vendorId, tenantId);
+      deleteVendorByIdTransaction.execute(new TransactionCompletionHandler<Vendor>() {
+        @Override
+        public void success(Vendor result) {
+          if (result == null) {
+            response = DeleteVendorByVendorIdResponse.withPlainNotFound("vendor not found");
+          } else {
+            response = DeleteVendorByVendorIdResponse.withNoContent();
+          }
+          respond(asyncResultHandler, response);
+        }
+
+        @Override
+        public void failed(Exception e) {
+          log.error(e.getMessage());
+          response = DeleteVendorByVendorIdResponse.withPlainInternalServerError(ErrorMessage.INTERNAL_SERVER_ERROR);
+          respond(asyncResultHandler, response);
+        }
+      });
+    });
   }
 
   /**
