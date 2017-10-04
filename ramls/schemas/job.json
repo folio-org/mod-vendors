@@ -6,12 +6,10 @@
       "type": "boolean"
     },
     "start_date": {
-      "type": "string",
-      "format": "date-time"
+      "type": "string"
     },
     "time": {
-      "type": "string",
-      "format": "time"
+      "type": "string"
     },
     "is_monday": {
       "type": "boolean"
