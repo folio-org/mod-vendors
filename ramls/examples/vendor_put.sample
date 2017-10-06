@@ -1,9 +1,9 @@
 {
-  "id": "5d2c1430-bda1-4f91-81b6-ed01befa5d2b",
+  "id": "1f304d0b-983d-446e-be2e-5e953ff211be",
   "name": "GOBI",
   "code": "AQ-GOBI",
   "vendor_status": "Active",
-  "language": "English",
+  "language": "French",
   "erp_code": "AQ-GOBI-HIST",
   "payment_method": "EFT",
   "access_provider": true,
@@ -21,28 +21,37 @@
   "tax_percentage": 5,
   "vendor_names": [
     {
-      "id": "3573f812-8d0e-4bb5-a03f-85038fc25865",
+      "id": "c486b895-8f6b-4329-9af2-ab0bb37a6bc3",
       "value": "YBP",
       "description": "AKA"
+    },
+    {
+      "id": "cd610774-681e-47bf-81f3-9b81a663f677",
+      "value": "Yankee Book Peddler",
+      "description": "Formerly known as"
     }
   ],
   "vendor_currencies": [
     {
-      "id": "2ef2bb27-6969-4754-8fca-d096b65e5034",
+      "id": "5c166de5-d8e3-48aa-a32d-6b1c0d5df377",
       "currency": "USD"
     },
     {
-      "id": "6adf80a4-fad7-4b50-ac71-91f549129a11",
+      "id": "f67a2277-75c8-4f83-bbca-1da9741bf4ea",
       "currency": "CAD"
     },
     {
-      "id": "dbab1dae-0186-49a6-b92f-5079ba2a88fd",
+      "id": "a3f13b0d-aeb4-42e2-8f96-a00f82305552",
+      "currency": "GBP"
+    },
+    {
+      "id": "1728ff2c-ad51-4737-a0d7-f52effa87262",
       "currency": "EUR"
     }
   ],
   "vendor_interfaces": [
     {
-      "id": "d50157ac-bb1e-4aee-9752-d153a9f18750",
+      "id": "e60630c4-70c1-4aba-958a-5c62990541d8",
       "name": "Sales Portal",
       "uri": "https://www.gobi3.com/Pages/Login.aspx",
       "username": "my_user",
@@ -58,7 +67,7 @@
   ],
   "agreements": [
     {
-      "id": "2b9a6c61-5247-405f-91cd-14781a8324c6",
+      "id": "ec970ada-1206-4d08-8676-d8a5b88eab3d",
       "discount": 10,
       "name": "History Follower Incentive",
       "notes": "",
@@ -67,7 +76,7 @@
   ],
   "accounts": [
     {
-      "id": "44477d2c-04a2-4f55-aea5-7b11d005c8f0",
+      "id": "2d40a3a7-76f2-4763-837b-9e08e2896ec0",
       "name": "History Account",
       "payment_method": "EFT",
       "account_no": "GOBI-HIST-12",
@@ -108,7 +117,7 @@
   },
   "job": {
     "is_scheduled": false,
-    "start_date": "2017-23-05T07:23:00-07",
+    "start_date": "2008-53-15T03:53:00-07",
     "time": "05:00:30-07",
     "is_monday": false,
     "is_tuesday": false,
@@ -121,9 +130,9 @@
   },
   "addresses": [
     {
-      "id": "a5b4b5fb-f742-4c5f-8037-ccab33d09d9d",
+      "id": "2c649f75-6ee3-45d0-8064-5f066b0002cd",
       "address": {
-        "id": "418496cd-0bb8-405d-a6d3-eb852c14a914",
+        "id": "9ec07434-7ebc-412d-a87a-745bcb25ac3a",
         "address_line_1": "10 Estes Street",
         "address_line_2": "",
         "city": "Ipswich",
@@ -133,19 +142,19 @@
       },
       "categories": [
         {
-          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "id": "0e3f9680-ab06-4565-af64-609b7364e6eb",
           "value": "Returns"
         },
         {
-          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "id": "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
           "value": "Payments"
         },
         {
-          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "id": "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
           "value": "Customer Service"
         },
         {
-          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "id": "56288fe8-8037-44da-8395-01d2d106dc54",
           "value": "Shipments"
         }
       ],
@@ -155,20 +164,20 @@
   ],
   "phone_numbers": [
     {
-      "id": "1db27e77-59ed-4bd1-b99d-0c31a2d3b011",
+      "id": "b79f4afe-0fb0-469d-b4f1-5b90b3e1d5b9",
       "phone_number": {
-        "id": "14610942-89d5-44cb-9e71-d98fa6bd3fb1",
+        "id": "eba6d045-e488-4ee3-be85-087e79d58b68",
         "country_code": "US",
         "area_code": "978",
         "phone_number": "9999999"
       },
       "categories": [
         {
-          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "id": "0e3f9680-ab06-4565-af64-609b7364e6eb",
           "value": "Returns"
         },
         {
-          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "id": "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
           "value": "Payments"
         }
       ],
@@ -177,18 +186,18 @@
   ],
   "emails": [
     {
-      "id": "a1a1d87d-3ec4-4edc-aa14-62dc8f233ce6",
+      "id": "ceabef54-9c03-4e51-af6e-293e2fe1f1a1",
       "email": {
-        "id": "82742739-57bd-4f47-8f57-323842f0e77f",
+        "id": "1bd00ab3-9d74-4d79-894c-29e81b3c1a46",
         "value": "noreply@folio.org"
       },
       "categories": [
         {
-          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "id": "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
           "value": "Customer Service"
         },
         {
-          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "id": "56288fe8-8037-44da-8395-01d2d106dc54",
           "value": "Shipments"
         }
       ],
@@ -197,27 +206,27 @@
   ],
   "contacts": [
     {
-      "id": "91e8b40a-77be-482c-ba59-46ba2d4450f7",
+      "id": "b4ee0b48-843b-4708-b97b-3d148d145ed5",
       "language": "en-us",
       "contact_person": {
-        "id": "a4443a51-1a5d-4534-8046-c8822750b9ab",
+        "id": "8676aeeb-e356-4bd4-b221-8fba48bb48cf",
         "prefix": "Director",
         "first_name": "Nick",
         "last_name": "Fury",
         "language": "en-us",
         "notes": "SHIELD's Big Kahuna",
         "phone_number": {
-          "id": "14610942-89d5-44cb-9e71-d98fa6bd3fb1",
+          "id": "eba6d045-e488-4ee3-be85-087e79d58b68",
           "country_code": "US",
           "area_code": "978",
           "phone_number": "9999999"
         },
         "email": {
-          "id": "93a157c0-bfd0-48bf-95ae-827957d6b021",
+          "id": "adfb60ea-d4a9-4908-9dbe-5490811c02ef",
           "value": "noreply@folio.org"
         },
         "address": {
-          "id": "bd2daf19-1d02-450c-ab27-4edbd85e8947",
+          "id": "c96285cb-bfef-4225-b8ee-ae8e8157b15e",
           "address_line_1": "10 Estes Street",
           "address_line_2": "",
           "city": "Ipswich",
@@ -226,8 +235,31 @@
           "country": "USA"
         }
       },
-      "categories": []
+      "categories": [
+        {
+          "id": "08e0eb27-b57f-4638-a703-9a2c57bd8708",
+          "value": "Accounting"
+        },
+        {
+          "id": "a5da9c44-6619-403f-bd3b-f9bd2f63bc59",
+          "value": "Books"
+        },
+        {
+          "id": "da0272e4-7ff7-4ea8-9bc9-9d9cd5c81580",
+          "value": "Customer Service"
+        },
+        {
+          "id": "ab18897b-0e40-4f31-896b-9c9adc979a88",
+          "value": "Ebooks"
+        }
+      ]
     }
   ],
-  "notes": []
+  "notes": [
+    {
+      "id": "a3b00f0e-61f0-4fa1-8b82-e9077533a227",
+      "description": "This is a sample note.",
+      "timestamp": "2008-53-15T03:53:00-07"
+    }
+  ]
 }

@@ -31,12 +31,14 @@ import java.util.UUID;
 public class UpdateVendorTransaction extends BaseTransaction<Vendor> {
   private Vendor entity = null;
   private String tenantId = null;
+  private UUID db_uuid = null;
 
-  public static UpdateVendorTransaction newInstance (Vendor entity, String tenantId) {
-    return new UpdateVendorTransaction(entity, tenantId);
+  public static UpdateVendorTransaction newInstance (String uuid, Vendor entity, String tenantId) {
+    return new UpdateVendorTransaction(uuid, entity, tenantId);
   }
 
-  private UpdateVendorTransaction(Vendor entity, String tenantId) {
+  private UpdateVendorTransaction(String uuid, Vendor entity, String tenantId) {
+    this.db_uuid = UUID.fromString(uuid);
     this.entity = entity;
     this.tenantId = tenantId;
   }
@@ -52,6 +54,11 @@ public class UpdateVendorTransaction extends BaseTransaction<Vendor> {
 
           // Persist the COMPLETE vendor record
           VendorRecord vendorRecord = updateVendor(db);
+          if (vendorRecord == null) {
+            completionHandler.success(null);
+            return;
+          }
+
           updateEdiInfo(db, vendorRecord);
           updateVendorNames(db, vendorRecord);
           updateVendorCurrencies(db, vendorRecord);
@@ -77,8 +84,11 @@ public class UpdateVendorTransaction extends BaseTransaction<Vendor> {
   }
 
   private VendorRecord updateVendor(DSLContext db) {
-    UUID uuid = UUID.fromString(entity.getId());
-    VendorRecord vendorRecord = db.selectFrom(VENDOR).where(VENDOR.ID.eq(uuid)).fetchOne();
+    VendorRecord vendorRecord = db.selectFrom(VENDOR).where(VENDOR.ID.eq(db_uuid)).fetchOne();
+    if (vendorRecord == null) {
+      return null;
+    }
+
     vendorRecord.setName(entity.getName());
     vendorRecord.setCode(entity.getCode());
     vendorRecord.setVendorStatus(entity.getVendorStatus());

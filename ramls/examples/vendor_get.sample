@@ -1,5 +1,5 @@
 {
-  "id": "e28ed477-c0c2-485e-9758-da0f7627a45d",
+  "id": "588b5c42-8634-4af7-bc9b-5e0116ed96b6",
   "name": "GOBI",
   "code": "AQ-GOBI",
   "vendor_status": "Active",
@@ -21,37 +21,37 @@
   "tax_percentage": 5,
   "vendor_names": [
     {
-      "id": "fab5fe2e-f174-44fb-bad2-2c97869c258f",
+      "id": "dc7e3d1b-7580-4107-837c-5f49b4e41950",
       "value": "YBP",
       "description": "AKA"
     },
     {
-      "id": "8d4c39cb-9539-4364-9433-80c8439a1679",
+      "id": "4f5e3e2e-2243-4bf4-97d9-4d88b26a290c",
       "value": "Yankee Book Peddler",
       "description": "Formerly known as"
     }
   ],
   "vendor_currencies": [
     {
-      "id": "06d3831e-b730-46db-9e35-a93e90cbf76c",
+      "id": "cd080af7-02ea-4fed-8e0a-d9d5697074c4",
       "currency": "USD"
     },
     {
-      "id": "149b5b07-9666-40c1-a0b5-2697d701a0fb",
+      "id": "f17f4bbb-04c7-4aa7-a4ea-39cffc87086d",
       "currency": "CAD"
     },
     {
-      "id": "29fd744e-cc84-4089-b600-a53fe52b5607",
+      "id": "4255e475-f841-4e58-ae3f-c127a94954ed",
       "currency": "GBP"
     },
     {
-      "id": "a9de52a4-1c3a-41f8-946a-ed748980c0f5",
+      "id": "23882aab-235e-47fe-b681-b3c4bfc0890d",
       "currency": "EUR"
     }
   ],
   "vendor_interfaces": [
     {
-      "id": "d31ae2f0-4404-477e-9fbb-a1713f4e805f",
+      "id": "caf06a6b-52b8-49b8-8d0f-ff920b72e971",
       "name": "Sales Portal",
       "uri": "https://www.gobi3.com/Pages/Login.aspx",
       "username": "my_user",
@@ -67,7 +67,7 @@
   ],
   "agreements": [
     {
-      "id": "b79a6e15-d53f-40fc-a99f-8dd2be92aff6",
+      "id": "5bc6b601-477d-43fb-96d4-4f649036c19e",
       "discount": 10,
       "name": "History Follower Incentive",
       "notes": "",
@@ -76,7 +76,7 @@
   ],
   "accounts": [
     {
-      "id": "b3c55a82-e784-4bce-99c4-736a77da51c8",
+      "id": "e647578d-e627-4ee4-b571-0e6a4d558c6a",
       "name": "History Account",
       "payment_method": "EFT",
       "account_no": "GOBI-HIST-12",
@@ -130,9 +130,9 @@
   },
   "addresses": [
     {
-      "id": "1e21c0bc-47bb-4819-b52c-4c3549a96270",
+      "id": "494e0455-b95a-4b1a-8c2f-9cf65d41f738",
       "address": {
-        "id": "eeda9af4-3bef-493d-8888-a84bcc2c055c",
+        "id": "5cc5972c-f19e-43f6-bbed-4ab312415288",
         "address_line_1": "10 Estes Street",
         "address_line_2": "",
         "city": "Ipswich",
@@ -142,19 +142,19 @@
       },
       "categories": [
         {
-          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "id": "0e3f9680-ab06-4565-af64-609b7364e6eb",
           "value": "Returns"
         },
         {
-          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "id": "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
           "value": "Payments"
         },
         {
-          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "id": "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
           "value": "Customer Service"
         },
         {
-          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "id": "56288fe8-8037-44da-8395-01d2d106dc54",
           "value": "Shipments"
         }
       ],
@@ -164,20 +164,20 @@
   ],
   "phone_numbers": [
     {
-      "id": "e6be70f6-301c-414d-b678-ed5d4414aabb",
+      "id": "9b3f7fbe-3154-42f9-b829-eb23d35fb3d8",
       "phone_number": {
-        "id": "6b86629c-f4a6-4f0b-9e8e-d72c624f0ad1",
+        "id": "3f7e5201-1cbd-4561-b78f-e385b239a50b",
         "country_code": "US",
         "area_code": "978",
         "phone_number": "9999999"
       },
       "categories": [
         {
-          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "id": "0e3f9680-ab06-4565-af64-609b7364e6eb",
           "value": "Returns"
         },
         {
-          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "id": "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
           "value": "Payments"
         }
       ],
@@ -186,18 +186,18 @@
   ],
   "emails": [
     {
-      "id": "1c459145-593b-4659-9ba5-dcb4882c3e7b",
+      "id": "25909263-13a1-4e0d-99e9-992b0095a792",
       "email": {
-        "id": "ccd72cdb-7d57-4955-af39-0abe6a83564e",
+        "id": "f1ad8f9c-9131-4d0f-956c-de2171d9fa8c",
         "value": "noreply@folio.org"
       },
       "categories": [
         {
-          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "id": "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
           "value": "Customer Service"
         },
         {
-          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "id": "56288fe8-8037-44da-8395-01d2d106dc54",
           "value": "Shipments"
         }
       ],
@@ -206,27 +206,27 @@
   ],
   "contacts": [
     {
-      "id": "128e728d-ba52-4da2-b314-191a8e57d488",
+      "id": "0e1c96cb-2303-4e5d-880e-7c689bd7ff80",
       "language": "en-us",
       "contact_person": {
-        "id": "ca5af74c-7c63-44c2-915f-2fa70c7a1f54",
+        "id": "201dd577-9c5f-418b-8e08-181e7d61faa1",
         "prefix": "Director",
         "first_name": "Nick",
         "last_name": "Fury",
         "language": "en-us",
         "notes": "SHIELD's Big Kahuna",
         "phone_number": {
-          "id": "ab5bfc46-1b7b-471b-86c5-a49e77c35bc7",
+          "id": "3f7e5201-1cbd-4561-b78f-e385b239a50b",
           "country_code": "US",
           "area_code": "978",
           "phone_number": "9999999"
         },
         "email": {
-          "id": "31b5bb8b-42e5-4c01-826d-175ee0e0fc08",
+          "id": "09188cbc-8427-4061-b2ea-3385354dc4da",
           "value": "noreply@folio.org"
         },
         "address": {
-          "id": "34d4c401-1c7d-433f-9cdb-5305271071ef",
+          "id": "c249f6bf-feee-47ff-a68c-a13d4520cabb",
           "address_line_1": "10 Estes Street",
           "address_line_2": "",
           "city": "Ipswich",
@@ -237,15 +237,27 @@
       },
       "categories": [
         {
-          "id": "a20a72c6-c92f-4659-ab20-2e8e8b472da1",
+          "id": "08e0eb27-b57f-4638-a703-9a2c57bd8708",
           "value": "Accounting"
+        },
+        {
+          "id": "a5da9c44-6619-403f-bd3b-f9bd2f63bc59",
+          "value": "Books"
+        },
+        {
+          "id": "da0272e4-7ff7-4ea8-9bc9-9d9cd5c81580",
+          "value": "Customer Service"
+        },
+        {
+          "id": "ab18897b-0e40-4f31-896b-9c9adc979a88",
+          "value": "Ebooks"
         }
       ]
     }
   ],
   "notes": [
     {
-      "id": "43e30301-e22c-4f13-aef6-61e48856513c",
+      "id": "8def5ef7-3a01-459f-8ab4-480c655a8e77",
       "description": "This is a sample note.",
       "timestamp": "2008-53-15T03:53:00-07"
     }

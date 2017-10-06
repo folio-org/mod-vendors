@@ -38,8 +38,7 @@ public class DeleteVendorByIdTransaction extends BaseTransaction<Vendor> {
 
           VendorRecord dbRecord = db.selectFrom(VENDOR).where(VENDOR.ID.eq(vendor_id)).fetchOne();
           if (dbRecord == null) {
-            Exception e = new Exception("no vendor found");
-            completionHandler.failed(e);
+            completionHandler.success(null);
             return;
           }
 

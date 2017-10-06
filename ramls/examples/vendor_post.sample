@@ -142,19 +142,19 @@
       },
       "categories": [
         {
-          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "id":"0e3f9680-ab06-4565-af64-609b7364e6eb",
           "value": "Returns"
         },
         {
-          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "id":"996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
           "value": "Payments"
         },
         {
-          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "id":"112ae2e4-88ae-4fa5-a75b-2379d2035e52",
           "value": "Customer Service"
         },
         {
-          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "id":"56288fe8-8037-44da-8395-01d2d106dc54",
           "value": "Shipments"
         }
       ],
@@ -173,11 +173,11 @@
       },
       "categories": [
         {
-          "id": "24f94977-d831-4fb8-b7f1-be601c412616",
+          "id":"0e3f9680-ab06-4565-af64-609b7364e6eb",
           "value": "Returns"
         },
         {
-          "id": "b1d9d689-28d2-4267-95fc-1c5f6c066655",
+          "id":"996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
           "value": "Payments"
         }
       ],
@@ -193,11 +193,11 @@
       },
       "categories": [
         {
-          "id": "b3809575-2d15-436b-9277-e7606f3318a1",
+          "id":"112ae2e4-88ae-4fa5-a75b-2379d2035e52",
           "value": "Customer Service"
         },
         {
-          "id": "2edd63f1-b65a-4e45-881c-5d7e364c1f5d",
+          "id":"56288fe8-8037-44da-8395-01d2d106dc54",
           "value": "Shipments"
         }
       ],
@@ -237,8 +237,20 @@
       },
       "categories": [
         {
-          "id": "a20a72c6-c92f-4659-ab20-2e8e8b472da1",
+          "id":"08e0eb27-b57f-4638-a703-9a2c57bd8708",
           "value": "Accounting"
+        },
+        {
+          "id":"a5da9c44-6619-403f-bd3b-f9bd2f63bc59",
+          "value":"Books"
+        },
+        {
+          "id":"da0272e4-7ff7-4ea8-9bc9-9d9cd5c81580",
+          "value": "Customer Service"
+        },
+        {
+          "id":"ab18897b-0e40-4f31-896b-9c9adc979a88",
+          "value":"Ebooks"
         }
       ]
     }

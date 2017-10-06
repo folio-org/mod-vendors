@@ -91,8 +91,10 @@ public class PostgresClient {
     try {
       JsonArray params = new JsonArray(jsonString);
       for (int i = 0; i < params.size(); i++) {
-        JsonObject param = params.getJsonObject(i);
-        String fieldNameValue = param.getString("field");
+        JsonArray param = params.getJsonArray(i);
+        String fieldNameValue = param.getString(0);
+        String fieldValueString = param.getString(1);
+        String operator = param.getString(2);
 
         // For now, disregard hierarchical field names
         // We determine this by checking for a "." in the 'fieldNameValue'
@@ -101,11 +103,10 @@ public class PostgresClient {
         }
 
         // Edge-case
-        Object fieldValue = param.getValue("value");
+        Object fieldValue = fieldValueString;
         if (fieldNameValue.equals("id")) {
           fieldValue = UUID.fromString( (String)fieldValue );
         }
-        String operator = param.getString("op");
         Field<Object> TABLE_FIELD = fieldFromName(fieldNameValue);
 
         Condition pCondition = null;

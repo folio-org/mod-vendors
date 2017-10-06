@@ -411,7 +411,7 @@ public class CreateVendorTransaction extends BaseTransaction<Vendor> {
       phoneNumber.setId(phoneNumberRecord.getId().toString());
       email.setId(emailRecord.getId().toString());
       address.setId(addressRecord.getId().toString());
-      contact.setId(vendorContactRecord.getId().toString());
+      contact.setId(personRecord.getId().toString());
       // -----
 
       List<Category_> categories = each.getCategories();
