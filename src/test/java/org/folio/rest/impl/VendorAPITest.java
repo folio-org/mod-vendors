@@ -49,13 +49,7 @@ public class VendorAPITest {
     vertx.deployVerticle(RestVerticle.class.getName(),
       opt, context.asyncAssertSuccess());
 
-
     // Set the default headers for the API calls to be tested
-//    requestSpecification = new RequestSpecBuilder()
-//      .addHeader("X-Okapi-Tenant", "diku")
-//      .addHeader("Accept", "application/json")
-//      .addHeader("Content-Type", "application/json")
-//      .build();
     RestAssured.port = port;
     RestAssured.basePath = "/vendor";
   }
