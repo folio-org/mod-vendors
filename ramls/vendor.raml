@@ -30,6 +30,7 @@ schemas:
   - vendor_url: !include schemas/vendor_url.json
   - vendor: !include schemas/vendor.json
   - vendorCollection: !include schemas/vendorCollection.json
+  - categoryCollection: !include schemas/categoryCollection.json
 
 
 traits:
@@ -67,3 +68,22 @@ resourceTypes:
       body:
         application/json:
           example: !include examples/vendor_put.sample
+/vendorCategory:
+  type:
+    collection:
+      exampleCollection: !include examples/category_collection.sample
+      exampleItem: !include examples/category_post.sample
+      schemaCollection: categoryCollection
+      schemaItem: category
+  get:
+    description: Get list of categories
+    is: [
+      searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
+      orderable: {fieldsList: "field A, field B"},
+      pageable
+    ]
+  /{category_id}:
+    type:
+      collection-item:
+        exampleItem: !include examples/category_get.sample
+        schema: category

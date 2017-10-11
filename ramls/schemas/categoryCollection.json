@@ -2,12 +2,12 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "vendors": {
+    "categories": {
       "type": "array",
-      "id": "vendorData",
+      "id": "categoryData",
       "items": {
         "type": "object",
-        "$ref": "vendor"
+        "$ref": "category"
       }
     },
     "total_records": {
@@ -22,7 +22,7 @@
   },
   "additionalProperties": false,
   "required": [
-    "vendors",
+    "categories",
     "total_records"
   ]
 }

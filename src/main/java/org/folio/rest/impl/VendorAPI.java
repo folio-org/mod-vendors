@@ -191,5 +191,4 @@ public class VendorAPI implements VendorResource {
     AsyncResult<Response> result = Future.succeededFuture(response);
     handler.handle(result);
   }
-
 }
