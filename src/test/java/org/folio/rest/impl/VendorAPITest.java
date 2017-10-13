@@ -14,8 +14,6 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.apache.commons.io.IOUtils;
 import org.folio.rest.RestVerticle;
 import org.folio.rest.tools.client.test.HttpClientMock2;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(VertxUnitRunner.class)
 public class VendorAPITest {
@@ -48,7 +48,7 @@ public class VendorAPITest {
 
     // Set the default headers for the API calls to be tested
     RestAssured.port = port;
-    RestAssured.basePath = "/vendor";
+    RestAssured.baseURI = "http://localhost";
   }
 
   @After
@@ -59,17 +59,54 @@ public class VendorAPITest {
     });
   }
 
+  /*
+  @Test
+  public void testSample(TestContext context) {
+    async = context.async();
+    logger.info("--- sample() test starting ... ");
+
+    TenantClient tc = new TenantClient("localhost", port, "diku", "dummyJwt.eyJzdWIiOiJzZWIiLCJ0ZW5hbnQiOm51bGx9.sig");
+    TenantAttributes ta = new TenantAttributes();
+    ta.setModuleTo("v1");
+    tc.get(reply -> {
+      try {
+        vc.get("[[\"language\",\"French\",\"=\"]]","id", VendorResource.Order.asc, 0, 10, "en", response -> {
+          response.bodyHandler(body -> {
+
+            logger.info("--- sample() body: " + body);
+
+            async.complete();
+            logger.info("--- sample() test done. ");
+
+          });
+        });
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+    });
+  }
+  */
+
   @Test
   public void testGetVendors(TestContext context) {
     async = context.async();
     logger.info("--- getVendors() test starting ... ");
-    Response response = getVendors();
 
-    // Validate 200 response
-    response.then().statusCode(200);
+    emptyCollection();
 
     logger.info("--- getVendors() test done. ");
     async.complete();
+  }
+
+  // Validates that there are zero vendor records in the DB
+  private void emptyCollection() {
+    Response response = getVendors();
+
+    // Validate 200 response and that there are zero records
+    response.then()
+      .statusCode(200)
+      .body("total_records", equalTo(0))
+      .body("vendors", empty());
   }
 
   @Test
@@ -77,10 +114,13 @@ public class VendorAPITest {
     async = context.async();
     logger.info("--- createVendor() test starting ... ");
     logger.info("--- createVendor(): posting new vendor info ... ");
-    Response response = postVendor();
 
-    // Assert that we got a 201
-    response.then().statusCode(201);
+    emptyCollection();
+
+    Response response = createVendorFromSampleFile();
+    response.then()
+      .statusCode(201)
+      .body("tax_id", equalTo("TX-GOBI-HIST"));
 
     // If we get to this point, we've validated that the POST was successful
     // Grab the ID then delete the newly added Vendor
@@ -99,26 +139,34 @@ public class VendorAPITest {
   public void testEditVendor(TestContext context) {
     async = context.async();
     logger.info("--- editVendor() test starting ... ");
-    Response response = postVendor();
 
-    // Assert that we got a 201
-    response.then().statusCode(201);
+    emptyCollection();
+
+    Response response = createVendorFromSampleFile();
+    response.then()
+      .statusCode(201)
+      .body("tax_id", equalTo("TX-GOBI-HIST"));
 
     String vendorID = response.then().extract().path("id");
     String responseBody = response.getBody().asString();
-    logger.info("--- editVendor() RESPONSE BODY: "+ responseBody);
     try {
       JSONObject payload = new JSONObject(responseBody);
       payload.put("language", "French");
 
       logger.info("--- editVendor(): putting edited vendor info ... ");
+      // Edit the vendor info with a new language
       String editVendorInput = payload.toString();
       response = putVendor(vendorID, editVendorInput);
-
-      // Assert a 204
       response.then().statusCode(204);
 
-      // TODO: Run a search that the language actually changed
+      // Query for this edited entry
+      logger.info("--- editVendor(): querying to validate edited record ... ");
+      response = getVendorById(vendorID);
+      response.then()
+        .statusCode(200)
+        .body("language", equalTo("French"))
+        .body("id", equalTo(vendorID));
+      logger.info("--- editVendor(): verified that the record has been edited");
 
       logger.info("--- editVendor(): deleting ID '" + vendorID + "'");
       response = deleteVendor(vendorID);
@@ -133,50 +181,61 @@ public class VendorAPITest {
     async.complete();
   }
 
-  private Response getVendors() {
-    Response response = given()
-      .header("X-Okapi-Tenant","diku")
-      .contentType(ContentType.JSON)
-      .get();
-
-    return response;
-  }
-
-  private Response postVendor() {
+  private Response createVendorFromSampleFile() {
+    // Populate the DB with a sample vendor
     String postBody;
     try {
       postBody = getFile("vendor_post.sample");
     } catch (Exception e) {
       postBody = "";
     }
+    return postVendor(postBody);
+  }
 
+  private Response getVendors() {
+    return given()
+      .header("X-Okapi-Tenant","diku")
+      .contentType(ContentType.JSON)
+      .get("vendor");
+  }
+
+  private Response getVendorById(String vendorId) {
+    return given()
+      .pathParam("vendor_id", vendorId)
+      .header("X-Okapi-Tenant", "diku")
+      .contentType(ContentType.JSON)
+      .get("vendor/{vendor_id}");
+  }
+
+  private Response postVendor(String postBody) {
     return given()
       .header("X-Okapi-Tenant", "diku")
       .accept(ContentType.JSON)
       .contentType(ContentType.JSON)
       .body(postBody)
-      .post();
+      .post("vendor");
   }
 
   private Response putVendor(String vendorId, String input) {
     return given()
+      .pathParam("vendor_id", vendorId)
       .header("X-Okapi-Tenant", "diku")
       .contentType(ContentType.JSON)
       .body(input)
-      .put(vendorId);
+      .put("vendor/{vendor_id}");
   }
 
-  private Response deleteVendor(String vendorID) {
+  private Response deleteVendor(String vendorId) {
     return given()
+      .pathParam("vendor_id", vendorId)
       .header("X-Okapi-Tenant", "diku")
       .contentType(ContentType.JSON)
-      .delete(vendorID);
+      .delete("vendor/{vendor_id}");
   }
 
   private String getFile(String filename) throws IOException {
     InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
     return IOUtils.toString(inputStream, "UTF-8");
   }
-
 
 }
