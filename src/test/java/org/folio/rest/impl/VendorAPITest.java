@@ -61,33 +61,20 @@ public class VendorAPITest {
     });
   }
 
-  /*
   @Test
-  public void testSample(TestContext context) {
+  public void testGetCategories(TestContext context) {
     async = context.async();
-    logger.info("--- sample() test starting ... ");
+    logger.info("-- getCategories() test starting ... ");
 
-    TenantClient tc = new TenantClient("localhost", port, "diku", "dummyJwt.eyJzdWIiOiJzZWIiLCJ0ZW5hbnQiOm51bGx9.sig");
-    TenantAttributes ta = new TenantAttributes();
-    ta.setModuleTo("v1");
-    tc.get(reply -> {
-      try {
-        vc.get("[[\"language\",\"French\",\"=\"]]","id", VendorResource.Order.asc, 0, 10, "en", response -> {
-          response.bodyHandler(body -> {
+    given()
+      .header("X-Okapi-Tenant","diku")
+      .contentType(ContentType.JSON)
+      .get("vendorCategory")
+      .then().statusCode(200);
 
-            logger.info("--- sample() body: " + body);
-
-            async.complete();
-            logger.info("--- sample() test done. ");
-
-          });
-        });
-      } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-      }
-    });
+    logger.info("-- getCategories() test done. ");
+    async.complete();
   }
-  */
 
   @Test
   public void testGetVendors(TestContext context) {

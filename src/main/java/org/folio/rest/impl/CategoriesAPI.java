@@ -93,7 +93,7 @@ public class CategoriesAPI implements VendorCategoryResource {
         @Override
         public void success(Category result) {
           if (result == null) {
-            response = GetVendorCategoryByCategoryIdResponse.withPlainNotFound("vendor not found");
+            response = GetVendorCategoryByCategoryIdResponse.withPlainNotFound("id not found");
           } else {
             response = GetVendorCategoryByCategoryIdResponse.withJsonOK(result);
           }
@@ -129,7 +129,7 @@ public class CategoriesAPI implements VendorCategoryResource {
         @Override
         public void success(Category result) {
           if (result == null) {
-            response = DeleteVendorCategoryByCategoryIdResponse.withPlainNotFound("vendor not found");
+            response = DeleteVendorCategoryByCategoryIdResponse.withPlainNotFound("id not found");
           } else {
             response = DeleteVendorCategoryByCategoryIdResponse.withNoContent();
           }

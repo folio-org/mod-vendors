@@ -1,17 +1,19 @@
 package org.folio.rest.impl.transactions;
 
 import org.folio.rest.jaxrs.model.Category;
-import org.folio.rest.jaxrs.model.CategoryCollection;
-import org.folio.rest.jaxrs.resource.VendorCategoryResource.*;
+import org.folio.rest.jaxrs.model.ContactCategoryCollection;
+import org.folio.rest.jaxrs.resource.VendorContactCategoryResource.Order;
 import org.jooq.*;
 import storage.client.ConnectResultHandler;
 import storage.client.PostgresClient;
+import storage.model.tables.ContactCategory;
 import storage.model.tables.records.CategoryRecord;
+import storage.model.tables.records.ContactCategoryRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetCategoriesTransaction extends BaseTransaction<CategoryCollection> {
+public class GetContactCategoriesTransaction extends BaseTransaction<ContactCategoryCollection> {
   private String tenantId;
   private String query;
   private String orderBy;
@@ -19,11 +21,11 @@ public class GetCategoriesTransaction extends BaseTransaction<CategoryCollection
   private int offset;
   private int limit;
 
-  public static GetCategoriesTransaction newInstance(String query, String orderBy, Order order, int offset, int limit, String tenantId) {
-    return new GetCategoriesTransaction(query, orderBy, order, offset, limit, tenantId);
+  public static GetContactCategoriesTransaction newInstance(String query, String orderBy, Order order, int offset, int limit, String tenantId) {
+    return new GetContactCategoriesTransaction(query, orderBy, order, offset, limit, tenantId);
   }
 
-  private GetCategoriesTransaction(String query, String orderBy, Order order, int offset, int limit, String tenantId) {
+  private GetContactCategoriesTransaction(String query, String orderBy, Order order, int offset, int limit, String tenantId) {
     this.query = query;
     this.orderBy = orderBy;
     this.order = order;
@@ -33,14 +35,14 @@ public class GetCategoriesTransaction extends BaseTransaction<CategoryCollection
   }
 
   @Override
-  public void execute(TransactionCompletionHandler<CategoryCollection> completionHandler) {
+  public void execute(TransactionCompletionHandler<ContactCategoryCollection> completionHandler) {
     PostgresClient dbClient = PostgresClient.getInstance(tenantId);
     dbClient.connect(new ConnectResultHandler() {
       @Override
       public void success(DSLContext ctx) {
         // BUILD QUERY
         // 1. Select the table to get information from
-        SelectWhereStep myQuery = ctx.selectFrom(CATEGORY);
+        SelectWhereStep myQuery = ctx.selectFrom(CONTACT_CATEGORY);
 
         // 2. Add the where condition, if it was provided
         Condition whereCondition = dbClient.conditionFromParams(query);
@@ -60,11 +62,11 @@ public class GetCategoriesTransaction extends BaseTransaction<CategoryCollection
         SelectForUpdateStep updateStep = seekStep.limit(limit).offset(offset);
 
         // 5. Fetch the results
-        @SuppressWarnings("unchecked") Result<CategoryRecord> result = updateStep.fetch();
+        @SuppressWarnings("unchecked") Result<ContactCategoryRecord> result = updateStep.fetch();
 
         // TOTAL RECORD COUNT
         // Calculate the total record count
-        SelectWhereStep countQuery = ctx.selectCount().from(CATEGORY);
+        SelectWhereStep countQuery = ctx.selectCount().from(CONTACT_CATEGORY);
         SelectConditionStep countConditionStep = (SelectConditionStep)countQuery;
         if (whereCondition != null) {
           countConditionStep = countQuery.where(whereCondition);
@@ -80,14 +82,14 @@ public class GetCategoriesTransaction extends BaseTransaction<CategoryCollection
         }
 
         List<Category> categories = new ArrayList<>();
-        for (CategoryRecord record: result) {
+        for (ContactCategoryRecord record: result) {
           Category category = new Category().withValue(record.getValue());
           category.setId(record.getId().toString());
           categories.add(category);
         }
 
         // Wrap the result
-        CategoryCollection collection = new CategoryCollection();
+        ContactCategoryCollection collection = new ContactCategoryCollection();
         collection.setCategories(categories);
         collection.setTotalRecords(totalCount);
         collection.setFirst(first);
