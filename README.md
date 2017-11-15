@@ -1,5 +1,11 @@
 # MOD-VENDOR
 
+Copyright (C) 2017 The Open Library Foundation
+
+This software is distributed under the terms of the Apache License, Version 2.0. See the file "LICENSE" for more information.
+
+## Introduction
+
 This module is responsible for the persistence of Vendor data (i.e. CRUD module).
 
 This module leverages a relational DB and imports the following dependencies:
