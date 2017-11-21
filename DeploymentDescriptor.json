@@ -1,7 +1,7 @@
 {
-  "srvcId" : "vendor-module",
-  "nodeId" : "localhost",
-  "descriptor" : {
-    "exec" : "java -jar ../mod-vendor/target/mod-vendor-fat.jar -Dhttp.port=%p"
+  "srvcId": "vendor-module",
+  "nodeId": "localhost",
+  "descriptor": {
+    "exec": "java -jar ../mod-vendor/target/mod-vendor-fat.jar -Dhttp.port=%p"
   }
 }
