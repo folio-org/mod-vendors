@@ -1,8 +1,8 @@
-# MOD-VENDOR
+# mod-vendor
 
 Copyright (C) 2017 The Open Library Foundation
 
-This software is distributed under the terms of the Apache License, Version 2.0. See the file "LICENSE" for more information.
+This software is distributed under the terms of the Apache License, Version 2.0. See the file "[LICENSE](LICENSE)" for more information.
 
 ## Introduction
 
@@ -23,7 +23,7 @@ For API documentation, run this project locally and then go to [http://localhost
 
 ## Building the Project
 
-Mod-Vendor uses a relational DB and takes a database-first approach.
+This module uses a relational DB and takes a database-first approach.
 
 _NOTE: JOOQ was configured to read the DB's schema to synthesize the corresponding POJOs. We then bridge this persistence model with the ones synthesized by RAML module builder (which models the API input/response)._
 
@@ -47,7 +47,7 @@ At this point, the project can be compiled. Run:
 mvn clean install
 ```
 
-##Schema Update Considerations
+## Schema Update Considerations
 
 Since this module uses a relational DB, any schema migration will require the running of a SQL script. To facilitate this, the module uses Flyway.
 
