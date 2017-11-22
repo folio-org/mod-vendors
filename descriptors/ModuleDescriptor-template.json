@@ -1,5 +1,5 @@
 {
-  "id": "vendor-module",
+  "id": "${artifactId}-${version}",
   "name": "Vendor CRUD module",
   "provides": [
     {
