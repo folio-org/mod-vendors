@@ -1,7 +1,7 @@
 {
-  "srvcId": "vendor-module",
+  "srvcId": "${artifactId}-${version}",
   "nodeId": "localhost",
   "descriptor": {
-    "exec": "java -jar ../mod-vendor/target/mod-vendor-fat.jar -Dhttp.port=%p"
+    "exec": "java -Dport=%p -jar ../${artifactId}/target/${artifactId}-fat.jar -Dhttp.port=%p embed_postgres=true"
   }
 }
