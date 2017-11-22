@@ -35,7 +35,7 @@ src/main/resources/db.properties
 src/main/resources/postgres-conf.json
 ```
 
-Once the parameters are set, the database can be initialized by running 
+Once the parameters are set, the database can be initialized by running
 ```
 mvn initialize flyway:migrate
 ```
@@ -49,7 +49,7 @@ mvn clean install
 
 ##Schema Update Considerations
 
-Since this module uses a relational DB, any schema migration will require the running of a SQL script. To facilitate this, the module uses Flyway.  
+Since this module uses a relational DB, any schema migration will require the running of a SQL script. To facilitate this, the module uses Flyway.
 
 All SQL migration scripts have to be stored in ```src/main/resources/db/migration``` and should follow the naming convention as per the [Flyway documentation](https://flywaydb.org/documentation/migration/versioned).
 
