@@ -22,6 +22,63 @@
     "language": {
       "type": "string"
     },
+    "aliases": {
+      "id": "aliases",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "alias.json"
+      }
+    },
+    "addresses": {
+      "id": "addresses",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_address.json"
+      }
+    },
+    "phone_numbers": {
+      "id": "phone_numbers",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_phone.json"
+      }
+    },
+    "emails": {
+      "id": "email_addresses",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_email.json"
+      }
+    },
+    "urls": {
+      "id": "urls",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_url.json"
+      }
+    },
+    "contacts": {
+      "id": "vendor_contact_person",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "vendor_contact_person.json"
+      }
+    },
+    "agreements": {
+      "id": "agreement",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "agreement.json"
+      }
+    },
+
     "erp_code": {
       "type": "string"
     },
@@ -39,6 +96,13 @@
     },
     "material_supplier": {
       "type": "boolean"
+    },
+    "vendor_currencies": {
+      "id": "vendor_currencies",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "claiming_interval": {
       "type": "integer"
@@ -58,101 +122,41 @@
     "subscription_interval": {
       "type": "integer"
     },
-    "liable_for_vat": {
-      "type": "boolean"
-    },
     "tax_id": {
       "type": "string"
+    },
+    "liable_for_vat": {
+      "type": "boolean"
     },
     "tax_percentage": {
       "type": "number"
     },
-    "vendor_names": {
-      "id": "vendor_name",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "$ref": "vendor_name"
-      }
+    "edi": {
+      "type": "object",
+      "$ref": "edi.json"
     },
-    "vendor_currencies": {
-      "id": "vendor_currency",
+    "interfaces": {
+      "id": "interfaces",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_currency"
-      }
-    },
-    "vendor_interfaces": {
-      "id": "vendor_interface",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "$ref": "vendor_interface"
-      }
-    },
-    "agreements": {
-      "id": "agreement",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "$ref": "agreement"
+        "$ref": "interface.json"
       }
     },
     "accounts": {
-      "id": "library_vendor_acct",
+      "id": "accounts",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "library_vendor_acct"
+        "$ref": "account.json"
       }
     },
-    "edi_info": {
-      "type": "object",
-      "$ref": "edi_info"
-    },
-    "job": {
-      "type": "object",
-      "$ref": "job"
-    },
-    "addresses": {
-      "id": "vendor_address",
+    "changelogs": {
+      "id": "changelogs",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "vendor_address"
-      }
-    },
-    "phone_numbers": {
-      "id": "vendor_phone",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "$ref": "vendor_phone"
-      }
-    },
-    "emails": {
-      "id": "vendor_email",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "$ref": "vendor_email"
-      }
-    },
-    "contacts": {
-      "id": "vendor_contact_person",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "$ref": "vendor_contact_person"
-      }
-    },
-    "notes": {
-      "id": "note",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "$ref": "note"
+        "$ref": "changelog.json"
       }
     }
   },

@@ -2,14 +2,16 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "is_scheduled": {
+    "schedule_edi": {
       "type": "boolean"
     },
-    "start_date": {
-      "type": "string"
+    "date": {
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "time": {
-      "type": "string"
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "is_monday": {
       "type": "boolean"
@@ -32,12 +34,22 @@
     "is_sunday": {
       "type": "boolean"
     },
+    "send_to_emails": {
+      "type": "string"
+    },
+    "notify_all_edi": {
+      "type": "boolean"
+    },
+    "notify_invoice_only": {
+      "type": "boolean"
+    },
+    "notify_error_only": {
+      "type": "boolean"
+    },
     "scheduling_notes": {
       "type": "string"
     }
   },
   "additionalProperties": false,
-  "required": [
-    "is_scheduled"
-  ]
+  "required": []
 }

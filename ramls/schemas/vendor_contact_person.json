@@ -2,24 +2,19 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "id": {
-      "type": ["string", "null"],
-      "description": "UUID",
-      "pattern": "^[a-f0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+    "contact_person": {
+      "type": "object",
+      "$ref": "contact_person.json"
     },
     "language": {
       "type": "string"
-    },
-    "contact_person": {
-      "type": "object",
-      "$ref": "contact_person"
     },
     "categories": {
       "id": "contact_category",
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "contact_category"
+        "$ref": "category.json"
       }
     }
   },

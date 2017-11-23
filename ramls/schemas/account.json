@@ -2,33 +2,25 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "id": {
-      "type": ["string", "null"],
-      "description": "UUID",
-      "pattern": "^[a-f0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-    },
     "name": {
-      "type": "string"
-    },
-    "payment_method": {
       "type": "string"
     },
     "account_no": {
       "type": "string"
     },
-    "lib_ven_acct_status": {
-      "type": "string"
-    },
     "description": {
       "type": "string"
     },
+    "app_system_no": {
+      "type": "string"
+    },
+    "payment_method": {
+      "type": "string"
+    },
+    "account_status": {
+      "type": "string"
+    },
     "contact_info": {
-      "type": "string"
-    },
-    "appsystem_no": {
-      "type": "string"
-    },
-    "notes": {
       "type": "string"
     },
     "library_code": {
@@ -36,15 +28,17 @@
     },
     "library_edi_code": {
       "type": "string"
+    },
+    "notes": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
   "required": [
     "name",
-    "payment_method",
-    "lib_ven_acct_status",
     "account_no",
-    "appsystem_no",
+    "payment_method",
+    "account_status",
     "library_code",
     "library_edi_code"
   ]

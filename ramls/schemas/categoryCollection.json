@@ -4,10 +4,10 @@
   "properties": {
     "categories": {
       "type": "array",
-      "id": "categoryData",
+      "id": "categories",
       "items": {
         "type": "object",
-        "$ref": "category"
+        "$ref": "category.json"
       }
     },
     "total_records": {

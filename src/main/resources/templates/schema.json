@@ -1,0 +1,28 @@
+{
+  "tables": [
+    {
+      "tableName": "vendor",
+      "generateId": true,
+      "fromModuleVersion": 1.0,
+      "withMetadata": true,
+      "ginIndex": true,
+      "populateJsonWithId": true
+    },
+    {
+      "tableName": "category",
+      "generateId": true,
+      "fromModuleVersion": 1.0,
+      "withMetadata": true,
+      "ginIndex": true,
+      "populateJsonWithId": true
+    },
+    {
+      "tableName": "contact_category",
+      "generateId": true,
+      "fromModuleVersion": 1.0,
+      "withMetadata": true,
+      "ginIndex": true,
+      "populateJsonWithId": true
+    }
+  ]
+}
