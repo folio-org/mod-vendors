@@ -1,5 +1,16 @@
 {
-  "scripts": [],
+  "scripts": [
+    {
+      "run": "after",
+      "snippet": "COPY contact_category (jsonb) FROM 'data/contact_category.data' ENCODING 'UTF8';",
+      "fromModuleVersion": "1.0"
+    },
+    {
+      "run": "after",
+      "snippet": "COPY category (jsonb) FROM 'data/category.data' ENCODING 'UTF8';",
+      "fromModuleVersion": "1.0"
+    }
+  ],
   "tables": [
     {
       "tableName": "vendor",

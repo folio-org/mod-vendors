@@ -31,7 +31,7 @@ public class ContactCategoryAPI implements ContactCategoryResource {
 
   private static final Logger log = LoggerFactory.getLogger(ContactCategoryAPI.class);
   private final Messages messages = Messages.getInstance();
-  private String idFieldName = "_id";
+  private String idFieldName = "id";
 
   private org.folio.rest.persist.Criteria.Order getOrder(Order order, String field) {
     if (field == null) {
