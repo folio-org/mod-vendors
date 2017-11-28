@@ -1,15 +1,11 @@
 package org.folio.rest.impl;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Context;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
 import org.folio.rest.jaxrs.model.Vendor;
 import org.folio.rest.jaxrs.model.VendorCollection;
-import org.folio.rest.jaxrs.resource.ContactCategoryResource;
 import org.folio.rest.jaxrs.resource.VendorResource;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
@@ -55,6 +51,10 @@ public class VendorAPI implements VendorResource {
 
   private boolean isInvalidUUID (String errorMessage) {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
+  }
+
+  public VendorAPI(Vertx vertx, String tenantId) {
+    PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
   @Override

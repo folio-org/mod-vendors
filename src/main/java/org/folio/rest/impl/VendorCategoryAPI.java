@@ -1,9 +1,6 @@
 package org.folio.rest.impl;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Context;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
@@ -31,7 +28,7 @@ public class VendorCategoryAPI implements VendorCategoryResource {
 
   private static final Logger log = LoggerFactory.getLogger(VendorCategoryAPI.class);
   private final Messages messages = Messages.getInstance();
-  private String idFieldName = "_id";
+  private String idFieldName = "id";
 
   private org.folio.rest.persist.Criteria.Order getOrder(Order order, String field) {
     if (field == null) {
@@ -54,6 +51,10 @@ public class VendorCategoryAPI implements VendorCategoryResource {
 
   private boolean isInvalidUUID (String errorMessage) {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
+  }
+
+  public VendorCategoryAPI(Vertx vertx, String tenantId) {
+    PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
   @Override

@@ -1,9 +1,6 @@
 package org.folio.rest.impl;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Context;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
@@ -54,6 +51,10 @@ public class ContactCategoryAPI implements ContactCategoryResource {
 
   private boolean isInvalidUUID (String errorMessage) {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
+  }
+
+  public ContactCategoryAPI(Vertx vertx, String tenantId) {
+    PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
   @Override
