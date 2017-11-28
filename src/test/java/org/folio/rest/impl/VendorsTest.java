@@ -14,6 +14,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import org.apache.commons.io.IOUtils;
 import org.folio.rest.RestVerticle;
+import org.folio.rest.persist.PostgresClient;
 import org.folio.rest.tools.client.test.HttpClientMock2;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,6 +42,15 @@ public class VendorsTest {
   public void before(TestContext context) {
     logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
+
+    try {
+      PostgresClient.setIsEmbedded(true);
+      PostgresClient.getInstance(vertx).startEmbeddedPostgres();
+    } catch (Exception e) {
+      e.printStackTrace();
+      context.fail(e);
+      return;
+    }
 
     // Deploy a verticle
     JsonObject conf = new JsonObject()
