@@ -64,8 +64,6 @@ public class VendorCategoryAPI implements VendorCategoryResource {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         Criterion criterion = Criterion.json2Criterion(query);
-//        Criteria criteria = new Criteria("/ramls/schemas/" +PURCHASE_ORDER_TABLE + ".json");
-//        criterion.addCriterion(criteria);
         criterion.setLimit(new Limit(limit));
         criterion.setOffset(new Offset(offset));
 
@@ -84,8 +82,9 @@ public class VendorCategoryAPI implements VendorCategoryResource {
                 collection.setCategories(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
-                Integer first = 0, last = 0;
-                if (results.size() > 0) {
+                Integer first = 0;
+                Integer last = 0;
+                if (!results.isEmpty()) {
                   first = offset + 1;
                   last = offset + results.size();
                 }
