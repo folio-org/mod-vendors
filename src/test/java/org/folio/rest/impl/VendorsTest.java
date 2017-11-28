@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(VertxUnitRunner.class)
-public class VendorTest {
+public class VendorsTest {
   private Vertx vertx;
   private Async async;
   private final Logger logger = LoggerFactory.getLogger("okapi");
@@ -79,35 +79,10 @@ public class VendorTest {
       .body("total_records", equalTo(0))
       .body("categories", empty());
 
-    getData("fiscal_year").then()
+    getData("vendor").then()
       .statusCode(200)
       .body("total_records", equalTo(0))
-      .body("fiscal_years", empty());
-
-    getData("fund_distribution").then()
-      .statusCode(200)
-      .body("total_records", equalTo(0))
-      .body("distributions", empty());
-
-    getData("fund").then()
-      .statusCode(200)
-      .body("total_records", equalTo(0))
-      .body("funds", empty());
-
-    getData("ledger").then()
-      .statusCode(200)
-      .body("total_records", equalTo(0))
-      .body("ledgers", empty());
-
-    getData("tag").then()
-      .statusCode(200)
-      .body("total_records", equalTo(0))
-      .body("tags", empty());
-
-    getData("transaction").then()
-      .statusCode(200)
-      .body("total_records", equalTo(0))
-      .body("transactions", empty());
+      .body("vendors", empty());
   }
 
   @Test
@@ -117,267 +92,111 @@ public class VendorTest {
       logger.info("--- mod-vendors-test: Verifying empty database ... ");
       emptyCollection();
 
-      logger.info("--- mod-vendors-test: Creating tag ... ");
-      String tagSample = getFile("tag.sample");
-      Response response = postData("tag", tagSample);
+      logger.info("--- mod-vendors-test: Creating category ... ");
+      String catSample = getFile("category.sample");
+      Response response = postData("contact_category", catSample);
       response.then()
         .statusCode(201)
-        .body("code", equalTo("HIST-SER"));
-      String tag_id = response.then().extract().path("id");
+        .body("value", equalTo("Accounting"));
+      String contact_category_id = response.then().extract().path("id");
 
-      logger.info("--- mod-vendors-test: Verifying only 1 tag was created ... ");
-      getData("tag").then()
+      logger.info("--- mod-vendors-test: Verifying only 1 category was created ... ");
+      getData("contact_category").then()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-vendors-test: Fetching tag with ID:"+ tag_id);
-      getDataById("tag", tag_id).then()
+      logger.info("--- mod-vendors-test: Fetching category with ID:"+ contact_category_id);
+      getDataById("contact_category", contact_category_id).then()
         .statusCode(200)
-        .body("id", equalTo(tag_id));
+        .body("id", equalTo(contact_category_id));
 
-      logger.info("--- mod-vendors-test: Editing tag with ID:"+ tag_id);
-      JSONObject tagJSON = new JSONObject(tagSample);
-      tagJSON.put("id", tag_id);
-      tagJSON.put("code", "PSYCH-SER");
-      response = putData("tag", tag_id, tagJSON.toString());
+      logger.info("--- mod-vendors-test: Editing category with ID:"+ contact_category_id);
+      JSONObject catJSON = new JSONObject(catSample);
+      catJSON.put("id", contact_category_id);
+      catJSON.put("value", "Customer Service");
+      response = putData("contact_category", contact_category_id, catJSON.toString());
       response.then()
         .statusCode(204);
 
-      logger.info("--- mod-vendors-test: Fetching tag with ID:"+ tag_id);
-      getDataById("tag", tag_id).then()
+      logger.info("--- mod-vendors-test: Fetching category with ID:"+ contact_category_id);
+      getDataById("contact_category", contact_category_id).then()
         .statusCode(200)
-        .body("code", equalTo("PSYCH-SER"));
+        .body("value", equalTo("Customer Service"));
+
+      logger.info("--- mod-vendors-test: Deleting contact-category with id ... ");
+      deleteData("contact_category", contact_category_id).then()
+        .statusCode(204);
 
 
-      logger.info("--- mod-vendors-test: Creating fiscal year ... ");
-      String fySample = getFile("fiscal_year.sample");
-      response = postData("fiscal_year", fySample);
+      logger.info("--- mod-vendors-test: Creating vendor category ... ");
+      String vendCatSample = getFile("category.sample");
+      response = postData("vendor_category", vendCatSample);
       response.then()
         .statusCode(201)
-        .body("name", equalTo("Fiscal Year 2017"));
-      String fy_id = response.then().extract().path("id");
+        .body("value", equalTo("Accounting"));
+      String vendor_category_id = response.then().extract().path("id");
 
-      logger.info("--- mod-vendors-test: Verifying only 1 fiscal year was created ... ");
-      getData("fiscal_year").then()
+      logger.info("--- mod-vendors-test: Verifying only 1 vendor category was created ... ");
+      getData("vendor_category").then()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-vendors-test: Fetching fiscal year with ID:"+ fy_id);
-      getDataById("fiscal_year", fy_id).then()
+      logger.info("--- mod-vendors-test: Fetching vendor category with ID:"+ vendor_category_id);
+      getDataById("vendor_category", vendor_category_id).then()
         .statusCode(200)
-        .body("id", equalTo(fy_id));
+        .body("id", equalTo(vendor_category_id));
 
-      logger.info("--- mod-vendors-test: Editing fiscal year with ID:"+ fy_id);
-      JSONObject fyJSON = new JSONObject(fySample);
-      fyJSON.put("id", fy_id);
-      fyJSON.put("name", "Fiscal Year 2017 B");
-      response = putData("fiscal_year", fy_id, fyJSON.toString());
+      logger.info("--- mod-vendors-test: Editing vendor category with ID:"+ vendor_category_id);
+      JSONObject vendCatJSON = new JSONObject(vendCatSample);
+      vendCatJSON.put("id", vendor_category_id);
+      vendCatJSON.put("value", "Customer Service");
+      response = putData("vendor_category", vendor_category_id, vendCatJSON.toString());
       response.then()
         .statusCode(204);
 
-      logger.info("--- mod-vendors-test: Fetching fiscal year with ID:"+ fy_id);
-      getDataById("fiscal_year", fy_id).then()
+      logger.info("--- mod-vendors-test: Fetching category with ID:"+ vendor_category_id);
+      getDataById("vendor_category", vendor_category_id).then()
         .statusCode(200)
-        .body("name", equalTo("Fiscal Year 2017 B"));
+        .body("value", equalTo("Customer Service"));
+
+      logger.info("--- mod-vendors-test: Deleting vendor-category with id ... ");
+      deleteData("vendor_category", vendor_category_id).then()
+        .statusCode(204);
 
 
-      logger.info("--- mod-vendors-test: Creating ledger ... ");
-      String ledgerSample = getFile("ledger.sample");
-      response = postData("ledger", ledgerSample);
+      logger.info("--- mod-vendors-test: Creating vendor ... ");
+      String vendorSample = getFile("vendor.sample");
+      response = postData("vendor", vendorSample);
       response.then()
         .statusCode(201)
-        .body("code", equalTo("MAIN-LIB"));
-      String ledger_id = response.then().extract().path("id");
+        .body("name", equalTo("GOBI"));
+      String vendor_id = response.then().extract().path("id");
 
-      logger.info("--- mod-vendors-test: Verifying only 1 ledger was created ... ");
-      getData("ledger").then()
+      logger.info("--- mod-vendors-test: Verifying only 1 vendor was created ... ");
+      getData("vendor").then()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-vendors-test: Fetching ledger with ID:"+ ledger_id);
-      getDataById("ledger", ledger_id).then()
+      logger.info("--- mod-vendors-test: Fetching vendor with ID:"+ vendor_id);
+      getDataById("vendor", vendor_id).then()
         .statusCode(200)
-        .body("id", equalTo(ledger_id));
+        .body("id", equalTo(vendor_id));
 
-      logger.info("--- mod-vendors-test: Editing ledger with ID:"+ ledger_id);
-      JSONObject ledgerJSON = new JSONObject(ledgerSample);
-      ledgerJSON.put("id", ledger_id);
-      ledgerJSON.put("code", "MAIN-LIB-B");
-      response = putData("ledger", ledger_id, ledgerJSON.toString());
+      logger.info("--- mod-vendors-test: Editing vendor with ID:"+ vendor_id);
+      JSONObject vendorJSON = new JSONObject(vendorSample);
+      vendorJSON.put("id", vendor_id);
+      vendorJSON.put("name", "G.O.B.I.");
+      response = putData("vendor", vendor_id, vendorJSON.toString());
       response.then()
         .statusCode(204);
 
-      logger.info("--- mod-vendors-test: Fetching ledger with ID:"+ ledger_id);
-      getDataById("ledger", ledger_id).then()
+      logger.info("--- mod-vendors-test: Fetching vendor with ID:"+ vendor_id);
+      getDataById("vendor", vendor_id).then()
         .statusCode(200)
-        .body("code", equalTo("MAIN-LIB-B"));
+        .body("name", equalTo("G.O.B.I."));
 
-
-      logger.info("--- mod-vendors-test: Creating fund ... ");
-      String fundSample = getFile("fund.sample");
-      response = postData("fund", fundSample);
-      response.then()
-        .statusCode(201)
-        .body("code", equalTo("HIST"));
-      String fund_id = response.then().extract().path("id");
-
-      logger.info("--- mod-vendors-test: Verifying only 1 fund was created ... ");
-      getData("fund").then()
-        .statusCode(200)
-        .body("total_records", equalTo(1));
-
-      logger.info("--- mod-vendors-test: Fetching fund with ID:"+ fund_id);
-      getDataById("fund", fund_id).then()
-        .statusCode(200)
-        .body("id", equalTo(fund_id));
-
-      logger.info("--- mod-vendors-test: Editing fund with ID:"+ fund_id);
-      JSONObject fundJSON = new JSONObject(fundSample);
-      fundJSON.put("id", fund_id);
-      fundJSON.put("code", "MAIN-LIB-FUND");
-      fundJSON.put("ledger_id", ledger_id);
-      JSONArray tagArray = fundJSON.getJSONArray("tags");
-      tagArray.put(tag_id);
-      fundJSON.put("tags", tagArray);
-      response = putData("fund", fund_id, fundJSON.toString());
-      response.then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Fetching fund with ID:"+ fund_id);
-      getDataById("fund", fund_id).then()
-        .statusCode(200)
-        .body("code", equalTo("MAIN-LIB-FUND"));
-
-
-      logger.info("--- mod-vendors-test: Creating budget ... ");
-      String budgetSample = getFile("budget.sample");
-      JSONObject budgetJSON = new JSONObject(budgetSample);
-      budgetJSON.put("fund_id", fund_id);
-      budgetJSON.put("fiscal_year_id", fy_id);
-      tagArray = budgetJSON.getJSONArray("tags");
-      tagArray.put(tag_id);
-      budgetJSON.put("tags", tagArray);
-      response = postData("budget", budgetJSON.toString());
-      response.then()
-        .statusCode(201)
-        .body("code", equalTo("HIST-2017"));
-      String budget_id = response.then().extract().path("id");
-      budgetJSON.put("id", budget_id);
-
-      logger.info("--- mod-vendors-test: Verifying only 1 budget was created ... ");
-      getData("budget").then()
-        .statusCode(200)
-        .body("total_records", equalTo(1));
-
-      logger.info("--- mod-vendors-test: Fetching budget with ID:"+ budget_id);
-      getDataById("budget", budget_id).then()
-        .statusCode(200)
-        .body("id", equalTo(budget_id));
-
-      logger.info("--- mod-vendors-test: Editing fund with ID:"+ budget_id);
-      budgetJSON.put("code", "MAIN-LIB-HIST-2017");
-      response = putData("budget", budget_id, budgetJSON.toString());
-      response.then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Fetching budget with ID:"+ budget_id);
-      getDataById("budget", budget_id).then()
-        .statusCode(200)
-        .body("code", equalTo("MAIN-LIB-HIST-2017"));
-
-
-      logger.info("--- mod-vendors-test: Creating transaction ... ");
-      String transactionSample = getFile("transaction.sample");
-      JSONObject transactionJSON = new JSONObject(transactionSample);
-      transactionJSON.put("budget_id", budget_id);
-      response = postData("transaction", transactionJSON.toString());
-      response.then()
-        .statusCode(201)
-        .body("note", equalTo("PO_Line: History of Incas"));
-      String transaction_id = response.then().extract().path("id");
-      transactionJSON.put("id", transaction_id);
-
-      logger.info("--- mod-vendors-test: Verifying only 1 transaction was created ... ");
-      getData("transaction").then()
-        .statusCode(200)
-        .body("total_records", equalTo(1));
-
-      logger.info("--- mod-vendors-test: Fetching transaction with ID:"+ transaction_id);
-      getDataById("transaction", transaction_id).then()
-        .statusCode(200)
-        .body("id", equalTo(transaction_id));
-
-      logger.info("--- mod-vendors-test: Editing transaction with ID:"+ transaction_id);
-      transactionJSON.put("note", "PO_Line: The History of Incas");
-      response = putData("transaction", transaction_id, transactionJSON.toString());
-      response.then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Fetching transaction with ID:"+ transaction_id);
-      getDataById("transaction", transaction_id).then()
-        .statusCode(200)
-        .body("note", equalTo("PO_Line: The History of Incas"));
-
-
-      logger.info("--- mod-vendors-test: Creating fund-distribution ... ");
-      String distributionSample = getFile("fund_distribution.sample");
-      JSONObject distributionJSON = new JSONObject(distributionSample);
-      distributionJSON.put("budget_id", budget_id);
-      response = postData("fund_distribution", distributionJSON.toString());
-      response.then()
-        .statusCode(201)
-        .body("currency", equalTo("USD"));
-      String distribution_id = response.then().extract().path("id");
-      distributionJSON.put("id", distribution_id);
-
-      logger.info("--- mod-vendors-test: Verifying only 1 fund-distribution was created ... ");
-      getData("fund_distribution").then()
-        .statusCode(200)
-        .body("total_records", equalTo(1));
-
-      logger.info("--- mod-vendors-test: Fetching fund-distribution with ID:"+ distribution_id);
-      getDataById("fund_distribution", distribution_id).then()
-        .statusCode(200)
-        .body("id", equalTo(distribution_id));
-
-      logger.info("--- mod-vendors-test: Editing fund-distribution with ID:"+ distribution_id);
-      distributionJSON.put("currency", "CAD");
-      response = putData("fund_distribution", distribution_id, distributionJSON.toString());
-      response.then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Fetching fund-distribution with ID:"+ distribution_id);
-      getDataById("fund_distribution", distribution_id).then()
-        .statusCode(200)
-        .body("currency", equalTo("CAD"));
-
-
-      logger.info("--- mod-vendors-test: Deleting fund-distribution ... ");
-      deleteData("fund_distribution", distribution_id).then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Deleting transaction ... ");
-      deleteData("transaction", transaction_id).then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Deleting budget ... ");
-      deleteData("budget", budget_id).then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Deleting fund ... ");
-      deleteData("fund", fund_id).then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Deleting ledger ... ");
-      deleteData("ledger", ledger_id).then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Deleting fiscal_year ... ");
-      deleteData("fiscal_year", fy_id).then()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Deleting tag ... ");
-      deleteData("tag", tag_id).then()
+      logger.info("--- mod-vendors-test: Deleting vendor with id ... ");
+      deleteData("vendor", vendor_id).then()
         .statusCode(204);
     }
     catch (Exception e) {

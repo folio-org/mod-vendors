@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class VendorAPI implements VendorResource {
-  private static final String VENDOR_TABLE = "contact_category";
-  private static final String VENDOR_LOCATION_PREFIX = "/contact_category/";
+  private static final String VENDOR_TABLE = "vendor";
+  private static final String VENDOR_LOCATION_PREFIX = "/vendor/";
 
   private static final Logger log = LoggerFactory.getLogger(ContactCategoryAPI.class);
   private final Messages messages = Messages.getInstance();

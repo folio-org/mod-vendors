@@ -1,5 +1,5 @@
 {
-  "id": "588b5c42-8634-4af7-bc9b-5e0116ed96b6",
+  "id": null,
   "name": "GOBI",
   "code": "AQ-GOBI",
   "description": "This is Yankee Book Peddler.",
@@ -110,7 +110,6 @@
     {
       "language": "en-us",
       "contact_person": {
-        "id": "201dd577-9c5f-418b-8e08-181e7d61faa1",
         "prefix": "Director",
         "first_name": "Nick",
         "last_name": "Fury",
@@ -173,18 +172,10 @@
   "licensor": true,
   "material_supplier": true,
   "vendor_currencies": [
-    {
-      "currency": "USD"
-    },
-    {
-      "currency": "CAD"
-    },
-    {
-      "currency": "GBP"
-    },
-    {
-      "currency": "EUR"
-    }
+    "USD",
+    "CAD",
+    "GBP",
+    "EUR"
   ],
   "claiming_interval": 30,
   "discount_percent": 10,

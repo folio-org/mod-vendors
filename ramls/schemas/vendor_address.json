@@ -23,8 +23,6 @@
   },
   "additionalProperties": false,
   "required": [
-    "region",
-    "country",
-    "language"
+    "address"
   ]
 }

@@ -45,6 +45,5 @@
       "$ref": "edi_job.json"
     }
   },
-  "additionalProperties": false,
-  "required": []
+  "additionalProperties": false
 }
