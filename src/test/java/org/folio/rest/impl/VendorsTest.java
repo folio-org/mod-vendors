@@ -71,6 +71,7 @@ public class VendorsTest {
     async = context.async();
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       logger.info("--- mod-vendors-test: END ");
+      PostgresClient.stopEmbeddedPostgres();
       async.complete();
     });
   }
