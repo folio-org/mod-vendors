@@ -6,53 +6,28 @@ This software is distributed under the terms of the Apache License, Version 2.0.
 
 ## Introduction
 
-This module is responsible for the persistence of Vendor data (i.e. CRUD module).
-
-The module leverages a relational DB and imports the following dependencies:
-
-* RAML-Module Builder (RMB)
-* JOOQ (a lightweight ORM)
-* Flyway (to facilitate schema migration)
-
+This RMB module is responsible for the persistence of Vendor data (i.e. CRUD module).
 
 For additional information on the acquisitions-vendor-module, please refer to the [Vendor Module WIKI](https://wiki.folio.org/display/RM/Acquisitions+Vendor+Module).
 
 
-For API documentation, run this project locally and then go to [http://localhost:8081/apidocs/index.html?raml=raml/vendor.raml](http://localhost:8081/apidocs/index.html?raml=raml/vendor.raml)
-
-
 ## Building the Project
 
-This module uses a relational DB and takes a database-first approach.
+To compile this module, head to the root-folder and run the following command in your Terminal:
 
-_NOTE: JOOQ was configured to read the DB's schema to synthesize the corresponding POJOs. We then bridge this persistence model with the ones synthesized by RAML module builder (which models the API input/response)._
-
-
-The database connection parameters needs to be configured in 2 places _(this will refactored so that we deal with only 1 file)_.
-
-```
-src/main/resources/db.properties
-src/main/resources/postgres-conf.json
-```
-
-Once the parameters are set, the database can be initialized by running
-```
-mvn initialize flyway:migrate
-```
-
-The above command will create a hardcoded schema `mod-vendor` and the appropriate tables.
-
-At this point, the project can be compiled. Run:
 ```
 mvn clean install
 ```
 
-## Schema Update Considerations
+To run the module in standalone mode (i.e. without involving Okapi):
+```
+java -jar target/mod-vendors-fat.jar -Dhttp.port=8081 embed_postgres=true
+```
 
-Since this module uses a relational DB, any schema migration will require the running of a SQL script. To facilitate this, the module uses Flyway.
+>Note that the above command launches an embedded Postgres server and is accessible using the default creds found in the *Credentials* section [here](https://github.com/folio-org/raml-module-builder).
 
-All SQL migration scripts have to be stored in ```src/main/resources/db/migration``` and should follow the naming convention as per the [Flyway documentation](https://flywaydb.org/documentation/migration/versioned).
 
-To run a migration:
-```mvn initialize flyway:migrate```
-
+Once up, access the module's API docs through the following links: 
+* [Vendor APIs](http://localhost:8081/apidocs/index.html?raml=raml/vendor.raml)
+* [Contact Category APIs](http://localhost:8081/apidocs/index.html?raml=raml/contact_category.raml)
+* [Vendor Category APIs](http://localhost:8081/apidocs/index.html?raml=raml/vendor_category.raml)

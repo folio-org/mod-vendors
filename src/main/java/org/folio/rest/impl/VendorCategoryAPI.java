@@ -172,7 +172,7 @@ public class VendorCategoryAPI implements VendorCategoryResource {
   }
 
   @Override
-  public void getVendorCategoryByCategoryId(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorCategoryById(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -188,41 +188,41 @@ public class VendorCategoryAPI implements VendorCategoryResource {
                 @SuppressWarnings("unchecked")
                 List<Category> results = (List<Category>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByCategoryIdResponse
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByIdResponse
                     .withPlainNotFound(categoryId)));
                 }
                 else{
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByCategoryIdResponse
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByIdResponse
                     .withJsonOK(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByCategoryIdResponse
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByIdResponse
                     .withPlainNotFound(categoryId)));
                 }
                 else{
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByCategoryIdResponse
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByIdResponse
                     .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByCategoryIdResponse
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByIdResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByCategoryIdResponse
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.GetVendorCategoryByIdResponse
           .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteVendorCategoryByCategoryId(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorCategoryById(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -234,30 +234,30 @@ public class VendorCategoryAPI implements VendorCategoryResource {
           postgresClient.delete(CATEGORY_TABLE, categoryId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorCategoryResource.DeleteVendorCategoryByCategoryIdResponse.noContent()
+                VendorCategoryResource.DeleteVendorCategoryByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorCategoryResource.DeleteVendorCategoryByCategoryIdResponse.
+                VendorCategoryResource.DeleteVendorCategoryByIdResponse.
                   withPlainInternalServerError(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            VendorCategoryResource.DeleteVendorCategoryByCategoryIdResponse.
+            VendorCategoryResource.DeleteVendorCategoryByIdResponse.
               withPlainInternalServerError(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        VendorCategoryResource.DeleteVendorCategoryByCategoryIdResponse.
+        VendorCategoryResource.DeleteVendorCategoryByIdResponse.
           withPlainInternalServerError(e.getMessage())));
     }
   }
 
   @Override
-  public void putVendorCategoryByCategoryId(String categoryId, String lang, Category entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorCategoryById(String categoryId, String lang, Category entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
@@ -270,28 +270,28 @@ public class VendorCategoryAPI implements VendorCategoryResource {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByCategoryIdResponse
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByIdResponse
                     .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByCategoryIdResponse
+                  asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByIdResponse
                     .withNoContent()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByCategoryIdResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByIdResponse
                   .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByCategoryIdResponse
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByIdResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByCategoryIdResponse
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorCategoryResource.PutVendorCategoryByIdResponse
           .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });

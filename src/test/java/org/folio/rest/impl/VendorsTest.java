@@ -35,13 +35,12 @@ public class VendorsTest {
   private final Logger logger = LoggerFactory.getLogger("okapi");
   private final int port = Integer.parseInt(System.getProperty("port", "8081"));
 
-  private final String TENANT_NAME = "testlib";
+  private final String TENANT_NAME = "diku";
   private final Header TENANT_HEADER = new Header("X-Okapi-Tenant", TENANT_NAME);
 
-
-  private String moduleName;
-  private String moduleVersion;
-  private String moduleId;
+  private String moduleName;      // "mod_vendors";
+  private String moduleVersion;   // "1.0.0"
+  private String moduleId;        // "mod-vendors-1.0.0"
 
 
   @Before
@@ -49,17 +48,20 @@ public class VendorsTest {
     logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
-    moduleName = PomReader.INSTANCE.getModuleName()
-      .replaceAll("_", "-");  // Rmb returns a 'normalized' name, with underscores
+    moduleName = PomReader.INSTANCE.getModuleName();
     moduleVersion = PomReader.INSTANCE.getVersion();
-    moduleId = moduleName + "-" + moduleVersion;
+
+    moduleId = String.format("%s-%s", moduleName, moduleVersion);
+
+    // RMB returns a 'normalized' name, with underscores
+    moduleId = moduleId.replaceAll("_", "-");
 
     try {
       // Run this test in embedded postgres mode
       // IMPORTANT: Later we will initialize the schema by calling the tenant interface.
       PostgresClient.setIsEmbedded(true);
       PostgresClient.getInstance(vertx).startEmbeddedPostgres();
-      PostgresClient.getInstance(vertx).dropCreateDatabase("diku_mod_vendors");
+      PostgresClient.getInstance(vertx).dropCreateDatabase(TENANT_NAME + "_" + PomReader.INSTANCE.getModuleName());
 
     } catch (Exception e) {
       e.printStackTrace();
