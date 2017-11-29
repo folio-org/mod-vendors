@@ -8,42 +8,43 @@ documentation:
     content: <b>This module implements the Vendor-CRUD interface.</b>
 
 schemas:
-  - address: !include schemas/address.json
-  - agreement: !include schemas/agreement.json
-  - category: !include schemas/category.json
-  - contact_category: !include schemas/contact_category.json
-  - contact_person: !include schemas/contact_person.json
-  - edi_info: !include schemas/edi_info.json
-  - email: !include schemas/email.json
-  - error: !include schemas/error.json
-  - job: !include schemas/job.json
-  - library_vendor_acct: !include schemas/library_vendor_acct.json
-  - note: !include schemas/note.json
-  - phone_number: !include schemas/phone_number.json
-  - vendor_address: !include schemas/vendor_address.json
-  - vendor_contact_person: !include schemas/vendor_contact_person.json
-  - vendor_currency: !include schemas/vendor_currency.json
-  - vendor_email: !include schemas/vendor_email.json
-  - vendor_interface: !include schemas/vendor_interface.json
-  - vendor_name: !include schemas/vendor_name.json
-  - vendor_phone: !include schemas/vendor_phone.json
-  - vendor_url: !include schemas/vendor_url.json
-  - vendor: !include schemas/vendor.json
+  - account.json: !include schemas/account.json
+  - address.json: !include schemas/address.json
+  - agreement.json: !include schemas/agreement.json
+  - alias.json: !include schemas/alias.json
+  - category.json: !include schemas/category.json
+  - changelog.json: !include schemas/changelog.json
+  - contact_person.json: !include schemas/contact_person.json
+  - edi.json: !include schemas/edi.json
+  - edi_ftp.json: !include schemas/edi_ftp.json
+  - edi_job.json: !include schemas/edi_job.json
+  - email.json: !include schemas/email.json
+  - error.json: !include schemas/error.json
+  - interface.json: !include schemas/interface.json
+  - phone_number.json: !include schemas/phone_number.json
+  - url.json: !include schemas/url.json
+  - vendor.json: !include schemas/vendor.json
+  - vendor_address.json: !include schemas/vendor_address.json
+  - vendor_contact_person.json: !include schemas/vendor_contact_person.json
+  - vendor_email.json: !include schemas/vendor_email.json
+  - vendor_phone.json: !include schemas/vendor_phone.json
+  - vendor_url.json: !include schemas/vendor_url.json
+
   - vendorCollection: !include schemas/vendorCollection.json
   - contactCategoryCollection: !include schemas/categoryCollection.json
   - categoryCollection: !include schemas/categoryCollection.json
 
 
 traits:
-  - secured: !include ../raml-util/traits/auth.raml
-  - orderable: !include ../raml-util/traits/orderable.raml
-  - pageable:  !include ../raml-util/traits/pageable.raml
-  - searchable: !include ../raml-util/traits/searchable.raml
-  - language: !include ../raml-util/traits/language.raml
+  - secured: !include raml-util/traits/auth.raml
+  - orderable: !include raml-util/traits/orderable.raml
+  - pageable:  !include raml-util/traits/pageable.raml
+  - searchable: !include raml-util/traits/searchable.raml
+  - language: !include raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include ../raml-util/rtypes/collection.raml
-  - collection-item: !include ../raml-util/rtypes/item-collection.raml
+  - collection: !include raml-util/rtypes/collection.raml
+  - collection-item: !include raml-util/rtypes/item-collection.raml
 
 /vendor:
   type:
@@ -51,7 +52,7 @@ resourceTypes:
       exampleCollection: !include examples/vendor_collection.sample
       exampleItem: !include examples/vendor_post.sample
       schemaCollection: vendorCollection
-      schemaItem: vendor
+      schemaItem: vendor.json
   get:
     description: Get list of vendors
     is: [
@@ -63,48 +64,9 @@ resourceTypes:
     type:
       collection-item:
         exampleItem: !include examples/vendor_get.sample
-        schema: vendor
+        schema: vendor.json
     put:
       description: Update vendor with 'vendor_id'
       body:
         application/json:
-          example: !include examples/vendor_put.sample
-/vendorCategory:
-  type:
-    collection:
-      exampleCollection: !include examples/category_collection.sample
-      exampleItem: !include examples/category_post.sample
-      schemaCollection: categoryCollection
-      schemaItem: category
-  get:
-    description: Get list of categories
-    is: [
-      searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
-      orderable: {fieldsList: "field A, field B"},
-      pageable
-    ]
-  /{category_id}:
-    type:
-      collection-item:
-        exampleItem: !include examples/category_get.sample
-        schema: category
-
-/vendorContactCategory:
-  type:
-    collection:
-      exampleCollection: !include examples/category_collection.sample
-      exampleItem: !include examples/category_post.sample
-      schemaCollection: contactCategoryCollection
-      schemaItem: contact_category
-  get:
-    description: Get list of contact categories
-    is: [
-      searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
-      orderable: {fieldsList: "field A, field B"},
-      pageable
-    ]
-  /{category_id}:
-    type:
-      collection-item:
-        exampleItem: !include examples/category_get.sample
-        schema: contact_category
+          example: !include examples/vendor_get.sample

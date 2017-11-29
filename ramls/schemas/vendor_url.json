@@ -2,13 +2,9 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "id": {
-      "type": ["string", "null"],
-      "description": "UUID",
-      "pattern": "^[a-f0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-    },
-    "value": {
-      "type": "string"
+    "url": {
+      "type": "object",
+      "$ref": "url.json"
     },
     "language": {
       "type": "string"
@@ -18,7 +14,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "$ref": "category"
+        "$ref": "category.json"
       }
     },
     "notes": {
@@ -27,6 +23,6 @@
   },
   "additionalProperties": false,
   "required": [
-    "value"
+    "url"
   ]
 }

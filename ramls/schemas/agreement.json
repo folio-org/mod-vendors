@@ -2,24 +2,21 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "id": {
-      "type": ["string", "null"],
-      "description": "UUID",
-      "pattern": "^[a-f0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+    "name": {
+      "type": "string"
     },
     "discount": {
       "type": "number"
     },
-    "name": {
+    "reference_url": {
       "type": "string"
     },
     "notes": {
       "type": "string"
-    },
-    "reference_url": {
-      "type": "string"
     }
   },
   "additionalProperties": false,
-  "required": []
+  "required": [
+    "name"
+  ]
 }

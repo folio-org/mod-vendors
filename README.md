@@ -8,7 +8,7 @@ This software is distributed under the terms of the Apache License, Version 2.0.
 
 This module is responsible for the persistence of Vendor data (i.e. CRUD module).
 
-This module leverages a relational DB and imports the following dependencies:
+The module leverages a relational DB and imports the following dependencies:
 
 * RAML-Module Builder (RMB)
 * JOOQ (a lightweight ORM)

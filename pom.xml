@@ -1,8 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.folio</groupId>
-  <artifactId>mod-vendor</artifactId>
-  <version>0.0.1</version>
+  <artifactId>mod-vendors</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
 
   <licenses>
     <license>
@@ -13,13 +14,12 @@
 
   <properties>
     <aspectj.version>1.8.9</aspectj.version>
-    <module_name>vendor-module</module_name>
+    <module_name>mod-vendors</module_name>
     <http.port>8081</http.port>
     <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
     <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
-    <raml-module-builder.version>13.0.2</raml-module-builder.version>
+    <raml-module-builder.version>15.0.0</raml-module-builder.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <flyway.version>4.2.0</flyway.version>
     <postgres.driver.version>9.4.1212</postgres.driver.version>
   </properties>
 
@@ -45,24 +45,14 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
+      <artifactId>vertx-unit</artifactId>
+      <version>3.5.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
       <artifactId>vertx-mysql-postgresql-client</artifactId>
       <version>3.3.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jooq</groupId>
-      <artifactId>jooq</artifactId>
-      <version>3.9.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jooq</groupId>
-      <artifactId>jooq-meta</artifactId>
-      <version>3.9.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jooq</groupId>
-      <artifactId>jooq-codegen</artifactId>
-      <version>3.9.4</version>
     </dependency>
 
     <!-- test dependencies -->
@@ -339,12 +329,12 @@
             <configuration>
               <tasks>
                 <replace token="baseUri: http://github.com/org/folio/lsp-apis"
-                     value="baseUri: http://localhost:${http.port}/apis"
-                     dir="${basedir}/target/classes/apidocs/raml">
+                         value="baseUri: http://localhost:${http.port}/apis"
+                         dir="${basedir}/target/classes/apidocs/raml">
                   <include name="**/*.raml" />
                 </replace>
                 <replace token="protocols: [ HTTPS ]" value="protocols: [ HTTP ]"
-                     dir="${basedir}/target/classes/apidocs/raml">
+                         dir="${basedir}/target/classes/apidocs/raml">
                   <include name="**/*.raml" />
                 </replace>
               </tasks>
@@ -361,18 +351,6 @@
         <artifactId>properties-maven-plugin</artifactId>
         <version>1.0.0</version>
         <executions>
-          <execution>
-            <id>initialize-properties</id>
-            <phase>initialize</phase>
-            <goals>
-              <goal>read-project-properties</goal>
-            </goals>
-            <configuration>
-              <files>
-                <file>src/main/resources/db.properties</file>
-              </files>
-            </configuration>
-          </execution>
           <execution>
             <id>set-system-properties</id>
             <goals>
@@ -425,7 +403,7 @@
             <configuration>
               <transformers>
                 <transformer
-                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
                     <Main-Class>org.folio.rest.RestLauncher</Main-Class>
                     <Main-Verticle>org.folio.rest.RestVerticle</Main-Verticle>
@@ -449,77 +427,6 @@
           <pushChanges>false</pushChanges>
           <localCheckout>true</localCheckout>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.jooq</groupId>
-        <artifactId>jooq-codegen-maven</artifactId>
-        <version>3.9.4</version>
-
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-
-        <dependencies>
-          <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgres.driver.version}</version>
-          </dependency>
-        </dependencies>
-
-        <configuration>
-
-          <!-- JDBC connection parameters -->
-          <jdbc>
-            <driver>org.postgresql.Driver</driver>
-            <url>${db.url}</url>
-            <user>${db.username}</user>
-            <password>${db.password}</password>
-          </jdbc>
-
-          <!-- Generator parameters -->
-          <generator>
-            <name>org.jooq.util.JavaGenerator</name>
-            <database>
-              <name>org.jooq.util.postgres.PostgresDatabase</name>
-              <includes>.*</includes>
-              <excludes></excludes>
-              <inputSchema>${db.schema}</inputSchema>
-            </database>
-            <target>
-              <packageName>storage.model</packageName>
-              <directory>src/main/java</directory>
-            </target>
-          </generator>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-maven-plugin</artifactId>
-        <version>${flyway.version}</version>
-        <configuration>
-          <sqlMigrationSeparator>__</sqlMigrationSeparator>
-          <locations>
-            <location>filesystem:src/main/resources/db/migration</location>
-          </locations>
-          <url>${db.url}</url>
-          <user>${db.username}</user>
-          <password>${db.password}</password>
-          <schemas>${db.schema}</schemas>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgres.driver.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>

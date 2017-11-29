@@ -3,6 +3,68 @@
   "name": "Vendor CRUD module",
   "provides": [
     {
+      "id": "contact_category",
+      "version": "1.0",
+      "handlers": [
+        {
+          "methods": ["GET"],
+          "pathPattern": "/contact_category",
+          "permissionsRequired": ["contact_category.collection.get"]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/contact_category",
+          "permissionsRequired": ["contact_category.item.post"]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/contact_category/{id}",
+          "permissionsRequired": ["contact_category.item.get"]
+        },
+        {
+          "methods": ["PUT"],
+          "pathPattern": "/contact_category/{id}",
+          "permissionsRequired": ["contact_category.item.put"]
+        },
+        {
+          "methods": ["DELETE"],
+          "pathPattern": "/contact_category/{id}",
+          "permissionsRequired": ["contact_category.item.delete"]
+        }
+      ]
+    },
+    {
+      "id": "vendor_category",
+      "version": "1.0",
+      "handlers": [
+        {
+          "methods": ["GET"],
+          "pathPattern": "/vendor_category",
+          "permissionsRequired": ["vendor_category.collection.get"]
+        },
+        {
+          "methods": ["POST"],
+          "pathPattern": "/vendor_category",
+          "permissionsRequired": ["vendor_category.item.post"]
+        },
+        {
+          "methods": ["GET"],
+          "pathPattern": "/vendor_category/{id}",
+          "permissionsRequired": ["vendor_category.item.get"]
+        },
+        {
+          "methods": ["PUT"],
+          "pathPattern": "/vendor_category/{id}",
+          "permissionsRequired": ["vendor_category.item.put"]
+        },
+        {
+          "methods": ["DELETE"],
+          "pathPattern": "/vendor_category/{id}",
+          "permissionsRequired": ["vendor_category.item.delete"]
+        }
+      ]
+    },
+    {
       "id": "vendor",
       "version": "1.0",
       "handlers": [
@@ -39,9 +101,48 @@
       "interfaceType": "system",
       "handlers": [
         {
-          "methods": [ "POST" ],
+          "methods": [ "POST", "DELETE" ],
           "pathPattern": "/_/tenant"
         }
+      ]
+    }
+  ],
+  "permissionSets" : [
+    {
+      "permissionName" : "contact_category.collection.get",
+      "displayName" : "contact-categories collection get",
+      "description" : "Get a collection of categories for Contacts"
+    },
+    {
+      "permissionName" : "contact_category.item.post",
+      "displayName" : "contact-category post",
+      "description" : "Create a new Contact category"
+    },
+    {
+      "permissionName" : "contact_category.item.get",
+      "displayName" : "contact-category get",
+      "description" : "Fetch a Contact category"
+    },
+    {
+      "permissionName" : "contact_category.item.put",
+      "displayName" : "contact-category put",
+      "description" : "Update a Contact category"
+    },
+    {
+      "permissionName" : "contact_category.item.delete",
+      "displayName" : "contact-category delete",
+      "description" : "Delete a Contact category"
+    },
+    {
+      "permissionName" : "vendors.all",
+      "displayName" : "vendors-module all",
+      "description" : "All permissions for the mod-vendors module",
+      "subPermissions" : [
+        "contact_category.collection.get",
+        "contact_category.item.post",
+        "contact_category.item.get",
+        "contact_category.item.put",
+        "contact_category.item.delete"
       ]
     }
   ]
