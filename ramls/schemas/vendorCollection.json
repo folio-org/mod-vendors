@@ -7,7 +7,7 @@
       "id": "vendorData",
       "items": {
         "type": "object",
-        "$ref": "vendor"
+        "$ref": "vendor.json"
       }
     },
     "total_records": {
