@@ -262,7 +262,7 @@
       "changelogs": [
         {
           "description": "This is a sample note.",
-          "timestamp": "2008-53-15T03:53:00-07"
+          "timestamp": "2008-05-15T03:53:00-07:00"
         }
       ]
     }
