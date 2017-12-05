@@ -145,7 +145,6 @@
         "contact_category.item.delete"
       ]
     },
-
     {
       "permissionName" : "vendor_category.collection.get",
       "displayName" : "categories collection get",
@@ -183,7 +182,6 @@
         "vendor_category.item.delete"
       ]
     },
-
     {
       "permissionName" : "vendor.collection.get",
       "displayName" : "vendor collection get",
