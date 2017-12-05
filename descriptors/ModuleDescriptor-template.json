@@ -219,7 +219,6 @@
         "vendor.item.delete"
       ]
     },
-
     {
       "permissionName" : "vendor.module.all",
       "displayName" : "vendor-module all",
