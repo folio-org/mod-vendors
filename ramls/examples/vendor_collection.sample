@@ -8,47 +8,35 @@
       "vendor_status": "Active",
       "language": "en-us",
       "aliases": [
-              {
-                "value": "YBP",
-                "description": "AKA"
-              },
-              {
-                "value": "Yankee Book Peddler",
-                "description": "Formerly known as"
-              }
-            ],
+        {
+          "value": "YBP",
+          "description": "AKA"
+        },
+        {
+          "value": "Yankee Book Peddler",
+          "description": "Formerly known as"
+        }
+      ],
       "addresses": [
-              {
-                "address": {
-                  "address_line_1": "10 Estes Street",
-                  "address_line_2": "",
-                  "city": "Ipswich",
-                  "region": "MA",
-                  "postal_code": "01938",
-                  "country": "USA"
-                },
-                "categories": [
-                  {
-                    "id": "0e3f9680-ab06-4565-af64-609b7364e6eb",
-                    "value": "Returns"
-                  },
-                  {
-                    "id": "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
-                    "value": "Payments"
-                  },
-                  {
-                    "id": "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
-                    "value": "Customer Service"
-                  },
-                  {
-                    "id": "56288fe8-8037-44da-8395-01d2d106dc54",
-                    "value": "Shipments"
-                  }
-                ],
-                "language": "en",
-                "san_code": "1234567"
-              }
-            ],
+        {
+          "address": {
+            "addressLine1": "10 Estes Street",
+            "addressLine2": "",
+            "city": "Ipswich",
+            "stateRegion": "MA",
+            "zipCode": "01938",
+            "country": "USA"
+          },
+          "categories": [
+            "0e3f9680-ab06-4565-af64-609b7364e6eb",
+            "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
+            "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
+            "56288fe8-8037-44da-8395-01d2d106dc54"
+          ],
+          "language": "en",
+          "san_code": "1234567"
+        }
+      ],
       "phone_numbers": [
         {
           "phone_number": {
@@ -57,14 +45,8 @@
             "phone_number": "9999999"
           },
           "categories": [
-            {
-              "id": "0e3f9680-ab06-4565-af64-609b7364e6eb",
-              "value": "Returns"
-            },
-            {
-              "id": "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6",
-              "value": "Payments"
-            }
+            "0e3f9680-ab06-4565-af64-609b7364e6eb",
+            "996ecd31-7ca4-4d8d-9bbf-bc94dff5f6c6"
           ],
           "language": "en-us"
         }
@@ -76,14 +58,8 @@
             "description": "Main"
           },
           "categories": [
-            {
-              "id": "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
-              "value": "Customer Service"
-            },
-            {
-              "id": "56288fe8-8037-44da-8395-01d2d106dc54",
-              "value": "Shipments"
-            }
+            "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
+            "56288fe8-8037-44da-8395-01d2d106dc54"
           ],
           "language": "en-us"
         }
@@ -96,14 +72,8 @@
           },
           "language": "en-us",
           "categories": [
-            {
-              "id": "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
-              "value": "Customer Service"
-            },
-            {
-              "id": "56288fe8-8037-44da-8395-01d2d106dc54",
-              "value": "Shipments"
-            }
+            "112ae2e4-88ae-4fa5-a75b-2379d2035e52",
+            "56288fe8-8037-44da-8395-01d2d106dc54"
           ],
           "notes": ""
         }
@@ -127,12 +97,12 @@
               "description": "Main"
             },
             "address": {
-               "address_line_1": "10 Estes Street",
-               "address_line_2": "",
-               "city": "Ipswich",
-               "region": "MA",
-               "postal_code": "01938",
-               "country": "USA"
+              "addressLine1": "10 Estes Street",
+              "addressLine2": "",
+              "city": "Ipswich",
+              "stateRegion": "MA",
+              "zipCode": "01938",
+              "country": "USA"
             },
             "url": {
               "value": "noreply@folio.org",
@@ -140,33 +110,21 @@
             }
           },
           "categories": [
-            {
-              "id": "08e0eb27-b57f-4638-a703-9a2c57bd8708",
-              "value": "Accounting"
-            },
-            {
-              "id": "a5da9c44-6619-403f-bd3b-f9bd2f63bc59",
-              "value": "Books"
-            },
-            {
-              "id": "da0272e4-7ff7-4ea8-9bc9-9d9cd5c81580",
-              "value": "Customer Service"
-            },
-            {
-              "id": "ab18897b-0e40-4f31-896b-9c9adc979a88",
-              "value": "Ebooks"
-            }
+            "08e0eb27-b57f-4638-a703-9a2c57bd8708",
+            "a5da9c44-6619-403f-bd3b-f9bd2f63bc59",
+            "da0272e4-7ff7-4ea8-9bc9-9d9cd5c81580",
+            "ab18897b-0e40-4f31-896b-9c9adc979a88"
           ]
         }
       ],
       "agreements": [
-              {
-                "name": "History Follower Incentive",
-                "discount": 10,
-                "reference_url": "http://my_sample_agreement.com",
-                "notes": ""
-              }
-            ],
+        {
+          "name": "History Follower Incentive",
+          "discount": 10,
+          "reference_url": "http://my_sample_agreement.com",
+          "notes": ""
+        }
+      ],
       "erp_code": "AQ-GOBI-HIST",
       "payment_method": "EFT",
       "access_provider": true,
@@ -176,8 +134,7 @@
       "vendor_currencies": [
         "USD",
         "CAD",
-        "GBP",
-        "EUR"
+        "GBP"
       ],
       "claiming_interval": 30,
       "discount_percent": 10,
@@ -189,46 +146,46 @@
       "tax_id": "TX-GOBI-HIST",
       "tax_percentage": 5,
       "edi": {
-              "vendor_edi_code": "AQ-GOBI-HIST",
-              "vendor_edi_type": "014/EAN",
-              "lib_edi_code": "MY-LIB-1",
-              "lib_edi_type": "014/EAN",
-              "prorate_tax": true,
-              "prorate_fees": true,
-              "edi_naming_convention": "",
-              "send_acct_num": true,
-              "support_order": true,
-              "support_invoice": true,
-              "notes": "",
-              "edi_ftp": {
-                "ftp_format": "SFTP",
-                "server_address": "http://127.0.0.1",
-                "username": "edi_username",
-                "password": "edi_password",
-                "ftp_mode": "ASCII",
-                "ftp_conn_mode": "Active",
-                "ftp_port": "22",
-                "order_directory": "/path/to/order/directory",
-                "invoice_directory": "/path/to/invoice/directory",
-                "notes": "My FTP notes"
-              },
-              "edi_job": {
-                "schedule_edi": false,
-                "date": null,
-                "time": null,
-                "is_monday": false,
-                "is_tuesday": false,
-                "is_wednesday": false,
-                "is_thursday": false,
-                "is_friday": false,
-                "is_saturday": false,
-                "is_sunday": false,
-                "send_to_emails": "email1@site.com, email2@site.com",
-                "notify_all_edi": true,
-                "notify_invoice_only": true,
-                "notify_error_only": false
-              }
-            },
+        "vendor_edi_code": "AQ-GOBI-HIST",
+        "vendor_edi_type": "014/EAN",
+        "lib_edi_code": "MY-LIB-1",
+        "lib_edi_type": "014/EAN",
+        "prorate_tax": true,
+        "prorate_fees": true,
+        "edi_naming_convention": "",
+        "send_acct_num": true,
+        "support_order": true,
+        "support_invoice": true,
+        "notes": "",
+        "edi_ftp": {
+          "ftp_format": "SFTP",
+          "server_address": "http://127.0.0.1",
+          "username": "edi_username",
+          "password": "edi_password",
+          "ftp_mode": "ASCII",
+          "ftp_conn_mode": "Active",
+          "ftp_port": "22",
+          "order_directory": "/path/to/order/directory",
+          "invoice_directory": "/path/to/invoice/directory",
+          "notes": "My FTP notes"
+        },
+        "edi_job": {
+          "schedule_edi": false,
+          "date": null,
+          "time": null,
+          "is_monday": false,
+          "is_tuesday": false,
+          "is_wednesday": false,
+          "is_thursday": false,
+          "is_friday": false,
+          "is_saturday": false,
+          "is_sunday": false,
+          "send_to_emails": "email1@site.com, email2@site.com",
+          "notify_all_edi": true,
+          "notify_invoice_only": true,
+          "notify_error_only": false
+        }
+      },
       "interfaces": [
         {
           "name": "Sales Portal",
@@ -244,7 +201,6 @@
           "statistics_notes": ""
         }
       ],
-
       "accounts": [
         {
           "name": "History Account",

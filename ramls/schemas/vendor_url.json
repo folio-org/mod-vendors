@@ -13,8 +13,7 @@
       "id": "category",
       "type": "array",
       "items": {
-        "type": "object",
-        "$ref": "category.json"
+        "type": "string"
       }
     },
     "notes": {
