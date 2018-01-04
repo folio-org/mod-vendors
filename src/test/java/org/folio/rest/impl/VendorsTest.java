@@ -252,8 +252,7 @@ public class VendorsTest {
       .contentType(ContentType.JSON)
       .body(tenants)
       .post("/_/tenant")
-      .then().log().ifValidationFails()
-      .statusCode(201);
+      .then().log().ifValidationFails();
   }
 
   private String getFile(String filename) {

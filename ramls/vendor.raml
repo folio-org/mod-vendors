@@ -8,31 +8,31 @@ documentation:
     content: <b>This module implements the Vendor-CRUD interface.</b>
 
 schemas:
-  - account.json: !include schemas/account.json
-  - address.json: !include schemas/address.json
-  - agreement.json: !include schemas/agreement.json
-  - alias.json: !include schemas/alias.json
-  - category.json: !include schemas/category.json
-  - changelog.json: !include schemas/changelog.json
-  - contact_person.json: !include schemas/contact_person.json
-  - edi.json: !include schemas/edi.json
-  - edi_ftp.json: !include schemas/edi_ftp.json
-  - edi_job.json: !include schemas/edi_job.json
-  - email.json: !include schemas/email.json
-  - error.json: !include schemas/error.json
-  - interface.json: !include schemas/interface.json
-  - phone_number.json: !include schemas/phone_number.json
-  - url.json: !include schemas/url.json
-  - vendor.json: !include schemas/vendor.json
-  - vendor_address.json: !include schemas/vendor_address.json
-  - vendor_contact_person.json: !include schemas/vendor_contact_person.json
-  - vendor_email.json: !include schemas/vendor_email.json
-  - vendor_phone.json: !include schemas/vendor_phone.json
-  - vendor_url.json: !include schemas/vendor_url.json
+  - account.json: !include acq-models/mod-vendors/schemas/account.json
+  - address.json: !include acq-models/mod-vendors/schemas/address.json
+  - agreement.json: !include acq-models/mod-vendors/schemas/agreement.json
+  - alias.json: !include acq-models/mod-vendors/schemas/alias.json
+  - category.json: !include acq-models/mod-vendors/schemas/category.json
+  - changelog.json: !include acq-models/mod-vendors/schemas/changelog.json
+  - contact_person.json: !include acq-models/mod-vendors/schemas/contact_person.json
+  - edi.json: !include acq-models/mod-vendors/schemas/edi.json
+  - edi_ftp.json: !include acq-models/mod-vendors/schemas/edi_ftp.json
+  - edi_job.json: !include acq-models/mod-vendors/schemas/edi_job.json
+  - email.json: !include acq-models/mod-vendors/schemas/email.json
+  - error.json: !include acq-models/mod-vendors/schemas/error.json
+  - interface.json: !include acq-models/mod-vendors/schemas/interface.json
+  - phone_number.json: !include acq-models/mod-vendors/schemas/phone_number.json
+  - url.json: !include acq-models/mod-vendors/schemas/url.json
+  - vendor.json: !include acq-models/mod-vendors/schemas/vendor.json
+  - vendor_address.json: !include acq-models/mod-vendors/schemas/vendor_address.json
+  - vendor_contact_person.json: !include acq-models/mod-vendors/schemas/vendor_contact_person.json
+  - vendor_email.json: !include acq-models/mod-vendors/schemas/vendor_email.json
+  - vendor_phone.json: !include acq-models/mod-vendors/schemas/vendor_phone.json
+  - vendor_url.json: !include acq-models/mod-vendors/schemas/vendor_url.json
 
-  - vendorCollection: !include schemas/vendorCollection.json
-  - contactCategoryCollection: !include schemas/categoryCollection.json
-  - categoryCollection: !include schemas/categoryCollection.json
+  - vendorCollection: !include acq-models/mod-vendors/schemas/vendorCollection.json
+  - contactCategoryCollection: !include acq-models/mod-vendors/schemas/categoryCollection.json
+  - categoryCollection: !include acq-models/mod-vendors/schemas/categoryCollection.json
 
 
 traits:
@@ -49,8 +49,8 @@ resourceTypes:
 /vendor:
   type:
     collection:
-      exampleCollection: !include examples/vendor_collection.sample
-      exampleItem: !include examples/vendor_post.sample
+      exampleCollection: !include acq-models/mod-vendors/examples/vendor_collection.sample
+      exampleItem: !include acq-models/mod-vendors/examples/vendor_post.sample
       schemaCollection: vendorCollection
       schemaItem: vendor.json
   get:
@@ -62,10 +62,10 @@ resourceTypes:
   /{id}:
     type:
       collection-item:
-        exampleItem: !include examples/vendor_get.sample
+        exampleItem: !include acq-models/mod-vendors/examples/vendor_get.sample
         schema: vendor.json
     put:
       description: Update vendor with 'vendor_id'
       body:
         application/json:
-          example: !include examples/vendor_get.sample
+          example: !include acq-models/mod-vendors/examples/vendor_get.sample
