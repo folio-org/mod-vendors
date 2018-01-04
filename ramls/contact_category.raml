@@ -8,8 +8,8 @@ documentation:
     content: <b>This module implements the CRUD interface.</b>
 
 schemas:
-  - category.json: !include schemas/category.json
-  - contactCategoryCollection: !include schemas/contactCategoryCollection.json
+  - category.json: !include acq-models/mod-vendors/schemas/category.json
+  - contactCategoryCollection: !include acq-models/mod-vendors/schemas/contactCategoryCollection.json
 
 traits:
   - secured: !include raml-util/traits/auth.raml
@@ -26,8 +26,8 @@ resourceTypes:
 /contact_category:
   type:
     collection:
-      exampleCollection: !include examples/category_collection.sample
-      exampleItem: !include examples/category_post.sample
+      exampleCollection: !include acq-models/mod-vendors/examples/category_collection.sample
+      exampleItem: !include acq-models/mod-vendors/examples/category_post.sample
       schemaCollection: contactCategoryCollection
       schemaItem: category.json
   get:
@@ -39,5 +39,5 @@ resourceTypes:
   /{id}:
     type:
       collection-item:
-        exampleItem: !include examples/category_get.sample
+        exampleItem: !include acq-models/mod-vendors/examples/category_get.sample
         schema: category.json
