@@ -1,4 +1,4 @@
-# mod-vendor
+# mod-vendors
 
 Copyright (C) 2017 The Open Library Foundation
 
@@ -27,7 +27,7 @@ java -jar target/mod-vendors-fat.jar -Dhttp.port=8081 embed_postgres=true
 >Note that the above command launches an embedded Postgres server and is accessible using the default creds found in the *Credentials* section [here](https://github.com/folio-org/raml-module-builder).
 
 
-Once up, access the module's API docs through the following links: 
+Once up, access the module's API docs through the following links:
 * [Vendor APIs](http://localhost:8081/apidocs/index.html?raml=raml/vendor.raml)
 * [Contact Category APIs](http://localhost:8081/apidocs/index.html?raml=raml/contact_category.raml)
 * [Vendor Category APIs](http://localhost:8081/apidocs/index.html?raml=raml/vendor_category.raml)
