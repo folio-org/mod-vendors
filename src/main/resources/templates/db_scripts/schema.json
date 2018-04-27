@@ -17,23 +17,42 @@
       "generateId": true,
       "fromModuleVersion": 1.0,
       "withMetadata": true,
-      "ginIndex": true,
-      "populateJsonWithId": true
+      "populateJsonWithId": true,
+      "ginIndex": [
+        {
+          "fieldName": "name",
+          "tOps": "ADD",
+          "caseSensitive": false,
+          "removeAccents": true
+        },
+        {
+          "fieldName": "code",
+          "tOps": "ADD",
+          "caseSensitive": false,
+          "removeAccents": true
+        }
+      ]
     },
     {
       "tableName": "category",
       "generateId": true,
       "fromModuleVersion": 1.0,
       "withMetadata": true,
-      "ginIndex": true,
-      "populateJsonWithId": true
+      "populateJsonWithId": true,
+      "ginIndex": [
+        {
+          "fieldName": "value",
+          "tOps": "ADD",
+          "caseSensitive": false,
+          "removeAccents": true
+        }
+      ]
     },
     {
       "tableName": "contact_category",
       "generateId": true,
       "fromModuleVersion": 1.0,
       "withMetadata": true,
-      "ginIndex": true,
       "populateJsonWithId": true
     }
   ]
