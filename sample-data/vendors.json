@@ -472,11 +472,11 @@
           "description": "main customer service contact"
         },
         "address": {
-          "address_line_1": "Kreuzberger Ring 6 b-d",
-          "address_line_2": "",
+          "addressLine1": "Kreuzberger Ring 6 b-d",
+          "addressLine2": "",
           "city": "Wiesbaden",
-          "region": "",
-          "postal_code": "",
+          "stateRegion": "",
+          "zipCode": "",
           "country": "Germany"
         },
         "url": {
