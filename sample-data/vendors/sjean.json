@@ -85,8 +85,8 @@
           "country": "USA"
         },
         "url": {
-          "value": "",
-          "description": ""
+          "value": "https://www.doi.gov/",
+          "description": "web address for U.S. Dept. of Interior"
         }
       },
       "categories": []
@@ -176,8 +176,8 @@
       "payment_method": "check",
       "account_status": "Active",
       "contact_info": "sister@luc.edu",
-      "library_code": "",
-      "library_edi_code": "",
+      "library_code": "COB",
+      "library_edi_code": "765987610",
       "notes": ""
     }
   ],

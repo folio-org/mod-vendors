@@ -85,8 +85,8 @@
           "country": "Germany"
         },
         "url": {
-          "value": "",
-          "description": ""
+          "value": "https://www.doi.gov/",
+          "description": "web address for U.S. Dept. of Interior"
         }
       },
       "categories": []
