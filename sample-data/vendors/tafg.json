@@ -86,7 +86,7 @@
         },
         "url": {
           "value": "https://www.doi.gov/",
-          "description": ""
+          "description": "web address for U.S. Dept. of Interior"
         }
       },
       "categories": []
@@ -183,8 +183,8 @@
       "payment_method": "EFT",
       "account_status": "Active",
       "contact_info": "Richard.Plantagenet@taylorandfrancis.com",
-      "library_code": "",
-      "library_edi_code": "",
+      "library_code": "COB",
+      "library_edi_code": "765987610",
       "notes": ""
     }
   ],

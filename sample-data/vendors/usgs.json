@@ -183,8 +183,8 @@
       "payment_method": "credit card",
       "account_status": "Active",
       "contact_info": "usgsstore@usgs.gov",
-      "library_code": "",
-      "library_edi_code": "",
+      "library_code": "COB",
+      "library_edi_code": "765987610",
       "notes": ""
     }
   ],
