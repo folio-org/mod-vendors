@@ -2,5 +2,5 @@
 * Incremental Release Notes here.
 
 ## 1.0.1 Release
-CRUD interfaces for:
+CRUD interface for:
 * vendor record
