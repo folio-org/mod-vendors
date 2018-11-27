@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "1",
-        "area_code": "800",
-        "phone_number": "258-3774"
+        "phone_number": "1-800-258-3774"
       },
       "categories": ["Customer Service"],
       "language": "en-us"
@@ -68,9 +66,7 @@
         "language": "en-us",
         "notes": "",
         "phone_number": {
-          "country_code": "1",
-          "area_code": "800",
-          "phone_number": "258-3774 x8852"
+          "phone_number": "1-800-258-3774 x8852"
         },
         "email": {
           "value": "ssilverman@ebsco.com",

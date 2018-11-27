@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "64",
-        "area_code": "95",
-        "phone_number": "783-996"
+        "phone_number": "64-95-783-996"
       },
       "categories": [],
       "language": "English"
@@ -68,9 +66,7 @@
         "language": "English",
         "notes": "",
         "phone_number": {
-          "country_code": "64",
-          "area_code": "95",
-          "phone_number": "783-996"
+          "phone_number": "64-95-783-996"
         },
         "email": {
           "value": "Siouxsie@mapress.com",

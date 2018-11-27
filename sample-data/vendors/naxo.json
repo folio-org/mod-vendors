@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "1",
-        "area_code": "615",
-        "phone_number": "771-9393"
+        "phone_number": "1-615-771-9393"
       },
       "categories": [],
       "language": "English"
@@ -68,9 +66,7 @@
         "language": "English",
         "notes": "",
         "phone_number": {
-          "country_code": "1",
-          "area_code": "615",
-          "phone_number": "771-9393 x2819"
+          "phone_number": "1-615-771-9393 x2819"
         },
         "email": {
           "value": "Mcur@naxosusa.com",
