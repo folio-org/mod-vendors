@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "1",
-        "area_code": "800",
-        "phone_number": "634-7064"
+        "phone_number": "1-800-634-7064"
       },
       "categories": [],
       "language": "English"
@@ -68,9 +66,7 @@
         "language": "English",
         "notes": "",
         "phone_number": {
-          "country_code": "1",
-          "area_code": "800",
-          "phone_number": "634-8888"
+          "phone_number": "1-800-634-8888"
         },
         "email": {
           "value": "john-joe.taylor@taylorandfrancis.com",

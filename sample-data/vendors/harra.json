@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "49",
-        "area_code": "611",
-        "phone_number": "530 ext. 0"
+        "phone_number": "49-611-530 ext. 0"
       },
       "categories": ["Customer Service","Payments","Returns","Shipments"],
       "language": "German"
@@ -68,9 +66,7 @@
         "language": "German and English",
         "notes": "",
         "phone_number": {
-          "country_code": "49",
-          "area_code": "611",
-          "phone_number": "530 ext. 0"
+          "phone_number": "49-611-530 ext. 0"
         },
         "email": {
           "value": "service@harrassowitz.de",

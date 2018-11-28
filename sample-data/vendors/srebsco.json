@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "1",
-        "area_code": "800",
-        "phone_number": "653-2726"
+        "phone_number": "1-800-653-2726"
       },
       "categories": [],
       "language": "en-us"
@@ -68,9 +66,7 @@
         "language": "en-us",
         "notes": "",
         "phone_number": {
-          "country_code": "US",
-          "area_code": "877",
-          "phone_number": "763-6348"
+          "phone_number": "1-877-763-6348"
         },
         "email": {
           "value": "noreply@folio.org",

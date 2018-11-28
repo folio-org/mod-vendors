@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "1",
-        "area_code": "800",
-        "phone_number": "889-5937"
+        "phone_number": "1-800-889-5937"
       },
       "categories": [],
       "language": "English"
@@ -68,9 +66,7 @@
         "language": "English",
         "notes": "",
         "phone_number": {
-          "country_code": "1",
-          "area_code": "800",
-          "phone_number": "889-5937"
+          "phone_number": "1-800-889-5937"
         },
         "email": {
           "value": "customerservice@alexanderstreet.com",

@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "55",
-        "area_code": "55-21",
-        "phone_number": "2539-3590"
+        "phone_number": "55-55-21-2539-3590"
       },
       "categories": [],
       "language": "Portuguese"
@@ -68,9 +66,7 @@
         "language": "English",
         "notes": "",
         "phone_number": {
-          "country_code": "55",
-          "area_code": "55-21",
-          "phone_number": "2539-3590"
+          "phone_number": "55-55-21-2539-3590"
         },
         "email": {
           "value": "sbach@sbachbooks.com.br",

@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "1",
-        "area_code": "888",
-        "phone_number": "ASK-USGS"
+        "phone_number": "1-888-ASK-USGS"
       },
       "categories": [],
       "language": "English"
@@ -68,9 +66,7 @@
         "language": "English",
         "notes": "",
         "phone_number": {
-          "country_code": "1",
-          "area_code": "202",
-          "phone_number": "208-3100"
+          "phone_number": "1-202-208-3100"
         },
         "email": {
           "value": "feedback@ios.doi.gov",

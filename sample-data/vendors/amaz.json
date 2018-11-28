@@ -29,9 +29,7 @@
   "phone_numbers": [
     {
       "phone_number": {
-        "country_code": "1",
-        "area_code": "888",
-        "phone_number": "238-22090"
+        "phone_number": "1-888-238-22090"
       },
       "categories": [],
       "language": "English"
@@ -68,9 +66,7 @@
         "language": "English",
         "notes": "",
         "phone_number": {
-          "country_code": "1",
-          "area_code": "888",
-          "phone_number": "238-2209"
+          "phone_number": "1-888-238-2209"
         },
         "email": {
           "value": "cust.service03@amazon.com",
