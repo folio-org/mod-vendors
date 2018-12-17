@@ -9,7 +9,7 @@ documentation:
 
 schemas:
   - category.json: !include acq-models/mod-vendors/schemas/category.json
-  - categoryCollection: !include acq-models/mod-vendors/schemas/categoryCollection.json
+  - category_collection: !include acq-models/mod-vendors/schemas/category_collection.json
 
 traits:
   - secured: !include raml-util/traits/auth.raml
@@ -28,7 +28,7 @@ resourceTypes:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/category_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/category_post.sample
-      schemaCollection: categoryCollection
+      schemaCollection: category_collection
       schemaItem: category.json
   get:
     description: Get list of categories

@@ -29,10 +29,8 @@ schemas:
   - vendor_email.json: !include acq-models/mod-vendors/schemas/vendor_email.json
   - vendor_phone.json: !include acq-models/mod-vendors/schemas/vendor_phone.json
   - vendor_url.json: !include acq-models/mod-vendors/schemas/vendor_url.json
-
-  - vendorCollection: !include acq-models/mod-vendors/schemas/vendorCollection.json
-  - contactCategoryCollection: !include acq-models/mod-vendors/schemas/categoryCollection.json
-  - categoryCollection: !include acq-models/mod-vendors/schemas/categoryCollection.json
+  - vendor_collection: !include acq-models/mod-vendors/schemas/vendor_collection.json
+  - category_collection: !include acq-models/mod-vendors/schemas/category_collection.json
 
 
 traits:
@@ -51,7 +49,7 @@ resourceTypes:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/vendor_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/vendor_post.sample
-      schemaCollection: vendorCollection
+      schemaCollection: vendor_collection
       schemaItem: vendor.json
   get:
     description: Get list of vendors
