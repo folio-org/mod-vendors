@@ -1,0 +1,43 @@
+#%RAML 0.8
+title: "mod-vendors"
+baseUri: https://github.com/folio-org/mod-vendors
+version: v1
+
+documentation:
+  - title: mod-vendors
+    content: <b>This module implements the CRUD interface.</b>
+
+schemas:
+  - edi_job.json: !include acq-models/mod-vendors/schemas/edi_job.json
+  - edi_job_collection: !include acq-models/mod-vendors/schemas/edi_job_collection.json
+
+traits:
+  - secured: !include raml-util/traits/auth.raml
+  - orderable: !include raml-util/traits/orderable.raml
+  - pageable:  !include raml-util/traits/pageable.raml
+  - searchable: !include raml-util/traits/searchable.raml
+  - language: !include raml-util/traits/language.raml
+
+resourceTypes:
+  - collection: !include raml-util/rtypes/collection.raml
+  - collection-item: !include raml-util/rtypes/item-collection.raml
+
+
+/edi_job:
+  type:
+    collection:
+      exampleCollection: !include acq-models/mod-vendors/examples/edi_job_collection.sample
+      exampleItem: !include acq-models/mod-vendors/examples/edi_job_post.sample
+      schemaCollection: edi_job_collection
+      schemaItem: edi_job.json
+  get:
+    description: Get list of EDI jobs
+    is: [
+      searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
+      pageable
+    ]
+  /{id}:
+    type:
+      collection-item:
+        exampleItem: !include acq-models/mod-vendors/examples/edi_job_get.sample
+        schema: edi_job.json

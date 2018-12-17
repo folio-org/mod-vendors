@@ -1,0 +1,43 @@
+#%RAML 0.8
+title: "mod-vendors"
+baseUri: https://github.com/folio-org/mod-vendors
+version: v1
+
+documentation:
+  - title: mod-vendors
+    content: <b>This module implements the CRUD interface.</b>
+
+schemas:
+  - contact_person.json: !include acq-models/mod-vendors/schemas/contact_person.json
+  - contact_person_collection: !include acq-models/mod-vendors/schemas/contact_person_collection.json
+
+traits:
+  - secured: !include raml-util/traits/auth.raml
+  - orderable: !include raml-util/traits/orderable.raml
+  - pageable:  !include raml-util/traits/pageable.raml
+  - searchable: !include raml-util/traits/searchable.raml
+  - language: !include raml-util/traits/language.raml
+
+resourceTypes:
+  - collection: !include raml-util/rtypes/collection.raml
+  - collection-item: !include raml-util/rtypes/item-collection.raml
+
+
+/contact_person:
+  type:
+    collection:
+      exampleCollection: !include acq-models/mod-vendors/examples/contact_person_collection.sample
+      exampleItem: !include acq-models/mod-vendors/examples/contact_person_post.sample
+      schemaCollection: contact_person_collection
+      schemaItem: contact_person.json
+  get:
+    description: Get list of contact persons
+    is: [
+      searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
+      pageable
+    ]
+  /{id}:
+    type:
+      collection-item:
+        exampleItem: !include acq-models/mod-vendors/examples/contact_person_get.sample
+        schema: contact_person.json
