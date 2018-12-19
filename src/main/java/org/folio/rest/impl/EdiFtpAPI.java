@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.PhoneNumber;
-import org.folio.rest.jaxrs.model.PhoneNumberCollection;
-import org.folio.rest.jaxrs.resource.PhoneNumberResource;
+import org.folio.rest.jaxrs.model.EdiFtp;
+import org.folio.rest.jaxrs.model.EdiFtpCollection;
+import org.folio.rest.jaxrs.resource.EdiFtpResource;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class PhoneNumberAPI implements PhoneNumberResource {
-  private static final String PHONE_NUMBER_TABLE = "phone_number";
-  private static final String PHONE_NUMBER_LOCATION_PREFIX = "/phone_number/";
+public class EdiFtpAPI implements EdiFtpResource {
+  private static final String EDI_FTP_TABLE = "edi_ftp";
+  private static final String EDI_FTP_LOCATION_PREFIX = "/edi_ftp/";
 
-  private static final Logger log = LoggerFactory.getLogger(PhoneNumberAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(EdiFtpAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +41,31 @@ public class PhoneNumberAPI implements PhoneNumberResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public PhoneNumberAPI(Vertx vertx, String tenantId) {
+  public EdiFtpAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getPhoneNumber(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEdiFtp(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", PHONE_NUMBER_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", EDI_FTP_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(PHONE_NUMBER_TABLE, PhoneNumber.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_FTP_TABLE, EdiFtp.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                PhoneNumberCollection collection = new PhoneNumberCollection();
+                EdiFtpCollection collection = new EdiFtpCollection();
                 @SuppressWarnings("unchecked")
-                List<PhoneNumber> results = (List<PhoneNumber>)reply.result().getResults();
-                collection.setPhoneNumbers(results);
+                List<EdiFtp> results = (List<EdiFtp>)reply.result().getResults();
+                collection.setEdiFtps(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,17 +76,17 @@ public class PhoneNumberAPI implements PhoneNumberResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiFtpResource.GetEdiFtpResponse
                   .withJsonOK(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiFtpResource.GetEdiFtpResponse
                   .withPlainBadRequest(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiFtpResource.GetEdiFtpResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
@@ -96,14 +96,14 @@ public class PhoneNumberAPI implements PhoneNumberResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiFtpResource.GetEdiFtpResponse
           .withPlainInternalServerError(message)));
       }
     });
   }
 
   @Override
-  public void postPhoneNumber(String lang, PhoneNumber entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postEdiFtp(String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +117,7 @@ public class PhoneNumberAPI implements PhoneNumberResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          PHONE_NUMBER_TABLE, id, entity,
+          EDI_FTP_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +126,20 @@ public class PhoneNumberAPI implements PhoneNumberResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = PostPhoneNumberResponse.
-                  withJsonCreated(PHONE_NUMBER_LOCATION_PREFIX + persistenceId, stream);
+                Response response = EdiFtpResource.PostEdiFtpResponse.
+                  withJsonCreated(EDI_FTP_LOCATION_PREFIX + persistenceId, stream);
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = PostPhoneNumberResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = EdiFtpResource.PostEdiFtpResponse.withPlainInternalServerError(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = PostPhoneNumberResponse.withPlainInternalServerError(e.getMessage());
+              Response response = EdiFtpResource.PostEdiFtpResponse.withPlainInternalServerError(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +150,7 @@ public class PhoneNumberAPI implements PhoneNumberResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = PostPhoneNumberResponse.withPlainInternalServerError(errMsg);
+        Response response = EdiFtpResource.PostEdiFtpResponse.withPlainInternalServerError(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +158,57 @@ public class PhoneNumberAPI implements PhoneNumberResource {
   }
 
   @Override
-  public void getPhoneNumberById(String phoneNumberId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEdiFtpById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", phoneNumberId);
+        String idArgument = String.format("'%s'", ediFtpId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(PHONE_NUMBER_TABLE, PhoneNumber.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_FTP_TABLE, EdiFtp.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
                 @SuppressWarnings("unchecked")
-                List<PhoneNumber> results = (List<PhoneNumber>) reply.result().getResults();
+                List<EdiFtp> results = (List<EdiFtp>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
-                    .withPlainNotFound(phoneNumberId)));
+                  asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.GetEdiFtpByIdResponse
+                    .withPlainNotFound(ediFtpId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.GetEdiFtpByIdResponse
                     .withJsonOK(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
-                    .withPlainNotFound(phoneNumberId)));
+                  asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.GetEdiFtpByIdResponse
+                    .withPlainNotFound(ediFtpId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.GetEdiFtpByIdResponse
                     .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.GetEdiFtpByIdResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.GetEdiFtpByIdResponse
           .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deletePhoneNumberById(String phoneNumberId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteEdiFtpById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,67 +217,67 @@ public class PhoneNumberAPI implements PhoneNumberResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(PHONE_NUMBER_TABLE, phoneNumberId, reply -> {
+          postgresClient.delete(EDI_FTP_TABLE, ediFtpId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                PhoneNumberAPI.DeletePhoneNumberByIdResponse.noContent()
+                EdiFtpAPI.DeleteEdiFtpByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                PhoneNumberAPI.DeletePhoneNumberByIdResponse.
+                EdiFtpAPI.DeleteEdiFtpByIdResponse.
                   withPlainInternalServerError(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            PhoneNumberAPI.DeletePhoneNumberByIdResponse.
+            EdiFtpAPI.DeleteEdiFtpByIdResponse.
               withPlainInternalServerError(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        PhoneNumberAPI.DeletePhoneNumberByIdResponse.
+        EdiFtpAPI.DeleteEdiFtpByIdResponse.
           withPlainInternalServerError(e.getMessage())));
     }
   }
 
   @Override
-  public void putPhoneNumberById(String phoneNumberId, String lang, PhoneNumber entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putEdiFtpById(String ediFtpId, String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(phoneNumberId);
+          entity.setId(ediFtpId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          PHONE_NUMBER_TABLE, entity, phoneNumberId,
+          EDI_FTP_TABLE, entity, ediFtpId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.PutEdiFtpByIdResponse
                     .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.PutEdiFtpByIdResponse
                     .withNoContent()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+                asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.PutEdiFtpByIdResponse
                   .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.PutEdiFtpByIdResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(EdiFtpAPI.PutEdiFtpByIdResponse
           .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });

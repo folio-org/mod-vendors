@@ -4,9 +4,10 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.PhoneNumber;
-import org.folio.rest.jaxrs.model.PhoneNumberCollection;
-import org.folio.rest.jaxrs.resource.PhoneNumberResource;
+import org.folio.rest.jaxrs.model.Email;
+import org.folio.rest.jaxrs.model.EmailCollection;
+import org.folio.rest.jaxrs.resource.EmailResource;
+import org.folio.rest.jaxrs.resource.EmailResource;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class PhoneNumberAPI implements PhoneNumberResource {
-  private static final String PHONE_NUMBER_TABLE = "phone_number";
-  private static final String PHONE_NUMBER_LOCATION_PREFIX = "/phone_number/";
+public class EmailAPI implements EmailResource {
+  private static final String EMAIL_TABLE = "email";
+  private static final String EMAIL_LOCATION_PREFIX = "/email/";
 
-  private static final Logger log = LoggerFactory.getLogger(PhoneNumberAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(EmailAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +42,31 @@ public class PhoneNumberAPI implements PhoneNumberResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public PhoneNumberAPI(Vertx vertx, String tenantId) {
+  public EmailAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getPhoneNumber(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEmail(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", PHONE_NUMBER_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", EMAIL_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(PHONE_NUMBER_TABLE, PhoneNumber.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EMAIL_TABLE, Email.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                PhoneNumberCollection collection = new PhoneNumberCollection();
+                EmailCollection collection = new EmailCollection();
                 @SuppressWarnings("unchecked")
-                List<PhoneNumber> results = (List<PhoneNumber>)reply.result().getResults();
-                collection.setPhoneNumbers(results);
+                List<Email> results = (List<Email>)reply.result().getResults();
+                collection.setEmails(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,17 +77,17 @@ public class PhoneNumberAPI implements PhoneNumberResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
                   .withJsonOK(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
                   .withPlainBadRequest(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
@@ -96,14 +97,14 @@ public class PhoneNumberAPI implements PhoneNumberResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(PhoneNumberResource.GetPhoneNumberResponse
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
           .withPlainInternalServerError(message)));
       }
     });
   }
 
   @Override
-  public void postPhoneNumber(String lang, PhoneNumber entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postEmail(String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +118,7 @@ public class PhoneNumberAPI implements PhoneNumberResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          PHONE_NUMBER_TABLE, id, entity,
+          EMAIL_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +127,20 @@ public class PhoneNumberAPI implements PhoneNumberResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = PostPhoneNumberResponse.
-                  withJsonCreated(PHONE_NUMBER_LOCATION_PREFIX + persistenceId, stream);
+                Response response = EmailResource.PostEmailResponse.
+                  withJsonCreated(EMAIL_LOCATION_PREFIX + persistenceId, stream);
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = PostPhoneNumberResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = EmailResource.PostEmailResponse.withPlainInternalServerError(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = PostPhoneNumberResponse.withPlainInternalServerError(e.getMessage());
+              Response response = EmailResource.PostEmailResponse.withPlainInternalServerError(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +151,7 @@ public class PhoneNumberAPI implements PhoneNumberResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = PostPhoneNumberResponse.withPlainInternalServerError(errMsg);
+        Response response = EmailResource.PostEmailResponse.withPlainInternalServerError(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +159,57 @@ public class PhoneNumberAPI implements PhoneNumberResource {
   }
 
   @Override
-  public void getPhoneNumberById(String phoneNumberId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", phoneNumberId);
+        String idArgument = String.format("'%s'", emailId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(PHONE_NUMBER_TABLE, PhoneNumber.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EMAIL_TABLE, Email.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
                 @SuppressWarnings("unchecked")
-                List<PhoneNumber> results = (List<PhoneNumber>) reply.result().getResults();
+                List<Email> results = (List<Email>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
-                    .withPlainNotFound(phoneNumberId)));
+                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
+                    .withPlainNotFound(emailId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
                     .withJsonOK(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
-                    .withPlainNotFound(phoneNumberId)));
+                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
+                    .withPlainNotFound(emailId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
                     .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.GetPhoneNumberByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
           .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deletePhoneNumberById(String phoneNumberId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,67 +218,67 @@ public class PhoneNumberAPI implements PhoneNumberResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(PHONE_NUMBER_TABLE, phoneNumberId, reply -> {
+          postgresClient.delete(EMAIL_TABLE, emailId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                PhoneNumberAPI.DeletePhoneNumberByIdResponse.noContent()
+                EmailAPI.DeleteEmailByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                PhoneNumberAPI.DeletePhoneNumberByIdResponse.
+                EmailAPI.DeleteEmailByIdResponse.
                   withPlainInternalServerError(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            PhoneNumberAPI.DeletePhoneNumberByIdResponse.
+            EmailAPI.DeleteEmailByIdResponse.
               withPlainInternalServerError(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        PhoneNumberAPI.DeletePhoneNumberByIdResponse.
+        EmailAPI.DeleteEmailByIdResponse.
           withPlainInternalServerError(e.getMessage())));
     }
   }
 
   @Override
-  public void putPhoneNumberById(String phoneNumberId, String lang, PhoneNumber entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putEmailById(String emailId, String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(phoneNumberId);
+          entity.setId(emailId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          PHONE_NUMBER_TABLE, entity, phoneNumberId,
+          EMAIL_TABLE, entity, emailId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
                     .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
                     .withNoContent()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+                asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
                   .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
                 .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(PhoneNumberAPI.PutPhoneNumberByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
           .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
