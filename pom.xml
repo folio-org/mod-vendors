@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.folio</groupId>
   <artifactId>mod-vendors</artifactId>
-  <version>v1.0.3</version>
+  <version>1.0.3</version>
   <packaging>jar</packaging>
 
   <licenses>
