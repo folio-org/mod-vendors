@@ -174,11 +174,11 @@ public class UrlAPI implements UrlResource {
                 @SuppressWarnings("unchecked")
                 List<Url> results = (List<Url>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
                     .withPlainNotFound(urlId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
                     .withJsonOK(results.get(0))));
                 }
               }

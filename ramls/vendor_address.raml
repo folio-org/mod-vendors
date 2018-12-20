@@ -8,12 +8,12 @@ documentation:
     content: <b>This module implements the CRUD interface.</b>
 
 schemas:
-  - vendor_address.json: !include acq-models/mod-vendors/schemas/vendor_address.json
-  - vendor_address_collection: !include acq-models/mod-vendors/schemas/vendor_address_collection.json
   - address.json: !include acq-models/mod-vendors/schemas/address.json
   - address_collection: !include acq-models/mod-vendors/schemas/address_collection.json
   - category.json: !include acq-models/mod-vendors/schemas/category.json
   - category_collection: !include acq-models/mod-vendors/schemas/category_collection.json
+  - vendor_address.json: !include acq-models/mod-vendors/schemas/vendor_address.json
+  - vendor_address_collection: !include acq-models/mod-vendors/schemas/vendor_address_collection.json
 
 traits:
   - secured: !include raml-util/traits/auth.raml

@@ -4,7 +4,7 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.Alias
+import org.folio.rest.jaxrs.model.Alias;
 import org.folio.rest.jaxrs.model.AliasCollection;
 import org.folio.rest.jaxrs.resource.AliasResource;
 import org.folio.rest.persist.Criteria.Criteria;
