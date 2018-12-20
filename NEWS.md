@@ -7,3 +7,6 @@ CRUD interface for:
 
 ## 1.0.2 Release
 * model changes to support additional UI functionality
+
+## 1.0.3 Release
+* resolved missing release artifacts
