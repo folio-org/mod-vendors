@@ -173,7 +173,8 @@
       "fromModuleVersion": 1.0,
       "withMetadata": true,
       "populateJsonWithId": true
-    }{
+    },
+    {
       "tableName": "vendor_url",
       "generateId": true,
       "fromModuleVersion": 1.0,
