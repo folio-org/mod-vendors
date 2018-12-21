@@ -19,5 +19,6 @@
   "subscription_interval": 365,
   "liable_for_vat": false,
   "tax_id": "TX-GOBI-HIST",
-  "tax_percentage": 5
+  "tax_percentage": 5,
+  "san_code": "1234567"
 }
