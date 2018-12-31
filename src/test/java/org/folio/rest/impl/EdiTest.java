@@ -45,7 +45,7 @@ public class EdiTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class EdiTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,10 +110,10 @@ public class EdiTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
       logger.info("--- mod-storage-test: Creating edi ... ");
@@ -124,17 +124,17 @@ public class EdiTest {
         .body("vendor_edi_code", equalTo("AQ-GOBI-HIST"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 edi was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 edi was created ... ");
       getData("edi").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching edi with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching edi with ID: "+ dataSampleId);
       getDataById("edi", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing edi with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing edi with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("vendor_edi_code", "Gift");
@@ -142,18 +142,18 @@ public class EdiTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching edi with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching edi with ID: "+ dataSampleId);
       getDataById("edi", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("vendor_edi_code", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting edi with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting edi with ID ... ");
       deleteData("edi", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

@@ -45,7 +45,7 @@ public class VendorPhoneTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class VendorPhoneTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class VendorPhoneTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating vendor phone ... ");
+      logger.info("--- mod-vendors-test: Creating vendor phone ... ");
       String dataSample = getFile("vendorPhone.sample");
       Response response = postData("vendor_phone", dataSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class VendorPhoneTest {
         .body("language", equalTo("en-us"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 vendor phone was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 vendor phone was created ... ");
       getData("vendor_phone").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching vendor phone with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching vendor phone with ID: "+ dataSampleId);
       getDataById("vendor_phone", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing vendor phone with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing vendor phone with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("language", "Gift");
@@ -142,18 +142,18 @@ public class VendorPhoneTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching vendor phone with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching vendor phone with ID: "+ dataSampleId);
       getDataById("vendor_phone", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("language", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting vendor phone with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting vendor phone with ID ... ");
       deleteData("vendor_phone", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

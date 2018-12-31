@@ -45,7 +45,7 @@ public class EdiJobTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class EdiJobTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class EdiJobTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating edi job ... ");
+      logger.info("--- mod-vendors-test: Creating edi job ... ");
       String dataSample = getFile("ediJob.sample");
       Response response = postData("edi_job", dataSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class EdiJobTest {
         .body("send_to_emails", equalTo("email1@site.com, email2@site.com"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 edi job was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 edi job was created ... ");
       getData("edi_job").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching edi job with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching edi job with ID: "+ dataSampleId);
       getDataById("edi_job", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing edi job with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing edi job with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("send_to_emails", "Gift");
@@ -142,18 +142,18 @@ public class EdiJobTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching edi job with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching edi job with ID: "+ dataSampleId);
       getDataById("edi_job", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("send_to_emails", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting edi job with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting edi job with ID ... ");
       deleteData("edi_job", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

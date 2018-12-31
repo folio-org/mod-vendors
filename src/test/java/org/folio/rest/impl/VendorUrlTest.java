@@ -45,7 +45,7 @@ public class VendorUrlTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class VendorUrlTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class VendorUrlTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating vendor url ... ");
+      logger.info("--- mod-vendors-test: Creating vendor url ... ");
       String dataSample = getFile("vendorUrl.sample");
       Response response = postData("vendor_url", dataSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class VendorUrlTest {
         .body("language", equalTo("en-us"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 vendor url was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 vendor url was created ... ");
       getData("vendor_url").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching vendor url with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching vendor url with ID: "+ dataSampleId);
       getDataById("vendor_url", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing vendor url with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing vendor url with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("language", "Gift");
@@ -142,18 +142,18 @@ public class VendorUrlTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching vendor url with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching vendor url with ID: "+ dataSampleId);
       getDataById("vendor_url", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("language", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting vendor url with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting vendor url with ID ... ");
       deleteData("vendor_url", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

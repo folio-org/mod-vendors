@@ -45,7 +45,7 @@ public class AgreementTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class AgreementTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class AgreementTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating agreement ... ");
+      logger.info("--- mod-vendors-test: Creating agreement ... ");
       String dataSample = getFile("agreement.sample");
       Response response = postData("agreement", dataSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class AgreementTest {
         .body("name", equalTo("History Follower Incentive"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 agreement was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 agreement was created ... ");
       getData("agreement").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching agreement with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching agreement with ID: "+ dataSampleId);
       getDataById("agreement", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing agreement with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing agreement with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("name", "Gift");
@@ -142,18 +142,18 @@ public class AgreementTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching agreement with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching agreement with ID: "+ dataSampleId);
       getDataById("agreement", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("name", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting agreement with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting agreement with ID ... ");
       deleteData("agreement", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

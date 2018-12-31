@@ -45,7 +45,7 @@ public class ContactPersonTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class ContactPersonTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class ContactPersonTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating contact_person ... ");
+      logger.info("--- mod-vendors-test: Creating contact_person ... ");
       String dataSample = getFile("contactPerson.sample");
       Response response = postData("contact_person", dataSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class ContactPersonTest {
         .body("prefix", equalTo("Director"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 contact_person was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 contact_person was created ... ");
       getData("contact_person").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching contact_person with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching contact_person with ID: "+ dataSampleId);
       getDataById("contact_person", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing contact_person with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing contact_person with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("prefix", "Gift");
@@ -142,18 +142,18 @@ public class ContactPersonTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching contact_person with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching contact_person with ID: "+ dataSampleId);
       getDataById("contact_person", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("prefix", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting contact_person with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting contact_person with ID ... ");
       deleteData("contact_person", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

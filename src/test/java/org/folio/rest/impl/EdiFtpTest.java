@@ -45,7 +45,7 @@ public class EdiFtpTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class EdiFtpTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class EdiFtpTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating edi ftp... ");
+      logger.info("--- mod-vendors-test: Creating edi ftp... ");
       String dataSample = getFile("ediFtp.sample");
       Response response = postData("edi_ftp", dataSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class EdiFtpTest {
         .body("ftp_format", equalTo("SFTP"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 edi ftp was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 edi ftp was created ... ");
       getData("edi_ftp").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching edi ftp with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching edi ftp with ID: "+ dataSampleId);
       getDataById("edi_ftp", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing edi ftp with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing edi ftp with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("ftp_format", "Gift");
@@ -142,18 +142,18 @@ public class EdiFtpTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching edi ftp with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching edi ftp with ID: "+ dataSampleId);
       getDataById("edi_ftp", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("ftp_format", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting edi with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting edi with ID ... ");
       deleteData("edi_ftp", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

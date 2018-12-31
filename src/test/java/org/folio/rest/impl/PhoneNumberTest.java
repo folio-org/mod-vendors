@@ -45,7 +45,7 @@ public class PhoneNumberTest {
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class PhoneNumberTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class PhoneNumberTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating phone number ... ");
+      logger.info("--- mod-vendors-test: Creating phone number ... ");
       String dataSample = getFile("phoneNumber.sample");
       Response response = postData("phone_number", dataSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class PhoneNumberTest {
         .body("phone_number", equalTo("19789999999"));
       String dataSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 phone number was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 phone number was created ... ");
       getData("phone_number").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching phone number with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching phone number with ID: "+ dataSampleId);
       getDataById("phone_number", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing phone number with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Editing phone number with ID: "+ dataSampleId);
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("phone_number", "Gift");
@@ -142,18 +142,18 @@ public class PhoneNumberTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching phone number with ID: "+ dataSampleId);
+      logger.info("--- mod-vendors-test: Fetching phone number with ID: "+ dataSampleId);
       getDataById("phone_number", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("phone_number", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting phone number with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting phone number with ID ... ");
       deleteData("phone_number", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }

@@ -38,14 +38,14 @@ public class AccountTest {
   private final String TENANT_NAME = "diku";
   private final Header TENANT_HEADER = new Header("X-Okapi-Tenant", TENANT_NAME);
 
-  private String moduleName;      // "mod_orders_storage";
+  private String moduleName;      // "mod_vendors";
   private String moduleVersion;   // "1.0.0"
-  private String moduleId;        // "mod-orders-storage-1.0.0"
+  private String moduleId;        // "mod-vendors-1.0.0"
 
 
   @Before
   public void before(TestContext context) {
-    logger.info("--- mod-orders-storage-test: START ");
+    logger.info("--- mod-vendors-test: START ");
     vertx = Vertx.vertx();
 
     moduleName = PomReader.INSTANCE.getModuleName();
@@ -90,7 +90,7 @@ public class AccountTest {
     vertx.close(res -> {   // This logs a stack trace, ignore it.
       PostgresClient.stopEmbeddedPostgres();
       async.complete();
-      logger.info("--- mod-orders-storage-test: END ");
+      logger.info("--- mod-vendors-test: END ");
     });
   }
 
@@ -110,13 +110,13 @@ public class AccountTest {
     try {
 
       // IMPORTANT: Call the tenant interface to initialize the tenant-schema
-      logger.info("--- mod-orders-storage-test: Preparing test tenant");
+      logger.info("--- mod-vendors-test: Preparing test tenant");
       prepareTenant();
 
-      logger.info("--- mod-orders-storage-test: Verifying database's initial state ... ");
+      logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-storage-test: Creating account ... ");
+      logger.info("--- mod-vendors-test: Creating account ... ");
       String accountSample = getFile("account.sample");
       Response response = postData("account", accountSample);
       response.then().log().ifValidationFails()
@@ -124,17 +124,17 @@ public class AccountTest {
         .body("description", equalTo("This is my account description."));
       String accountSampleId = response.then().extract().path("id");
 
-      logger.info("--- mod-orders-storage-test: Verifying only 1 account was created ... ");
+      logger.info("--- mod-vendors-test: Verifying only 1 account was created ... ");
       getData("account").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-orders-storage-test: Fetching account with ID: "+ accountSampleId);
+      logger.info("--- mod-vendors-test: Fetching account with ID: "+ accountSampleId);
       getDataById("account", accountSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(accountSampleId));
 
-      logger.info("--- mod-orders-storage-test: Editing account with ID: "+ accountSampleId);
+      logger.info("--- mod-vendors-test: Editing account with ID: "+ accountSampleId);
       JSONObject catJSON = new JSONObject(accountSample);
       catJSON.put("id", accountSampleId);
       catJSON.put("description", "Gift");
@@ -142,18 +142,18 @@ public class AccountTest {
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-orders-storage-test: Fetching account with ID: "+ accountSampleId);
+      logger.info("--- mod-vendors-test: Fetching account with ID: "+ accountSampleId);
       getDataById("account", accountSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("description", equalTo("Gift"));
 
-      logger.info("--- mod-orders-storages-test: Deleting account with ID ... ");
+      logger.info("--- mod-vendors-test: Deleting account with ID ... ");
       deleteData("account", accountSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
     catch (Exception e) {
-      context.fail("--- mod-orders-storage-test: ERROR: " + e.getMessage());
+      context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());
     }
     async.complete();
   }
