@@ -29,7 +29,7 @@ import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 @RunWith(VertxUnitRunner.class)
-public class VendorsTest {
+public class VendorTest {
   private Vertx vertx;
   private Async async;
   private final Logger logger = LoggerFactory.getLogger("okapi");
@@ -38,9 +38,9 @@ public class VendorsTest {
   private final String TENANT_NAME = "diku";
   private final Header TENANT_HEADER = new Header("X-Okapi-Tenant", TENANT_NAME);
 
-  private String moduleName;      // "mod_vendors";
+  private String moduleName;      // "mod_orders_storage";
   private String moduleVersion;   // "1.0.0"
-  private String moduleId;        // "mod-vendors-1.0.0"
+  private String moduleId;        // "mod-orders-storage-1.0.0"
 
 
   @Before
@@ -64,7 +64,8 @@ public class VendorsTest {
       PostgresClient.getInstance(vertx).dropCreateDatabase(TENANT_NAME + "_" + PomReader.INSTANCE.getModuleName());
 
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
+      logger.info(e);
       context.fail(e);
       return;
     }
@@ -93,31 +94,14 @@ public class VendorsTest {
     });
   }
 
-  // Validates that there are zero vendor records in the DB
+  // Validates that there are zero po_line records in the DB
   private void verifyCollection() {
 
-    // Validate that contact_category is prepopulated with 12 records
-    // and this particular call returns a default limit of 10
-    getData("contact_category").then()
-      .log().ifValidationFails()
-      .statusCode(200)
-      .body("total_records", equalTo(12))
-      .body("categories.size()", is(10));
-
-    // Validate that vendor_category is prepopulated with 4 records
-    // and this particular call returns all 4
-    getData("vendor_category").then()
-      .log().ifValidationFails()
-      .statusCode(200)
-      .body("total_records", equalTo(4))
-      .body("categories.size()", is(4));
-
-    // Verify that there are no existing vendor records
+    // Verify that there are no existing po_line records
     getData("vendor").then()
-      .log().ifValidationFails()
+      .log().all()
       .statusCode(200)
-      .body("total_records", equalTo(0))
-      .body("vendors", empty());
+      .body("total_records", equalTo(0));
   }
 
   @Test
@@ -132,112 +116,41 @@ public class VendorsTest {
       logger.info("--- mod-vendors-test: Verifying database's initial state ... ");
       verifyCollection();
 
-      logger.info("--- mod-vendors-test: Creating category ... ");
-      String catSample = getFile("category.sample");
-      Response response = postData("contact_category", catSample);
-      response.then().log().ifValidationFails()
-        .statusCode(201)
-        .body("value", equalTo("Accounting"));
-      String contact_category_id = response.then().extract().path("id");
-
-      logger.info("--- mod-vendors-test: Verifying only 1 category was created ... ");
-      getData("contact_category").then().log().ifValidationFails()
-        .statusCode(200)
-        .body("total_records", equalTo(13));
-
-      logger.info("--- mod-vendors-test: Fetching category with ID:"+ contact_category_id);
-      getDataById("contact_category", contact_category_id).then().log().ifValidationFails()
-        .statusCode(200)
-        .body("id", equalTo(contact_category_id));
-
-      logger.info("--- mod-vendors-test: Editing category with ID:"+ contact_category_id);
-      JSONObject catJSON = new JSONObject(catSample);
-      catJSON.put("id", contact_category_id);
-      catJSON.put("value", "Customer Service");
-      response = putData("contact_category", contact_category_id, catJSON.toString());
-      response.then().log().ifValidationFails()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Fetching category with ID:"+ contact_category_id);
-      getDataById("contact_category", contact_category_id).then()
-        .statusCode(200).log().ifValidationFails()
-        .body("value", equalTo("Customer Service"));
-
-      logger.info("--- mod-vendors-test: Deleting contact-category with id ... ");
-      deleteData("contact_category", contact_category_id).then().log().ifValidationFails()
-        .statusCode(204);
-
-
-      logger.info("--- mod-vendors-test: Creating vendor category ... ");
-      String vendCatSample = getFile("category.sample");
-      response = postData("vendor_category", vendCatSample);
-      response.then().log().ifValidationFails()
-        .statusCode(201)
-        .body("value", equalTo("Accounting"));
-      String vendor_category_id = response.then().extract().path("id");
-
-      logger.info("--- mod-vendors-test: Verifying only 1 vendor category was created ... ");
-      getData("vendor_category").then().log().ifValidationFails()
-        .statusCode(200)
-        .body("total_records", equalTo(5));
-
-      logger.info("--- mod-vendors-test: Fetching vendor category with ID:"+ vendor_category_id);
-      getDataById("vendor_category", vendor_category_id).then()
-        .statusCode(200).log().ifValidationFails()
-        .body("id", equalTo(vendor_category_id));
-
-      logger.info("--- mod-vendors-test: Editing vendor category with ID:"+ vendor_category_id);
-      JSONObject vendCatJSON = new JSONObject(vendCatSample);
-      vendCatJSON.put("id", vendor_category_id);
-      vendCatJSON.put("value", "Customer Service");
-      response = putData("vendor_category", vendor_category_id, vendCatJSON.toString());
-      response.then().log().ifValidationFails()
-        .statusCode(204);
-
-      logger.info("--- mod-vendors-test: Fetching category with ID:"+ vendor_category_id);
-      getDataById("vendor_category", vendor_category_id).then().log().ifValidationFails()
-        .statusCode(200)
-        .body("value", equalTo("Customer Service"));
-
-      logger.info("--- mod-vendors-test: Deleting vendor-category with id ... ");
-      deleteData("vendor_category", vendor_category_id).then().log().ifValidationFails()
-        .statusCode(204);
-
-
       logger.info("--- mod-vendors-test: Creating vendor ... ");
-      String vendorSample = getFile("vendor.sample");
-      response = postData("vendor", vendorSample);
+      String dataSample = getFile("vendor.sample");
+      Response response = postData("vendor", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("name", equalTo("GOBI"));
-      String vendor_id = response.then().extract().path("id");
+      String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 vendor was created ... ");
       getData("vendor").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
-      logger.info("--- mod-vendors-test: Fetching vendor with ID:"+ vendor_id);
-      getDataById("vendor", vendor_id).then().log().ifValidationFails()
+      logger.info("--- mod-vendors-test: Fetching vendor with ID: "+ dataSampleId);
+      getDataById("vendor", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
-        .body("id", equalTo(vendor_id));
+        .body("id", equalTo(dataSampleId));
 
-      logger.info("--- mod-vendors-test: Editing vendor with ID:"+ vendor_id);
-      JSONObject vendorJSON = new JSONObject(vendorSample);
-      vendorJSON.put("id", vendor_id);
-      vendorJSON.put("name", "G.O.B.I.");
-      response = putData("vendor", vendor_id, vendorJSON.toString());
+      logger.info("--- mod-vendors-test: Editing vendor with ID: "+ dataSampleId);
+      JSONObject catJSON = new JSONObject(dataSample);
+      catJSON.put("id", dataSampleId);
+      catJSON.put("name", "Gift");
+      response = putData("vendor", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
-      logger.info("--- mod-vendors-test: Fetching vendor with ID:"+ vendor_id);
-      getDataById("vendor", vendor_id).then().log().ifValidationFails()
-        .statusCode(200)
-        .body("name", equalTo("G.O.B.I."));
+      logger.info("--- mod-vendors-test: Fetching vendor with ID: "+ dataSampleId);
+      getDataById("vendor", dataSampleId).then()
+        .statusCode(200).log().ifValidationFails()
+        .body("name", equalTo("Gift"));
 
-      logger.info("--- mod-vendors-test: Deleting vendor with id ... ");
-      deleteData("vendor", vendor_id).then().log().ifValidationFails()
+      logger.info("--- mod-vendors-test: Deleting vendor with ID ... ");
+      deleteData("vendor", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
+
     }
     catch (Exception e) {
       context.fail("--- mod-vendors-test: ERROR: " + e.getMessage());

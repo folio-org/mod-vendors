@@ -4,8 +4,8 @@ baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors (category)
-    content: <b>This module implements the Vendor-CRUD interface.</b>
+  - title: mod-vendors
+    content: <b>This module implements the CRUD interface.</b>
 
 schemas:
   - category.json: !include acq-models/mod-vendors/schemas/category.json
@@ -23,7 +23,7 @@ resourceTypes:
   - collection-item: !include raml-util/rtypes/item-collection.raml
 
 
-/vendor_category:
+/category:
   type:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/category_collection.sample
@@ -31,7 +31,7 @@ resourceTypes:
       schemaCollection: category_collection
       schemaItem: category.json
   get:
-    description: Get list of vendor categories
+    description: Get list of categories
     is: [
       searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
       pageable

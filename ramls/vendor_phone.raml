@@ -4,10 +4,14 @@ baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors (category)
-    content: <b>This module implements the Vendor-CRUD interface.</b>
+  - title: mod-vendors
+    content: <b>This module implements the CRUD interface.</b>
 
 schemas:
+  - vendor_phone.json: !include acq-models/mod-vendors/schemas/vendor_phone.json
+  - vendor_phone_collection: !include acq-models/mod-vendors/schemas/vendor_phone_collection.json
+  - phone_number.json: !include acq-models/mod-vendors/schemas/phone_number.json
+  - phone_number_collection: !include acq-models/mod-vendors/schemas/phone_number_collection.json
   - category.json: !include acq-models/mod-vendors/schemas/category.json
   - category_collection: !include acq-models/mod-vendors/schemas/category_collection.json
 
@@ -23,15 +27,15 @@ resourceTypes:
   - collection-item: !include raml-util/rtypes/item-collection.raml
 
 
-/vendor_category:
+/vendor_phone:
   type:
     collection:
-      exampleCollection: !include acq-models/mod-vendors/examples/category_collection.sample
-      exampleItem: !include acq-models/mod-vendors/examples/category_post.sample
-      schemaCollection: category_collection
-      schemaItem: category.json
+      exampleCollection: !include acq-models/mod-vendors/examples/vendor_phone_collection.sample
+      exampleItem: !include acq-models/mod-vendors/examples/vendor_phone_post.sample
+      schemaCollection: vendor_phone_collection
+      schemaItem: vendor_phone.json
   get:
-    description: Get list of vendor categories
+    description: Get list of vendor phones
     is: [
       searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
       pageable
@@ -39,5 +43,5 @@ resourceTypes:
   /{id}:
     type:
       collection-item:
-        exampleItem: !include acq-models/mod-vendors/examples/category_get.sample
-        schema: category.json
+        exampleItem: !include acq-models/mod-vendors/examples/vendor_phone_get.sample
+        schema: vendor_phone.json

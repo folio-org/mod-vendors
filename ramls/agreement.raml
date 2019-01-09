@@ -4,12 +4,12 @@ baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors (category)
-    content: <b>This module implements the Vendor-CRUD interface.</b>
+  - title: mod-vendors
+    content: <b>This module implements the CRUD interface.</b>
 
 schemas:
-  - category.json: !include acq-models/mod-vendors/schemas/category.json
-  - category_collection: !include acq-models/mod-vendors/schemas/category_collection.json
+  - agreement.json: !include acq-models/mod-vendors/schemas/agreement.json
+  - agreement_collection: !include acq-models/mod-vendors/schemas/agreement_collection.json
 
 traits:
   - secured: !include raml-util/traits/auth.raml
@@ -23,15 +23,15 @@ resourceTypes:
   - collection-item: !include raml-util/rtypes/item-collection.raml
 
 
-/vendor_category:
+/agreement:
   type:
     collection:
-      exampleCollection: !include acq-models/mod-vendors/examples/category_collection.sample
-      exampleItem: !include acq-models/mod-vendors/examples/category_post.sample
-      schemaCollection: category_collection
-      schemaItem: category.json
+      exampleCollection: !include acq-models/mod-vendors/examples/agreement_collection.sample
+      exampleItem: !include acq-models/mod-vendors/examples/agreement_post.sample
+      schemaCollection: agreement_collection
+      schemaItem: agreement.json
   get:
-    description: Get list of vendor categories
+    description: Get list of agreements
     is: [
       searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
       pageable
@@ -39,5 +39,5 @@ resourceTypes:
   /{id}:
     type:
       collection-item:
-        exampleItem: !include acq-models/mod-vendors/examples/category_get.sample
-        schema: category.json
+        exampleItem: !include acq-models/mod-vendors/examples/agreement_get.sample
+        schema: agreement.json

@@ -1,0 +1,13 @@
+{
+    "vendor_edi_code": "AQ-GOBI-HIST",
+    "vendor_edi_type": "014/EAN",
+    "lib_edi_code": "MY-LIB-1",
+    "lib_edi_type": "014/EAN",
+    "prorate_tax": true,
+    "prorate_fees": true,
+    "edi_naming_convention": "",
+    "send_acct_num": true,
+    "support_order": true,
+    "support_invoice": true,
+    "notes": ""
+}

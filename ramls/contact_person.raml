@@ -1,0 +1,59 @@
+#%RAML 0.8
+title: "mod-vendors"
+baseUri: https://github.com/folio-org/mod-vendors
+version: v1
+
+documentation:
+  - title: mod-vendors
+    content: <b>This module implements the CRUD interface.</b>
+
+schemas:
+  - address.json: !include acq-models/mod-vendors/schemas/address.json
+  - address_collection: !include acq-models/mod-vendors/schemas/address_collection.json
+  - contact_person.json: !include acq-models/mod-vendors/schemas/contact_person.json
+  - contact_person_collection: !include acq-models/mod-vendors/schemas/contact_person_collection.json
+  - email.json: !include acq-models/mod-vendors/schemas/email.json
+  - email_collection: !include acq-models/mod-vendors/schemas/email_collection.json
+  - phone_number.json: !include acq-models/mod-vendors/schemas/phone_number.json
+  - phone_number_collection: !include acq-models/mod-vendors/schemas/phone_number_collection.json
+  - url.json: !include acq-models/mod-vendors/schemas/url.json
+  - url_collection: !include acq-models/mod-vendors/schemas/url_collection.json
+  - vendor_phone.json: !include acq-models/mod-vendors/schemas/vendor_phone.json
+  - vendor_phone_collection: !include acq-models/mod-vendors/schemas/vendor_phone_collection.json
+  - vendor_email.json: !include acq-models/mod-vendors/schemas/vendor_email.json
+  - vendor_email_collection: !include acq-models/mod-vendors/schemas/vendor_email_collection.json
+  - vendor_address.json: !include acq-models/mod-vendors/schemas/vendor_address.json
+  - vendor_address_collection: !include acq-models/mod-vendors/schemas/vendor_address_collection.json
+  - vendor_url.json: !include acq-models/mod-vendors/schemas/vendor_url.json
+  - vendor_url_collection: !include acq-models/mod-vendors/schemas/vendor_url_collection.json
+
+traits:
+  - secured: !include raml-util/traits/auth.raml
+  - orderable: !include raml-util/traits/orderable.raml
+  - pageable:  !include raml-util/traits/pageable.raml
+  - searchable: !include raml-util/traits/searchable.raml
+  - language: !include raml-util/traits/language.raml
+
+resourceTypes:
+  - collection: !include raml-util/rtypes/collection.raml
+  - collection-item: !include raml-util/rtypes/item-collection.raml
+
+
+/contact_person:
+  type:
+    collection:
+      exampleCollection: !include acq-models/mod-vendors/examples/contact_person_collection.sample
+      exampleItem: !include acq-models/mod-vendors/examples/contact_person_post.sample
+      schemaCollection: contact_person_collection
+      schemaItem: contact_person.json
+  get:
+    description: Get list of contact persons
+    is: [
+      searchable: {description: "with valid searchable fields: for example code", example: "[\"code\", \"MEDGRANT\", \"=\"]"},
+      pageable
+    ]
+  /{id}:
+    type:
+      collection-item:
+        exampleItem: !include acq-models/mod-vendors/examples/contact_person_get.sample
+        schema: contact_person.json
