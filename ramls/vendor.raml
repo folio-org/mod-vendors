@@ -1,57 +1,36 @@
-#%RAML 0.8
-title: "Vendor-Module"
+#%RAML 1.0
+title: "Vendors"
 baseUri: http://github.com/org/folio/lsp-apis
 version: v1
 
 documentation:
-  - title: Vendors Module
-    content: <b>This module implements the Vendor-CRUD interface.</b>
+  - title: Vendors
+    content: <b>CRUD APIs used to manage vendors.</b>
 
-schemas:
-  - account.json: !include acq-models/mod-vendors/schemas/account.json
-  - address.json: !include acq-models/mod-vendors/schemas/address.json
-  - agreement.json: !include acq-models/mod-vendors/schemas/agreement.json
-  - alias.json: !include acq-models/mod-vendors/schemas/alias.json
-  - category.json: !include acq-models/mod-vendors/schemas/category.json
-  - changelog.json: !include acq-models/mod-vendors/schemas/changelog.json
-  - contact_person.json: !include acq-models/mod-vendors/schemas/contact_person.json
-  - edi.json: !include acq-models/mod-vendors/schemas/edi.json
-  - edi_ftp.json: !include acq-models/mod-vendors/schemas/edi_ftp.json
-  - edi_job.json: !include acq-models/mod-vendors/schemas/edi_job.json
-  - email.json: !include acq-models/mod-vendors/schemas/email.json
-  - error.json: !include acq-models/mod-vendors/schemas/error.json
-  - interface.json: !include acq-models/mod-vendors/schemas/interface.json
-  - phone_number.json: !include acq-models/mod-vendors/schemas/phone_number.json
-  - url.json: !include acq-models/mod-vendors/schemas/url.json
-  - vendor.json: !include acq-models/mod-vendors/schemas/vendor.json
-  - vendor_address.json: !include acq-models/mod-vendors/schemas/vendor_address.json
-  - vendor_contact_person.json: !include acq-models/mod-vendors/schemas/vendor_contact_person.json
-  - vendor_email.json: !include acq-models/mod-vendors/schemas/vendor_email.json
-  - vendor_phone.json: !include acq-models/mod-vendors/schemas/vendor_phone.json
-  - vendor_type.json: !include acq-models/mod-vendors/schemas/vendor_type.json
-  - vendor_url.json: !include acq-models/mod-vendors/schemas/vendor_url.json
-  - vendor_collection: !include acq-models/mod-vendors/schemas/vendor_collection.json
-  - category_collection: !include acq-models/mod-vendors/schemas/category_collection.json
-
+types:
+    vendor: !include acq-models/mod-vendors/schemas/vendor.json
+    vendor_collection: !include acq-models/mod-vendors/schemas/vendor_collection.json
+    UUID:
+      type: string
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
 
 traits:
-  - secured: !include raml-util/traits/auth.raml
-  - orderable: !include raml-util/traits/orderable.raml
-  - pageable:  !include raml-util/traits/pageable.raml
-  - searchable: !include raml-util/traits/searchable.raml
-  - language: !include raml-util/traits/language.raml
+    orderable: !include raml-util/traits/orderable.raml
+    pageable:  !include raml-util/traits/pageable.raml
+    searchable: !include raml-util/traits/searchable.raml
+    language: !include raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include raml-util/rtypes/collection.raml
-  - collection-item: !include raml-util/rtypes/item-collection.raml
+    collection: !include raml-util/rtypes/collection.raml
+    collection-item: !include raml-util/rtypes/item-collection.raml
 
-/vendor:
+/vendors:
   type:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/vendor_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/vendor_post.sample
       schemaCollection: vendor_collection
-      schemaItem: vendor.json
+      schemaItem: vendor
   get:
     description: Get list of vendors
     is: [
@@ -59,10 +38,14 @@ resourceTypes:
       pageable
     ]
   /{id}:
+    uriParameters:
+      id:
+        description: The UUID of Vendor
+        type: UUID
     type:
       collection-item:
         exampleItem: !include acq-models/mod-vendors/examples/vendor_get.sample
-        schema: vendor.json
+        schema: vendor
     put:
       description: Update vendor with 'vendor_id'
       body:

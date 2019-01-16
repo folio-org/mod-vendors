@@ -1,39 +1,36 @@
-#%RAML 0.8
-title: "mod-vendors"
+#%RAML 1.0
+title: "Vendors"
 baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors
-    content: <b>This module implements the CRUD interface.</b>
+  - title: Vendor Emails
+    content: <b>CRUD APIs used to manage vendor emails.</b>
 
-schemas:
-  - vendor_email.json: !include acq-models/mod-vendors/schemas/vendor_email.json
-  - vendor_email_collection: !include acq-models/mod-vendors/schemas/vendor_email_collection.json
-  - email.json: !include acq-models/mod-vendors/schemas/email.json
-  - email_collection: !include acq-models/mod-vendors/schemas/email_collection.json
-  - category.json: !include acq-models/mod-vendors/schemas/category.json
-  - category_collection: !include acq-models/mod-vendors/schemas/category_collection.json
+types:
+    vendor_email: !include acq-models/mod-vendors/schemas/vendor_email.json
+    vendor_email_collection: !include acq-models/mod-vendors/schemas/vendor_email_collection.json
+    UUID:
+      type: string
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
 
 traits:
-  - secured: !include raml-util/traits/auth.raml
-  - orderable: !include raml-util/traits/orderable.raml
-  - pageable:  !include raml-util/traits/pageable.raml
-  - searchable: !include raml-util/traits/searchable.raml
-  - language: !include raml-util/traits/language.raml
+    orderable: !include raml-util/traits/orderable.raml
+    pageable:  !include raml-util/traits/pageable.raml
+    searchable: !include raml-util/traits/searchable.raml
+    language: !include raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include raml-util/rtypes/collection.raml
-  - collection-item: !include raml-util/rtypes/item-collection.raml
+    collection: !include raml-util/rtypes/collection.raml
+    collection-item: !include raml-util/rtypes/item-collection.raml
 
-
-/vendor_email:
+/vendors/vendor_emails:
   type:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/vendor_email_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/vendor_email_post.sample
       schemaCollection: vendor_email_collection
-      schemaItem: vendor_email.json
+      schemaItem: vendor_email
   get:
     description: Get list of vendor emails
     is: [
@@ -41,7 +38,11 @@ resourceTypes:
       pageable
     ]
   /{id}:
+    uriParameters:
+      id:
+        description: The UUID of Vendor Email
+        type: UUID
     type:
       collection-item:
         exampleItem: !include acq-models/mod-vendors/examples/vendor_email_get.sample
-        schema: vendor_email.json
+        schema: vendor_email

@@ -1,35 +1,36 @@
-#%RAML 0.8
-title: "mod-vendors"
+#%RAML 1.0
+title: "Vendors"
 baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors
-    content: <b>This module implements the CRUD interface.</b>
+  - title: Vendor Types
+    content: <b>CRUD APIs used to manage vendor types.</b>
 
-schemas:
-  - vendor_type.json: !include acq-models/mod-vendors/schemas/vendor_type.json
-  - vendor_type_collection: !include acq-models/mod-vendors/schemas/vendor_type_collection.json
+types:
+    vendor_type: !include acq-models/mod-vendors/schemas/vendor_type.json
+    vendor_type_collection: !include acq-models/mod-vendors/schemas/vendor_type_collection.json
+    UUID:
+      type: string
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
 
 traits:
-  - secured: !include raml-util/traits/auth.raml
-  - orderable: !include raml-util/traits/orderable.raml
-  - pageable:  !include raml-util/traits/pageable.raml
-  - searchable: !include raml-util/traits/searchable.raml
-  - language: !include raml-util/traits/language.raml
+    orderable: !include raml-util/traits/orderable.raml
+    pageable:  !include raml-util/traits/pageable.raml
+    searchable: !include raml-util/traits/searchable.raml
+    language: !include raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include raml-util/rtypes/collection.raml
-  - collection-item: !include raml-util/rtypes/item-collection.raml
+    collection: !include raml-util/rtypes/collection.raml
+    collection-item: !include raml-util/rtypes/item-collection.raml
 
-
-/vendor_type:
+/vendors/vendor_types:
   type:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/vendor_type_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/vendor_type_post.sample
       schemaCollection: vendor_type_collection
-      schemaItem: vendor_type.json
+      schemaItem: vendor_type
   get:
     description: Get list of vendor types
     is: [
@@ -37,7 +38,11 @@ resourceTypes:
       pageable
     ]
   /{id}:
+    uriParameters:
+      id:
+        description: The UUID of Adjustment
+        type: UUID
     type:
       collection-item:
         exampleItem: !include acq-models/mod-vendors/examples/vendor_type_get.sample
-        schema: vendor_type.json
+        schema: vendor_type

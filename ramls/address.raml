@@ -1,35 +1,37 @@
-#%RAML 0.8
-title: "mod-vendors"
+#%RAML 1.0
+title: "Vendors"
 baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors
-    content: <b>This module implements the CRUD interface.</b>
+  - title: Addresses
+    content: <b>CRUD APIs used to manage addresses.</b>
 
-schemas:
-  - address.json: !include acq-models/mod-vendors/schemas/address.json
-  - address_collection: !include acq-models/mod-vendors/schemas/address_collection.json
+types:
+    address: !include acq-models/mod-vendors/schemas/address.json
+    address_collection: !include acq-models/mod-vendors/schemas/address_collection.json
+    UUID:
+      type: string
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
 
 traits:
-  - secured: !include raml-util/traits/auth.raml
-  - orderable: !include raml-util/traits/orderable.raml
-  - pageable:  !include raml-util/traits/pageable.raml
-  - searchable: !include raml-util/traits/searchable.raml
-  - language: !include raml-util/traits/language.raml
+    orderable: !include raml-util/traits/orderable.raml
+    pageable:  !include raml-util/traits/pageable.raml
+    searchable: !include raml-util/traits/searchable.raml
+    language: !include raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include raml-util/rtypes/collection.raml
-  - collection-item: !include raml-util/rtypes/item-collection.raml
+    collection: !include raml-util/rtypes/collection.raml
+    collection-item: !include raml-util/rtypes/item-collection.raml
 
 
-/address:
+/vendor/addresses:
   type:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/address_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/address_post.sample
       schemaCollection: address_collection
-      schemaItem: address.json
+      schemaItem: address
   get:
     description: Get list of addresses
     is: [
@@ -37,7 +39,11 @@ resourceTypes:
       pageable
     ]
   /{id}:
+    uriParameters:
+      id:
+        description: The UUID of a Address
+        type: UUID
     type:
       collection-item:
         exampleItem: !include acq-models/mod-vendors/examples/address_get.sample
-        schema: address.json
+        schema: address
