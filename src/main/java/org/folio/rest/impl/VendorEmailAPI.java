@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class VendorEmailAPI implements VendorEmailResource {
   private static final String VENDOR_EMAIL_TABLE = "vendor_email";
-  private static final String VENDOR_EMAIL_LOCATION_PREFIX = "/vendor_email/";
+  private static final String VENDOR_EMAIL_LOCATION_PREFIX = "/vendors/vendor_emails/";
 
   private static final Logger log = LoggerFactory.getLogger(VendorEmailAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class VendorEmailAPI implements VendorEmailResource {
 
 
   @Override
-  public void getVendorEmail(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorEmail(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class VendorEmailAPI implements VendorEmailResource {
   }
 
   @Override
-  public void postVendorEmail(String lang, VendorEmail entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendorEmail(String lang, VendorEmail entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class VendorEmailAPI implements VendorEmailResource {
   }
 
   @Override
-  public void getVendorEmailById(String vendorEmailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorEmailById(String vendorEmailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class VendorEmailAPI implements VendorEmailResource {
   }
 
   @Override
-  public void deleteVendorEmailById(String vendorEmailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorEmailById(String vendorEmailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class VendorEmailAPI implements VendorEmailResource {
   }
 
   @Override
-  public void putVendorEmailById(String vendorEmailId, String lang, VendorEmail entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorEmailById(String vendorEmailId, String lang, VendorEmail entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

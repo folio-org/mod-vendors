@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class AccountAPI implements AccountResource {
+public class AccountsAPI implements AccountResource {
   private static final String ACCOUNT_TABLE = "account";
-  private static final String ACCOUNT_LOCATION_PREFIX = "/account/";
+  private static final String ACCOUNT_LOCATION_PREFIX = "/vendors/accounts/";
 
-  private static final Logger log = LoggerFactory.getLogger(AccountAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(AccountsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -47,7 +47,7 @@ public class AccountAPI implements AccountResource {
 
 
   @Override
-  public void getAccount(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorsAccounts(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class AccountAPI implements AccountResource {
   }
 
   @Override
-  public void postAccount(String lang, Account entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendorsAccounts(String lang, Account entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class AccountAPI implements AccountResource {
   }
 
   @Override
-  public void getAccountById(String accountId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorsAccountsById(String accountId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class AccountAPI implements AccountResource {
   }
 
   @Override
-  public void deleteAccountById(String accountId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorsAccountsById(String accountId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class AccountAPI implements AccountResource {
   }
 
   @Override
-  public void putAccountById(String accountId, String lang, Account entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorsAccountsById(String accountId, String lang, Account entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

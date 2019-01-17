@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class UrlAPI implements UrlResource {
   private static final String URL_TABLE = "url";
-  private static final String URL_LOCATION_PREFIX = "/url/";
+  private static final String URL_LOCATION_PREFIX = "/vendors/urls/";
 
   private static final Logger log = LoggerFactory.getLogger(UrlAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class UrlAPI implements UrlResource {
 
 
   @Override
-  public void getUrl(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getUrl(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class UrlAPI implements UrlResource {
   }
 
   @Override
-  public void postUrl(String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postUrl(String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class UrlAPI implements UrlResource {
   }
 
   @Override
-  public void getUrlById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getUrlById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class UrlAPI implements UrlResource {
   }
 
   @Override
-  public void deleteUrlById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteUrlById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class UrlAPI implements UrlResource {
   }
 
   @Override
-  public void putUrlById(String urlId, String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putUrlById(String urlId, String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

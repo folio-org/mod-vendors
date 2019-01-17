@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class VendorAddressAPI implements VendorAddressResource {
   private static final String VENDOR_ADDRESS_TABLE = "vendor_address";
-  private static final String VENDOR_ADDRESS_LOCATION_PREFIX = "/vendor_address/";
+  private static final String VENDOR_ADDRESS_LOCATION_PREFIX = "/vendors/vendor_addresses/";
 
   private static final Logger log = LoggerFactory.getLogger(VendorAddressAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class VendorAddressAPI implements VendorAddressResource {
 
 
   @Override
-  public void getVendorAddress(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorAddress(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class VendorAddressAPI implements VendorAddressResource {
   }
 
   @Override
-  public void postVendorAddress(String lang, VendorAddress entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendorAddress(String lang, VendorAddress entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class VendorAddressAPI implements VendorAddressResource {
   }
 
   @Override
-  public void getVendorAddressById(String vendorAddressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorAddressById(String vendorAddressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class VendorAddressAPI implements VendorAddressResource {
   }
 
   @Override
-  public void deleteVendorAddressById(String vendorAddressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorAddressById(String vendorAddressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class VendorAddressAPI implements VendorAddressResource {
   }
 
   @Override
-  public void putVendorAddressById(String vendorAddressId, String lang, VendorAddress entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorAddressById(String vendorAddressId, String lang, VendorAddress entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

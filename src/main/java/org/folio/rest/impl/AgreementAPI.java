@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class AgreementAPI implements AgreementResource {
   private static final String AGREEMENT_TABLE = "agreement";
-  private static final String AGREEMENT_LOCATION_PREFIX = "/agreement/";
+  private static final String AGREEMENT_LOCATION_PREFIX = "/vendors/agreements/";
 
   private static final Logger log = LoggerFactory.getLogger(AgreementAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class AgreementAPI implements AgreementResource {
 
 
   @Override
-  public void getAgreement(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getAgreement(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class AgreementAPI implements AgreementResource {
   }
 
   @Override
-  public void postAgreement(String lang, Agreement entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postAgreement(String lang, Agreement entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class AgreementAPI implements AgreementResource {
   }
 
   @Override
-  public void getAgreementById(String agreementId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getAgreementById(String agreementId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class AgreementAPI implements AgreementResource {
   }
 
   @Override
-  public void deleteAgreementById(String agreementId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteAgreementById(String agreementId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class AgreementAPI implements AgreementResource {
   }
 
   @Override
-  public void putAgreementById(String agreementId, String lang, Agreement entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putAgreementById(String agreementId, String lang, Agreement entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

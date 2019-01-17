@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class EdiFtpAPI implements EdiFtpResource {
   private static final String EDI_FTP_TABLE = "edi_ftp";
-  private static final String EDI_FTP_LOCATION_PREFIX = "/edi_ftp/";
+  private static final String EDI_FTP_LOCATION_PREFIX = "/vendors/edi_ftps/";
 
   private static final Logger log = LoggerFactory.getLogger(EdiFtpAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class EdiFtpAPI implements EdiFtpResource {
 
 
   @Override
-  public void getEdiFtp(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEdiFtp(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class EdiFtpAPI implements EdiFtpResource {
   }
 
   @Override
-  public void postEdiFtp(String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postEdiFtp(String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class EdiFtpAPI implements EdiFtpResource {
   }
 
   @Override
-  public void getEdiFtpById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEdiFtpById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class EdiFtpAPI implements EdiFtpResource {
   }
 
   @Override
-  public void deleteEdiFtpById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteEdiFtpById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class EdiFtpAPI implements EdiFtpResource {
   }
 
   @Override
-  public void putEdiFtpById(String ediFtpId, String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putEdiFtpById(String ediFtpId, String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

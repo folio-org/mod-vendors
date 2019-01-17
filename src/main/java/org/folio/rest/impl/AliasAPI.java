@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class AliasAPI implements AliasResource {
   private static final String ALIAS_TABLE = "alias";
-  private static final String ALIAS_LOCATION_PREFIX = "/alias/";
+  private static final String ALIAS_LOCATION_PREFIX = "/vendors/aliases/";
 
   private static final Logger log = LoggerFactory.getLogger(AliasAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class AliasAPI implements AliasResource {
 
 
   @Override
-  public void getAlias(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getAlias(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class AliasAPI implements AliasResource {
   }
 
   @Override
-  public void postAlias(String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postAlias(String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class AliasAPI implements AliasResource {
   }
 
   @Override
-  public void getAliasById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getAliasById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class AliasAPI implements AliasResource {
   }
 
   @Override
-  public void deleteAliasById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteAliasById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class AliasAPI implements AliasResource {
   }
 
   @Override
-  public void putAliasById(String aliasId, String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putAliasById(String aliasId, String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

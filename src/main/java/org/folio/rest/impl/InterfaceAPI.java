@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class InterfaceAPI implements InterfaceResource {
   private static final String INTERFACE_TABLE = "interface";
-  private static final String INTERFACE_LOCATION_PREFIX = "/interface/";
+  private static final String INTERFACE_LOCATION_PREFIX = "/vendors/interfaces/";
 
   private static final Logger log = LoggerFactory.getLogger(InterfaceAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class InterfaceAPI implements InterfaceResource {
 
 
   @Override
-  public void getInterface(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getInterface(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class InterfaceAPI implements InterfaceResource {
   }
 
   @Override
-  public void postInterface(String lang, Interface entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postInterface(String lang, Interface entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class InterfaceAPI implements InterfaceResource {
   }
 
   @Override
-  public void getInterfaceById(String interfaceId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getInterfaceById(String interfaceId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class InterfaceAPI implements InterfaceResource {
   }
 
   @Override
-  public void deleteInterfaceById(String interfaceId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteInterfaceById(String interfaceId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class InterfaceAPI implements InterfaceResource {
   }
 
   @Override
-  public void putInterfaceById(String interfaceId, String lang, Interface entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putInterfaceById(String interfaceId, String lang, Interface entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

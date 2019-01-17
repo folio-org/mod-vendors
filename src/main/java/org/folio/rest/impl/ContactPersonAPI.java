@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class ContactPersonAPI implements ContactPersonResource {
   private static final String CONTACT_PERSON_TABLE = "contact_person";
-  private static final String CONTACT_PERSON_LOCATION_PREFIX = "/contact_person/";
+  private static final String CONTACT_PERSON_LOCATION_PREFIX = "/vendors/contact_persons/";
 
   private static final Logger log = LoggerFactory.getLogger(ContactPersonAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class ContactPersonAPI implements ContactPersonResource {
 
 
   @Override
-  public void getContactPerson(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getContactPerson(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -103,7 +103,7 @@ public class ContactPersonAPI implements ContactPersonResource {
   }
 
   @Override
-  public void postContactPerson(String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postContactPerson(String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -158,7 +158,7 @@ public class ContactPersonAPI implements ContactPersonResource {
   }
 
   @Override
-  public void getContactPersonById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getContactPersonById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -208,7 +208,7 @@ public class ContactPersonAPI implements ContactPersonResource {
   }
 
   @Override
-  public void deleteContactPersonById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteContactPersonById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -243,7 +243,7 @@ public class ContactPersonAPI implements ContactPersonResource {
   }
 
   @Override
-  public void putContactPersonById(String contactPersonId, String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putContactPersonById(String contactPersonId, String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

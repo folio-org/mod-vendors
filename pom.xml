@@ -18,7 +18,7 @@
     <http.port>8081</http.port>
     <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
     <ramlfiles_util_path>${basedir}/raml-util</ramlfiles_util_path>
-    <raml-module-builder.version>19.0.0</raml-module-builder.version>
+    <raml-module-builder.version>23.3.0</raml-module-builder.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <postgres.driver.version>9.4.1212</postgres.driver.version>
   </properties>
@@ -31,8 +31,19 @@
     </repository>
   </repositories>
 
-  <dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-stack-depchain</artifactId>
+        <version>3.5.4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
+  <dependencies>
     <dependency>
       <groupId>org.folio</groupId>
       <artifactId>domain-models-api-interfaces</artifactId>
@@ -46,13 +57,11 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-unit</artifactId>
-      <version>3.5.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-mysql-postgresql-client</artifactId>
-      <version>3.3.2</version>
     </dependency>
 
     <!-- test dependencies -->
@@ -247,7 +256,7 @@
         <executions>
           <execution>
             <id>copy-resources</id>
-            <phase>prepare-package</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -263,7 +272,7 @@
           </execution>
           <execution>
             <id>copy-resources-2</id>
-            <phase>prepare-package</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -446,7 +455,7 @@
     <url>https://github.com/folio-org/mod-vendors</url>
     <connection>scm:git:git://github.com/folio-org/mod-vendors.git</connection>
     <developerConnection>scm:git:git@github.com:folio-org/mod-vendors.git</developerConnection>
-    <tag>v1.0.2</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>

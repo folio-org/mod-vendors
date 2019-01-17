@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public class EdiAPI implements EdiResource{
   private static final String EDI_TABLE = "edi";
-  private static final String EDI_LOCATION_PREFIX = "/edi/";
+  private static final String EDI_LOCATION_PREFIX = "/vendors/edis/";
 
   private static final Logger log = LoggerFactory.getLogger(EdiAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -48,7 +48,7 @@ public class EdiAPI implements EdiResource{
 
 
   @Override
-  public void getEdi(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEdi(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -104,7 +104,7 @@ public class EdiAPI implements EdiResource{
   }
 
   @Override
-  public void postEdi(String lang, Edi entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postEdi(String lang, Edi entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -159,7 +159,7 @@ public class EdiAPI implements EdiResource{
   }
 
   @Override
-  public void getEdiById(String ediId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEdiById(String ediId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -209,7 +209,7 @@ public class EdiAPI implements EdiResource{
   }
 
   @Override
-  public void deleteEdiById(String ediId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteEdiById(String ediId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -244,7 +244,7 @@ public class EdiAPI implements EdiResource{
   }
 
   @Override
-  public void putEdiById(String ediId, String lang, Edi entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putEdiById(String ediId, String lang, Edi entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {

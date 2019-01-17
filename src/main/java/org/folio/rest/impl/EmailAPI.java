@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public class EmailAPI implements EmailResource {
   private static final String EMAIL_TABLE = "email";
-  private static final String EMAIL_LOCATION_PREFIX = "/email/";
+  private static final String EMAIL_LOCATION_PREFIX = "/vendors/emails/";
 
   private static final Logger log = LoggerFactory.getLogger(EmailAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -48,7 +48,7 @@ public class EmailAPI implements EmailResource {
 
 
   @Override
-  public void getEmail(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEmail(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -104,7 +104,7 @@ public class EmailAPI implements EmailResource {
   }
 
   @Override
-  public void postEmail(String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postEmail(String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -159,7 +159,7 @@ public class EmailAPI implements EmailResource {
   }
 
   @Override
-  public void getEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -209,7 +209,7 @@ public class EmailAPI implements EmailResource {
   }
 
   @Override
-  public void deleteEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -244,7 +244,7 @@ public class EmailAPI implements EmailResource {
   }
 
   @Override
-  public void putEmailById(String emailId, String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putEmailById(String emailId, String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
