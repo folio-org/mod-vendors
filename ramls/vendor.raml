@@ -50,4 +50,7 @@ resourceTypes:
       description: Update vendor with 'vendor_id'
       body:
         application/json:
-          example: !include acq-models/mod-vendors/examples/vendor_get.sample
+          example:
+            strict: false
+            value: !include acq-models/mod-vendors/examples/vendor_post.sample
+          type: vendor

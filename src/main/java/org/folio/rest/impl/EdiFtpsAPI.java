@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.Address;
-import org.folio.rest.jaxrs.model.AddressCollection;
-import org.folio.rest.jaxrs.resource.AddressResource;
+import org.folio.rest.jaxrs.model.EdiFtp;
+import org.folio.rest.jaxrs.model.EdiFtpCollection;
+import org.folio.rest.jaxrs.resource.VendorsEdiFtps;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class AddressAPI implements AddressResource {
-  private static final String ADDRESS_TABLE = "address";
-  private static final String ADDRESS_LOCATION_PREFIX = "/vendors/addresses/";
+public class EdiFtpsAPI implements VendorsEdiFtps {
+  private static final String EDI_FTP_TABLE = "edi_ftp";
+  private static final String EDI_FTP_LOCATION_PREFIX = "/vendors/edi_ftps/";
 
-  private static final Logger log = LoggerFactory.getLogger(AddressAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(EdiFtpsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +41,31 @@ public class AddressAPI implements AddressResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public AddressAPI(Vertx vertx, String tenantId) {
+  public EdiFtpsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getAddress(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsEdiFtps(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", ADDRESS_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", EDI_FTP_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ADDRESS_TABLE, Address.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_FTP_TABLE, EdiFtp.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                AddressCollection collection = new AddressCollection();
+                EdiFtpCollection collection = new EdiFtpCollection();
                 @SuppressWarnings("unchecked")
-                List<Address> results = (List<Address>)reply.result().getResults();
-                collection.setAddresses(results);
+                List<EdiFtp> results = (List<EdiFtp>)reply.result().getResults();
+                collection.setEdiFtps(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +76,18 @@ public class AddressAPI implements AddressResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AddressResource.GetAddressResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AddressResource.GetAddressResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AddressResource.GetAddressResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +96,14 @@ public class AddressAPI implements AddressResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AddressResource.GetAddressResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postAddress(String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void postVendorsEdiFtps(String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +117,7 @@ public class AddressAPI implements AddressResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          ADDRESS_TABLE, id, entity,
+          EDI_FTP_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +126,22 @@ public class AddressAPI implements AddressResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = AddressResource.PostAddressResponse.
-                  withJsonCreated(ADDRESS_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorsEdiFtps.PostVendorsEdiFtpsResponse.respond201WithApplicationJson(stream,
+                  VendorsEdiFtps.PostVendorsEdiFtpsResponse.headersFor201()
+                    .withLocation(EDI_FTP_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = AddressResource.PostAddressResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorsEdiFtps.PostVendorsEdiFtpsResponse
+                  .respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = AddressResource.PostAddressResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorsEdiFtps.PostVendorsEdiFtpsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +152,7 @@ public class AddressAPI implements AddressResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = AddressResource.PostAddressResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorsEdiFtps.PostVendorsEdiFtpsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +160,56 @@ public class AddressAPI implements AddressResource {
   }
 
   @Override
-  public void getAddressById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsEdiFtpsById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", addressId);
+        String idArgument = String.format("'%s'", ediFtpId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ADDRESS_TABLE, Address.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_FTP_TABLE, EdiFtp.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
-                List<Address> results = (List<Address>) reply.result().getResults();
+                List<EdiFtp> results = (List<EdiFtp>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(AddressAPI.GetAddressByIdResponse
-                    .withPlainNotFound(addressId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsByIdResponse
+                    .respond404WithTextPlain(ediFtpId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AddressAPI.GetAddressByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(AddressAPI.GetAddressByIdResponse
-                    .withPlainNotFound(addressId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsByIdResponse
+                    .respond404WithTextPlain(ediFtpId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AddressAPI.GetAddressByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(AddressAPI.GetAddressByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(AddressAPI.GetAddressByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.GetVendorsEdiFtpsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteAddressById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void deleteVendorsEdiFtpsById(String ediFtpId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +218,65 @@ public class AddressAPI implements AddressResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(ADDRESS_TABLE, addressId, reply -> {
+          postgresClient.delete(EDI_FTP_TABLE, ediFtpId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                AddressAPI.DeleteAddressByIdResponse.noContent()
+                VendorsEdiFtps.DeleteVendorsEdiFtpsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                AddressAPI.DeleteAddressByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorsEdiFtps.DeleteVendorsEdiFtpsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            AddressAPI.DeleteAddressByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorsEdiFtps.DeleteVendorsEdiFtpsByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        AddressAPI.DeleteAddressByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorsEdiFtps.DeleteVendorsEdiFtpsByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putAddressById(String addressId, String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void putVendorsEdiFtpsById(String ediFtpId, String lang, EdiFtp entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(addressId);
+          entity.setId(ediFtpId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          ADDRESS_TABLE, entity, addressId,
+          EDI_FTP_TABLE, entity, ediFtpId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(AddressAPI.PutAddressByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.PutVendorsEdiFtpsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AddressAPI.PutAddressByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.PutVendorsEdiFtpsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(AddressAPI.PutAddressByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.PutVendorsEdiFtpsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(AddressAPI.PutAddressByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.PutVendorsEdiFtpsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(AddressAPI.PutAddressByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsEdiFtps.PutVendorsEdiFtpsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

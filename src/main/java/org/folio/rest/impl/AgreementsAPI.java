@@ -4,10 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.Email;
-import org.folio.rest.jaxrs.model.EmailCollection;
-import org.folio.rest.jaxrs.resource.EmailResource;
-import org.folio.rest.jaxrs.resource.EmailResource;
+import org.folio.rest.jaxrs.model.Agreement;
+import org.folio.rest.jaxrs.model.AgreementCollection;
+import org.folio.rest.jaxrs.resource.VendorsAgreements;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -25,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class EmailAPI implements EmailResource {
-  private static final String EMAIL_TABLE = "email";
-  private static final String EMAIL_LOCATION_PREFIX = "/vendors/emails/";
+public class AgreementsAPI implements VendorsAgreements {
+  private static final String AGREEMENT_TABLE = "agreement";
+  private static final String AGREEMENT_LOCATION_PREFIX = "/vendors/agreements/";
 
-  private static final Logger log = LoggerFactory.getLogger(EmailAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(AgreementsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -42,31 +41,31 @@ public class EmailAPI implements EmailResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public EmailAPI(Vertx vertx, String tenantId) {
+  public AgreementsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getEmail(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsAgreements(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", EMAIL_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", AGREEMENT_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EMAIL_TABLE, Email.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(AGREEMENT_TABLE, Agreement.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                EmailCollection collection = new EmailCollection();
+                AgreementCollection collection = new AgreementCollection();
                 @SuppressWarnings("unchecked")
-                List<Email> results = (List<Email>)reply.result().getResults();
-                collection.setEmails(results);
+                List<Agreement> results = (List<Agreement>)reply.result().getResults();
+                collection.setAgreements(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -77,18 +76,18 @@ public class EmailAPI implements EmailResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -97,14 +96,14 @@ public class EmailAPI implements EmailResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EmailResource.GetEmailResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postEmail(String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void postVendorsAgreements(String lang, Agreement entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -118,7 +117,7 @@ public class EmailAPI implements EmailResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          EMAIL_TABLE, id, entity,
+          AGREEMENT_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -127,20 +126,22 @@ public class EmailAPI implements EmailResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = EmailResource.PostEmailResponse.
-                  withJsonCreated(EMAIL_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorsAgreements.PostVendorsAgreementsResponse.respond201WithApplicationJson(stream,
+                  VendorsAgreements.PostVendorsAgreementsResponse.headersFor201()
+                    .withLocation(AGREEMENT_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = EmailResource.PostEmailResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorsAgreements.PostVendorsAgreementsResponse
+                  .respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = EmailResource.PostEmailResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorsAgreements.PostVendorsAgreementsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -151,7 +152,7 @@ public class EmailAPI implements EmailResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = EmailResource.PostEmailResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorsAgreements.PostVendorsAgreementsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -159,57 +160,56 @@ public class EmailAPI implements EmailResource {
   }
 
   @Override
-  public void getEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsAgreementsById(String agreementId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", emailId);
+        String idArgument = String.format("'%s'", agreementId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EMAIL_TABLE, Email.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(AGREEMENT_TABLE, Agreement.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
-                List<Email> results = (List<Email>) reply.result().getResults();
+                List<Agreement> results = (List<Agreement>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
-                    .withPlainNotFound(emailId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsByIdResponse
+                    .respond404WithTextPlain(agreementId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
-                    .withPlainNotFound(emailId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsByIdResponse
+                    .respond404WithTextPlain(agreementId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(EmailAPI.GetEmailByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.GetVendorsAgreementsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteEmailById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void deleteVendorsAgreementsById(String agreementId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -218,68 +218,65 @@ public class EmailAPI implements EmailResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(EMAIL_TABLE, emailId, reply -> {
+          postgresClient.delete(AGREEMENT_TABLE, agreementId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                EmailAPI.DeleteEmailByIdResponse.noContent()
+                VendorsAgreements.DeleteVendorsAgreementsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                EmailAPI.DeleteEmailByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorsAgreements.DeleteVendorsAgreementsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            EmailAPI.DeleteEmailByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorsAgreements.DeleteVendorsAgreementsByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        EmailAPI.DeleteEmailByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorsAgreements.DeleteVendorsAgreementsByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putEmailById(String emailId, String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void putVendorsAgreementsById(String agreementId, String lang, Agreement entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(emailId);
+          entity.setId(agreementId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          EMAIL_TABLE, entity, emailId,
+          AGREEMENT_TABLE, entity, agreementId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.PutVendorsAgreementsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.PutVendorsAgreementsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.PutVendorsAgreementsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.PutVendorsAgreementsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(EmailAPI.PutEmailByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsAgreements.PutVendorsAgreementsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

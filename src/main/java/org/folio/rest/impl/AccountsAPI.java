@@ -6,7 +6,7 @@ import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
 import org.folio.rest.jaxrs.model.Account;
 import org.folio.rest.jaxrs.model.AccountCollection;
-import org.folio.rest.jaxrs.resource.AccountResource;
+import org.folio.rest.jaxrs.resource.VendorsAccounts;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class AccountsAPI implements AccountResource {
+public class AccountsAPI implements VendorsAccounts {
   private static final String ACCOUNT_TABLE = "account";
   private static final String ACCOUNT_LOCATION_PREFIX = "/vendors/accounts/";
 
@@ -41,7 +41,7 @@ public class AccountsAPI implements AccountResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public AccountAPI(Vertx vertx, String tenantId) {
+  public AccountsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
@@ -76,18 +76,18 @@ public class AccountsAPI implements AccountResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AccountResource.GetAccountResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAccounts.GetVendorsAccountsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AccountResource.GetAccountResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAccounts.GetVendorsAccountsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AccountResource.GetAccountResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAccounts.GetVendorsAccountsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,8 +96,8 @@ public class AccountsAPI implements AccountResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AccountResource.GetAccountResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAccounts.GetVendorsAccountsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
@@ -126,20 +126,20 @@ public class AccountsAPI implements AccountResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = AccountResource.PostAccountResponse.
-                  withJsonCreated(ACCOUNT_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorsAccounts.PostVendorsAccountsResponse.
+                  respond201WithApplicationJson(stream, VendorsAccounts.PostVendorsAccountsResponse.headersFor201().withLocation( ACCOUNT_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = AccountResource.PostAccountResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorsAccounts.PostVendorsAccountsResponse.respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = AccountResource.PostAccountResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorsAccounts.PostVendorsAccountsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +150,7 @@ public class AccountsAPI implements AccountResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = AccountResource.PostAccountResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorsAccounts.PostVendorsAccountsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -171,38 +171,36 @@ public class AccountsAPI implements AccountResource {
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
                 List<Account> results = (List<Account>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
-                    .withPlainNotFound(accountId)));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorsAccountsByIdResponse
+                    .respond404WithTextPlain(accountId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorsAccountsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
-                    .withPlainNotFound(accountId)));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorsAccountsByIdResponse
+                    .respond404WithTextPlain(accountId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorsAccountsByIdResponse.respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(GetVendorsAccountsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(AccountAPI.GetAccountByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(GetVendorsAccountsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
@@ -220,25 +218,25 @@ public class AccountsAPI implements AccountResource {
           postgresClient.delete(ACCOUNT_TABLE, accountId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                AccountAPI.DeleteAccountByIdResponse.noContent()
+                VendorsAccounts.DeleteVendorsAccountsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                AccountAPI.DeleteAccountByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorsAccounts.DeleteVendorsAccountsByIdResponse.
+                  respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            AccountAPI.DeleteAccountByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorsAccounts.DeleteVendorsAccountsByIdResponse.
+              respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        AccountAPI.DeleteAccountByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorsAccounts.DeleteVendorsAccountsByIdResponse.
+          respond500WithTextPlain(e.getMessage())));
     }
   }
 
@@ -256,29 +254,29 @@ public class AccountsAPI implements AccountResource {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.PutAccountByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(PutVendorsAccountsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AccountAPI.PutAccountByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(PutVendorsAccountsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(AccountAPI.PutAccountByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(PutVendorsAccountsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(AccountAPI.PutAccountByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(PutVendorsAccountsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(AccountAPI.PutAccountByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(PutVendorsAccountsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

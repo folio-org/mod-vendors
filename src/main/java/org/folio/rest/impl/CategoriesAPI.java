@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.Alias;
-import org.folio.rest.jaxrs.model.AliasCollection;
-import org.folio.rest.jaxrs.resource.AliasResource;
+import org.folio.rest.jaxrs.model.Category;
+import org.folio.rest.jaxrs.model.CategoryCollection;
+import org.folio.rest.jaxrs.resource.VendorsCategories;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class AliasAPI implements AliasResource {
-  private static final String ALIAS_TABLE = "alias";
-  private static final String ALIAS_LOCATION_PREFIX = "/vendors/aliases/";
+public class CategoriesAPI implements VendorsCategories {
+  private static final String CATEGORY_TABLE = "category";
+  private static final String CATEGORY_LOCATION_PREFIX = "/vendors/categories/";
 
-  private static final Logger log = LoggerFactory.getLogger(AliasAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(CategoriesAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +41,31 @@ public class AliasAPI implements AliasResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public AliasAPI(Vertx vertx, String tenantId) {
+  public CategoriesAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getAlias(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsCategories(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", ALIAS_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", CATEGORY_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ALIAS_TABLE, Alias.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CATEGORY_TABLE, Category.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                AliasCollection collection = new AliasCollection();
+                CategoryCollection collection = new CategoryCollection();
                 @SuppressWarnings("unchecked")
-                List<Alias> results = (List<Alias>)reply.result().getResults();
-                collection.setAliases(results);
+                List<Category> results = (List<Category>)reply.result().getResults();
+                collection.setCategories(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +76,18 @@ public class AliasAPI implements AliasResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AliasResource.GetAliasResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsCategories.GetVendorsCategoriesResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AliasResource.GetAliasResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsCategories.GetVendorsCategoriesResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AliasResource.GetAliasResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsCategories.GetVendorsCategoriesResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +96,14 @@ public class AliasAPI implements AliasResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(AliasResource.GetAliasResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsCategories.GetVendorsCategoriesResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postAlias(String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void postVendorsCategories(String lang, Category entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +117,7 @@ public class AliasAPI implements AliasResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          ALIAS_TABLE, id, entity,
+          CATEGORY_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +126,22 @@ public class AliasAPI implements AliasResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = AliasResource.PostAliasResponse.
-                  withJsonCreated(ALIAS_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorsCategories.PostVendorsCategoriesResponse.respond201WithApplicationJson(stream,
+                  VendorsCategories.PostVendorsCategoriesResponse.headersFor201()
+                    .withLocation(CATEGORY_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = AliasResource.PostAliasResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorsCategories.PostVendorsCategoriesResponse
+                  .respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = AliasResource.PostAliasResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorsCategories.PostVendorsCategoriesResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +152,7 @@ public class AliasAPI implements AliasResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = AliasResource.PostAliasResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorsCategories.PostVendorsCategoriesResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +160,57 @@ public class AliasAPI implements AliasResource {
   }
 
   @Override
-  public void getAliasById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsCategoriesById(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", aliasId);
+        String idArgument = String.format("'%s'", categoryId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ALIAS_TABLE, Alias.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CATEGORY_TABLE, Category.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
                 @SuppressWarnings("unchecked")
-                List<Alias> results = (List<Alias>) reply.result().getResults();
+                List<Category> results = (List<Category>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(AliasAPI.GetAliasByIdResponse
-                    .withPlainNotFound(aliasId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.GetVendorsCategoriesByIdResponse
+                    .respond200WithApplicationJson(categoryId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AliasAPI.GetAliasByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.GetVendorsCategoriesByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(AliasAPI.GetAliasByIdResponse
-                    .withPlainNotFound(aliasId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.GetVendorsCategoriesByIdResponse
+                    .respond404WithTextPlain(categoryId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AliasAPI.GetAliasByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.GetVendorsCategoriesByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(AliasAPI.GetAliasByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.GetVendorsCategoriesByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(AliasAPI.GetAliasByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.GetVendorsCategoriesByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteAliasById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void deleteVendorsCategoriesById(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +219,65 @@ public class AliasAPI implements AliasResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(ALIAS_TABLE, aliasId, reply -> {
+          postgresClient.delete(CATEGORY_TABLE, categoryId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                AliasAPI.DeleteAliasByIdResponse.noContent()
+                VendorsCategories.DeleteVendorsCategoriesByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                AliasAPI.DeleteAliasByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorsCategories.DeleteVendorsCategoriesByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            AliasAPI.DeleteAliasByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorsCategories.DeleteVendorsCategoriesByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        AliasAPI.DeleteAliasByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorsCategories.DeleteVendorsCategoriesByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putAliasById(String aliasId, String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void putVendorsCategoriesById(String categoryId, String lang, Category entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(aliasId);
+          entity.setId(categoryId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          ALIAS_TABLE, entity, aliasId,
+          CATEGORY_TABLE, entity, categoryId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(AliasAPI.PutAliasByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.PutVendorsCategoriesByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(AliasAPI.PutAliasByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.PutVendorsCategoriesByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(AliasAPI.PutAliasByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.PutVendorsCategoriesByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(AliasAPI.PutAliasByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.PutVendorsCategoriesByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(AliasAPI.PutAliasByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsCategories.PutVendorsCategoriesByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

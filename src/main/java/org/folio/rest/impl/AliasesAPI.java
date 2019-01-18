@@ -4,9 +4,10 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.Interface;
-import org.folio.rest.jaxrs.model.InterfaceCollection;
-import org.folio.rest.jaxrs.resource.InterfaceResource;
+import org.folio.rest.jaxrs.model.Alias;
+import org.folio.rest.jaxrs.model.AliasCollection;
+import org.folio.rest.jaxrs.model.Vendor;
+import org.folio.rest.jaxrs.resource.VendorsAliases;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class InterfaceAPI implements InterfaceResource {
-  private static final String INTERFACE_TABLE = "interface";
-  private static final String INTERFACE_LOCATION_PREFIX = "/vendors/interfaces/";
+public class AliasesAPI implements VendorsAliases {
+  private static final String ALIAS_TABLE = "alias";
+  private static final String ALIAS_LOCATION_PREFIX = "/vendors/aliases/";
 
-  private static final Logger log = LoggerFactory.getLogger(InterfaceAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(AliasesAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +42,31 @@ public class InterfaceAPI implements InterfaceResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public InterfaceAPI(Vertx vertx, String tenantId) {
+  public AliasesAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getInterface(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsAliases(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", INTERFACE_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", ALIAS_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(INTERFACE_TABLE, Interface.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ALIAS_TABLE, Alias.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                InterfaceCollection collection = new InterfaceCollection();
+                AliasCollection collection = new AliasCollection();
                 @SuppressWarnings("unchecked")
-                List<Interface> results = (List<Interface>)reply.result().getResults();
-                collection.setInterfaces(results);
+                List<Alias> results = (List<Alias>)reply.result().getResults();
+                collection.setAliases(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +77,18 @@ public class InterfaceAPI implements InterfaceResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(InterfaceResource.GetInterfaceResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAliases.GetVendorsAliasesResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(InterfaceResource.GetInterfaceResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAliases.GetVendorsAliasesResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(InterfaceResource.GetInterfaceResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAliases.GetVendorsAliasesResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +97,14 @@ public class InterfaceAPI implements InterfaceResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(InterfaceResource.GetInterfaceResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsAliases.GetVendorsAliasesResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postInterface(String lang, Interface entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void postVendorsAliases(String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +118,7 @@ public class InterfaceAPI implements InterfaceResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          INTERFACE_TABLE, id, entity,
+          ALIAS_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +127,22 @@ public class InterfaceAPI implements InterfaceResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = InterfaceResource.PostInterfaceResponse.
-                  withJsonCreated(INTERFACE_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorsAliases.PostVendorsAliasesResponse.respond201WithApplicationJson(stream,
+                  VendorsAliases.PostVendorsAliasesResponse.headersFor201()
+                    .withLocation(ALIAS_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = InterfaceResource.PostInterfaceResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorsAliases.PostVendorsAliasesResponse
+                  .respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = InterfaceResource.PostInterfaceResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorsAliases.PostVendorsAliasesResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +153,7 @@ public class InterfaceAPI implements InterfaceResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = InterfaceResource.PostInterfaceResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorsAliases.PostVendorsAliasesResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +161,56 @@ public class InterfaceAPI implements InterfaceResource {
   }
 
   @Override
-  public void getInterfaceById(String interfaceId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsAliasesById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", interfaceId);
+        String idArgument = String.format("'%s'", aliasId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(INTERFACE_TABLE, Interface.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ALIAS_TABLE, Alias.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
-                List<Interface> results = (List<Interface>) reply.result().getResults();
+                List<Alias> results = (List<Alias>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.GetInterfaceByIdResponse
-                    .withPlainNotFound(interfaceId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.GetVendorsAliasesByIdResponse
+                    .respond404WithTextPlain(aliasId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.GetInterfaceByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.GetVendorsAliasesByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.GetInterfaceByIdResponse
-                    .withPlainNotFound(interfaceId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.GetVendorsAliasesByIdResponse
+                    .respond404WithTextPlain(aliasId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.GetInterfaceByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.GetVendorsAliasesByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.GetInterfaceByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.GetVendorsAliasesByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.GetInterfaceByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.GetVendorsAliasesByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteInterfaceById(String interfaceId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void deleteVendorsAliasesById(String aliasId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +219,65 @@ public class InterfaceAPI implements InterfaceResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(INTERFACE_TABLE, interfaceId, reply -> {
+          postgresClient.delete(ALIAS_TABLE, aliasId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                InterfaceAPI.DeleteInterfaceByIdResponse.noContent()
+                VendorsAliases.DeleteVendorsAliasesByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                InterfaceAPI.DeleteInterfaceByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorsAliases.DeleteVendorsAliasesByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            InterfaceAPI.DeleteInterfaceByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorsAliases.DeleteVendorsAliasesByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        InterfaceAPI.DeleteInterfaceByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorsAliases.DeleteVendorsAliasesByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putInterfaceById(String interfaceId, String lang, Interface entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void putVendorsAliasesById(String aliasId, String lang, Alias entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(interfaceId);
+          entity.setId(aliasId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          INTERFACE_TABLE, entity, interfaceId,
+          ALIAS_TABLE, entity, aliasId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.PutInterfaceByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.PutVendorsAliasesByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.PutInterfaceByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.PutVendorsAliasesByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.PutInterfaceByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.PutVendorsAliasesByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.PutInterfaceByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.PutVendorsAliasesByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(InterfaceAPI.PutInterfaceByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsAliases.PutVendorsAliasesByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
