@@ -6,7 +6,8 @@ import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
 import org.folio.rest.jaxrs.model.Url;
 import org.folio.rest.jaxrs.model.UrlCollection;
-import org.folio.rest.jaxrs.resource.UrlResource;
+import org.folio.rest.jaxrs.model.Vendor;
+import org.folio.rest.jaxrs.resource.VendorsUrls;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class UrlAPI implements UrlResource {
+public class UrlsAPI implements VendorsUrls {
   private static final String URL_TABLE = "url";
   private static final String URL_LOCATION_PREFIX = "/vendors/urls/";
 
-  private static final Logger log = LoggerFactory.getLogger(UrlAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(UrlsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,13 +42,13 @@ public class UrlAPI implements UrlResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public UrlAPI(Vertx vertx, String tenantId) {
+  public UrlsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getUrl(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsUrls(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -63,7 +64,6 @@ public class UrlAPI implements UrlResource {
             try {
               if(reply.succeeded()){
                 UrlCollection collection = new UrlCollection();
-                @SuppressWarnings("unchecked")
                 List<Url> results = (List<Url>)reply.result().getResults();
                 collection.setUrls(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
@@ -76,18 +76,18 @@ public class UrlAPI implements UrlResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(UrlResource.GetUrlResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsUrls.GetVendorsUrlsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(UrlResource.GetUrlResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsUrls.GetVendorsUrlsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(UrlResource.GetUrlResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsUrls.GetVendorsUrlsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +96,14 @@ public class UrlAPI implements UrlResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(UrlResource.GetUrlResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorsUrls.GetVendorsUrlsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postUrl(String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void postVendorsUrls(String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -126,20 +126,21 @@ public class UrlAPI implements UrlResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = UrlResource.PostUrlResponse.
-                  withJsonCreated(URL_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorsUrls.PostVendorsUrlsResponse.respond201WithApplicationJson(stream,
+                  VendorsUrls.PostVendorsUrlsResponse.headersFor201()
+                    .withLocation(URL_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = UrlResource.PostUrlResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorsUrls.PostVendorsUrlsResponse.respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = UrlResource.PostUrlResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorsUrls.PostVendorsUrlsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +151,7 @@ public class UrlAPI implements UrlResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = UrlResource.PostUrlResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorsUrls.PostVendorsUrlsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,7 +159,7 @@ public class UrlAPI implements UrlResource {
   }
 
   @Override
-  public void getUrlById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorsUrlsById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -171,44 +172,43 @@ public class UrlAPI implements UrlResource {
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
                 List<Url> results = (List<Url>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
-                    .withPlainNotFound(urlId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.GetVendorsUrlsByIdResponse
+                    .respond404WithTextPlain(urlId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.GetVendorsUrlsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
-                    .withPlainNotFound(urlId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.GetVendorsUrlsByIdResponse
+                    .respond404WithTextPlain(urlId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.GetVendorsUrlsByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.GetVendorsUrlsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(UrlAPI.GetUrlByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.GetVendorsUrlsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteUrlById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void deleteVendorsUrlsById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -220,30 +220,27 @@ public class UrlAPI implements UrlResource {
           postgresClient.delete(URL_TABLE, urlId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                UrlAPI.DeleteUrlByIdResponse.noContent()
+                VendorsUrls.DeleteVendorsUrlsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                UrlAPI.DeleteUrlByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorsUrls.DeleteVendorsUrlsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            UrlAPI.DeleteUrlByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorsUrls.DeleteVendorsUrlsByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        UrlAPI.DeleteUrlByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorsUrls.DeleteVendorsUrlsByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putUrlById(String urlId, String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void putVendorsUrlsById(String urlId, String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
@@ -256,29 +253,29 @@ public class UrlAPI implements UrlResource {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.PutUrlByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.PutVendorsUrlsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(UrlAPI.PutUrlByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.PutVendorsUrlsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(UrlAPI.PutUrlByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.PutVendorsUrlsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(UrlAPI.PutUrlByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.PutVendorsUrlsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(UrlAPI.PutUrlByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorsUrls.PutVendorsUrlsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
