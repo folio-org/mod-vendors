@@ -406,37 +406,6 @@
       ]
     },
     {
-      "id": "vendors.vendor-addresses",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-addresses",
-          "permissionsRequired": ["vendors.vendor-addresses.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendors/vendor-addresses",
-          "permissionsRequired": ["vendors.vendor-addresses.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-addresses/{id}",
-          "permissionsRequired": ["vendors.vendor-addresses.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendors/vendor-addresses/{id}",
-          "permissionsRequired": ["vendors.vendor-addresses.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendors/vendor-addresses/{id}",
-          "permissionsRequired": ["vendors.vendor-addresses.item.delete"]
-        }
-      ]
-    },
-    {
       "id": "vendors.vendor-contact-persons",
       "version": "1.0",
       "handlers": [
@@ -468,68 +437,6 @@
       ]
     },
     {
-      "id": "vendors.vendor-emails",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-emails",
-          "permissionsRequired": ["vendors.vendor-emails.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendors/vendor-emails",
-          "permissionsRequired": ["vendors.vendor-emails.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-emails/{id}",
-          "permissionsRequired": ["vendors.vendor-emails.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendors/vendor-emails/{id}",
-          "permissionsRequired": ["vendors.vendor-emails.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendors/vendor-emails/{id}",
-          "permissionsRequired": ["vendors.vendor-emails.item.delete"]
-        }
-      ]
-    },
-    {
-      "id": "vendors.vendor-phones",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-phones",
-          "permissionsRequired": ["vendors.vendor-phones.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendors/vendor-phones",
-          "permissionsRequired": ["vendors.vendor-phones.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-phones/{id}",
-          "permissionsRequired": ["vendors.vendor-phones.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendors/vendor-phones/{id}",
-          "permissionsRequired": ["vendors.vendor-phones.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendors/vendor-phones/{id}",
-          "permissionsRequired": ["vendors.vendor-phones.item.delete"]
-        }
-      ]
-    },
-    {
       "id": "vendors.vendor-types",
       "version": "1.0",
       "handlers": [
@@ -557,37 +464,6 @@
           "methods": ["DELETE"],
           "pathPattern": "/vendors/vendor-types/{id}",
           "permissionsRequired": ["vendors.vendor-types.item.delete"]
-        }
-      ]
-    },
-    {
-      "id": "vendors.vendor-url",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-urls",
-          "permissionsRequired": ["vendors.vendor-urls.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendors/vendor-urls",
-          "permissionsRequired": ["vendors.vendor-urls.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendors/vendor-urls/{id}",
-          "permissionsRequired": ["vendors.vendor-urls.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendors/vendor-urls/{id}",
-          "permissionsRequired": ["vendors.vendor-urls.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendors/vendor-urls/{id}",
-          "permissionsRequired": ["vendors.vendor-urls.item.delete"]
         }
       ]
     },
@@ -1117,43 +993,6 @@
       ]
     },
     {
-      "permissionName" : "vendors.vendor-addresses.collection.get",
-      "displayName" : "vendor_address collection get",
-      "description" : "Get a collection of vendor_addresses"
-    },
-    {
-      "permissionName" : "vendors.vendor-addresses.item.post",
-      "displayName" : "vendor_address post",
-      "description" : "Create a new vendor_address"
-    },
-    {
-      "permissionName" : "vendors.vendor-addresses.item.get",
-      "displayName" : "vendor_address get",
-      "description" : "Fetch a vendor_address"
-    },
-    {
-      "permissionName" : "vendors.vendor-addresses.item.put",
-      "displayName" : "vendor_address put",
-      "description" : "Update a vendor_address"
-    },
-    {
-      "permissionName" : "vendors.vendor-addresses.item.delete",
-      "displayName" : "vendor_address delete",
-      "description" : "Delete a vendor_address"
-    },
-    {
-      "permissionName" : "vendors.vendor-addresses.all",
-      "displayName" : "vendor_address all",
-      "description" : "All permissions for vendor_address",
-      "subPermissions" : [
-        "vendors.vendor-addresses.collection.get",
-        "vendors.vendor-addresses.item.post",
-        "vendors.vendor-addresses.item.get",
-        "vendors.vendor-addresses.item.put",
-        "vendors.vendor-addresses.item.delete"
-      ]
-    },
-    {
       "permissionName" : "vendors.vendor-contact-persons.collection.get",
       "displayName" : "vendor_contact_person get",
       "description" : "Get a collection of vendor_contact_persons"
@@ -1191,80 +1030,6 @@
       ]
     },
     {
-      "permissionName" : "vendors.vendor-emails.collection.get",
-      "displayName" : "vendor_email collection get",
-      "description" : "Get a collection of vendor_emails"
-    },
-    {
-      "permissionName" : "vendors.vendor-emails.item.post",
-      "displayName" : "vendor_email post",
-      "description" : "Create a new Contact category"
-    },
-    {
-      "permissionName" : "vendors.vendor-emails.item.get",
-      "displayName" : "vendor_email get",
-      "description" : "Fetch a vendor_email"
-    },
-    {
-      "permissionName" : "vendors.vendor-emails.item.put",
-      "displayName" : "vendor_email put",
-      "description" : "Update a vendor_email"
-    },
-    {
-      "permissionName" : "vendors.vendor-emails.item.delete",
-      "displayName" : "vendor_email delete",
-      "description" : "Delete a vendor_email"
-    },
-    {
-      "permissionName" : "vendors.vendor-emails.all",
-      "displayName" : "vendor_email all",
-      "description" : "All permissions for vendor_email",
-      "subPermissions" : [
-        "vendors.vendor-emails.collection.get",
-        "vendors.vendor-emails.item.post",
-        "vendors.vendor-emails.item.get",
-        "vendors.vendor-emails.item.put",
-        "vendors.vendor-emails.item.delete"
-      ]
-    },
-    {
-      "permissionName" : "vendors.vendor-phones.collection.get",
-      "displayName" : "vendor_phone collection get",
-      "description" : "Get a collection of vendor_phones"
-    },
-    {
-      "permissionName" : "vendors.vendor-phones.item.post",
-      "displayName" : "vendor_phone post",
-      "description" : "Create a new vendor_phone"
-    },
-    {
-      "permissionName" : "vendors.vendor-phones.item.get",
-      "displayName" : "vendor_phone get",
-      "description" : "Fetch a vendor_phone"
-    },
-    {
-      "permissionName" : "vendors.vendor-phones.item.put",
-      "displayName" : "vendor_phone put",
-      "description" : "Update a vendor_phone"
-    },
-    {
-      "permissionName" : "vendors.vendor-phones.item.delete",
-      "displayName" : "vendor_phone delete",
-      "description" : "Delete a vendor_phone"
-    },
-    {
-      "permissionName" : "vendors.vendor-phones.all",
-      "displayName" : "vendor_phone all",
-      "description" : "All permissions for vendor_phone",
-      "subPermissions" : [
-        "vendors.vendor-phones.collection.get",
-        "vendors.vendor-phones.item.post",
-        "vendors.vendor-phones.item.get",
-        "vendors.vendor-phones.item.put",
-        "vendors.vendor-phones.item.delete"
-      ]
-    },
-    {
       "permissionName" : "vendors.vendor-types.collection.get",
       "displayName" : "vendor_type collection get",
       "description" : "Get a collection of vendor_types"
@@ -1299,43 +1064,6 @@
         "vendors.vendor-types.item.get",
         "vendors.vendor-types.item.put",
         "vendors.vendor-types.item.delete"
-      ]
-    },
-    {
-      "permissionName" : "vendors.vendor-urls.collection.get",
-      "displayName" : "vendor_url collection get",
-      "description" : "Get a collection of vendor_urls"
-    },
-    {
-      "permissionName" : "vendors.vendor-urls.item.post",
-      "displayName" : "vendor_url post",
-      "description" : "Create a new vendor_url"
-    },
-    {
-      "permissionName" : "vendors.vendor-urls.item.get",
-      "displayName" : "vendor_url get",
-      "description" : "Fetch a vendor_url"
-    },
-    {
-      "permissionName" : "vendors.vendor-urls.item.put",
-      "displayName" : "vendor_url put",
-      "description" : "Update a vendor_url"
-    },
-    {
-      "permissionName" : "vendors.vendor-urls.item.delete",
-      "displayName" : "vendor_url delete",
-      "description" : "Delete a vendor_url"
-    },
-    {
-      "permissionName" : "vendors.vendor-urls.all",
-      "displayName" : "vendor_url all",
-      "description" : "All permissions for vendor_url",
-      "subPermissions" : [
-        "vendors.vendor-urls.collection.get",
-        "vendors.vendor-urls.item.post",
-        "vendors.vendor-urls.item.get",
-        "vendors.vendor-urls.item.put",
-        "vendors.vendor-urls.item.delete"
       ]
     },
     {
@@ -1394,12 +1122,8 @@
         "vendors.phone-numbers.all",
         "vendors.urls.all",
         "vendors.all",
-        "vendors.vendor-addresses.all",
         "vendors.vendor-contact-persons.all",
-        "vendors.vendor-emails.all",
-        "vendors.vendor-phones.all",
-        "vendors.vendor-types.all",
-        "vendors.vendor-urls.all"
+        "vendors.vendor-types.all"
       ]
     }
   ],

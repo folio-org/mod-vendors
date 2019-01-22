@@ -119,13 +119,6 @@
       "populateJsonWithId": true
     },
     {
-      "tableName": "vendor_address",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
       "tableName": "vendor",
       "generateId": true,
       "fromModuleVersion": 1.0,
@@ -161,28 +154,7 @@
       "populateJsonWithId": true
     },
     {
-      "tableName": "vendor_email",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
-      "tableName": "vendor_phone",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
       "tableName": "vendor_type",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
-      "tableName": "vendor_url",
       "generateId": true,
       "fromModuleVersion": 1.0,
       "withMetadata": true,
