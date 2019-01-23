@@ -98,7 +98,7 @@ public class AddressTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("vendors/addresses").then()
+    getData("/vendor-storage/addresses").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class AddressTest {
 
       logger.info("--- mod-vendors-test: Creating address ... ");
       String dataSample = getFile("address.sample");
-      Response response = postData("vendors/addresses", dataSample);
+      Response response = postData("/vendor-storage/addresses", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("city", equalTo("Ipswich"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 address was created ... ");
-      getData("vendors/addresses").then().log().ifValidationFails()
+      getData("/vendor-storage/addresses").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching address with ID: "+ dataSampleId);
-      getDataById("vendors/addresses", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/addresses", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class AddressTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("city", "Gift");
-      response = putData("vendors/addresses", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/addresses", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching address with ID: "+ dataSampleId);
-      getDataById("vendors/addresses", dataSampleId).then()
+      getDataById("/vendor-storage/addresses", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("city", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting address with ID ... ");
-      deleteData("vendors/addresses", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/addresses", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

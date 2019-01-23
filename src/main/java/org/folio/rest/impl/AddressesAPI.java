@@ -6,7 +6,7 @@ import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
 import org.folio.rest.jaxrs.model.Address;
 import org.folio.rest.jaxrs.model.AddressCollection;
-import org.folio.rest.jaxrs.resource.VendorsAddresses;
+import org.folio.rest.jaxrs.resource.VendorStorageAddresses;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class AddressesAPI implements VendorsAddresses {
+public class AddressesAPI implements VendorStorageAddresses {
   private static final String ADDRESS_TABLE = "address";
-  private static final String ADDRESS_LOCATION_PREFIX = "/vendors/addresses/";
+  private static final String ADDRESS_LOCATION_PREFIX = "/vendor-storage/addresses/";
 
   private static final Logger log = LoggerFactory.getLogger(AddressesAPI.class);
   private final Messages messages = Messages.getInstance();
@@ -47,7 +47,7 @@ public class AddressesAPI implements VendorsAddresses {
 
 
   @Override
-  public void getVendorsAddresses(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorStorageAddresses(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -76,17 +76,17 @@ public class AddressesAPI implements VendorsAddresses {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorsAddressesResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
                   .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorsAddressesResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
                   .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorsAddressesResponse
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
                 .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
@@ -96,14 +96,14 @@ public class AddressesAPI implements VendorsAddresses {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorsAddressesResponse
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
           .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postVendorsAddresses(String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void postVendorStorageAddresses(String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -126,14 +126,14 @@ public class AddressesAPI implements VendorsAddresses {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = VendorsAddresses.PostVendorsAddressesResponse.respond201WithApplicationJson(stream,
-                  VendorsAddresses.PostVendorsAddressesResponse.headersFor201()
+                Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse.respond201WithApplicationJson(stream,
+                  VendorStorageAddresses.PostVendorStorageAddressesResponse.headersFor201()
                     .withLocation(ADDRESS_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = VendorsAddresses.PostVendorsAddressesResponse
+                Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse
                   .respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
@@ -141,7 +141,7 @@ public class AddressesAPI implements VendorsAddresses {
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = VendorsAddresses.PostVendorsAddressesResponse.respond500WithTextPlain(e.getMessage());
+              Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -152,7 +152,7 @@ public class AddressesAPI implements VendorsAddresses {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = VendorsAddresses.PostVendorsAddressesResponse.respond500WithTextPlain(errMsg);
+        Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -160,7 +160,7 @@ public class AddressesAPI implements VendorsAddresses {
   }
 
   @Override
-  public void getVendorsAddressesById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorStorageAddressesById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -176,41 +176,41 @@ public class AddressesAPI implements VendorsAddresses {
                 @SuppressWarnings("unchecked")
                 List<Address> results = (List<Address>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.GetVendorsAddressesByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
                     .respond404WithTextPlain(addressId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.GetVendorsAddressesByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
                     .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.GetVendorsAddressesByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
                     .respond404WithTextPlain(addressId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.GetVendorsAddressesByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
                     .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.GetVendorsAddressesByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
                 .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(GetVendorsAddressesByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAddressesByIdResponse
           .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteVendorsAddressesById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void deleteVendorStorageAddressesById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -222,27 +222,27 @@ public class AddressesAPI implements VendorsAddresses {
           postgresClient.delete(ADDRESS_TABLE, addressId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorsAddresses.DeleteVendorsAddressesByIdResponse.noContent()
+                VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorsAddresses.DeleteVendorsAddressesByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
+                VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            VendorsAddresses.DeleteVendorsAddressesByIdResponse.respond500WithTextPlain(e.getMessage())));
+            VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        VendorsAddresses.DeleteVendorsAddressesByIdResponse.respond500WithTextPlain(e.getMessage())));
+        VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putVendorsAddressesById(String addressId, String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void putVendorStorageAddressesById(String addressId, String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
@@ -255,28 +255,28 @@ public class AddressesAPI implements VendorsAddresses {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.PutVendorsAddressesByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
                     .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.PutVendorsAddressesByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
                     .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.PutVendorsAddressesByIdResponse
+                asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
                   .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.PutVendorsAddressesByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
                 .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorsAddresses.PutVendorsAddressesByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
           .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
