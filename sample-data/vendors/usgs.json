@@ -5,6 +5,7 @@
   "description": "Maps and materials from the USGS",
   "vendor_status": "Active",
   "language": "en-us",
+  "san_code": "",
   "aliases": [
     {
       "value": "USGS",
@@ -13,44 +14,35 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "12201 Sunrise Valley Drive",
-        "addressLine2": "P.O. Box 15550",
-        "city": "Reston",
-        "stateRegion": "VA",
-        "zipCode": "20192",
-        "country": "USA"
-      },
+      "addressLine1": "12201 Sunrise Valley Drive",
+      "addressLine2": "P.O. Box 15550",
+      "city": "Reston",
+      "stateRegion": "VA",
+      "zipCode": "20192",
+      "country": "USA",
       "categories": [],
-      "language": "English",
-      "san_code": ""
+      "language": "English"
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-888-ASK-USGS"
-      },
+      "phone_number": "1-888-ASK-USGS",
       "categories": [],
       "language": "English"
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "usgsstore@usgs.gov",
-        "description": "main customer service email"
-      },
+      "value": "usgsstore@usgs.gov",
+      "description": "main customer service email",
       "categories": [],
       "language": "English"
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "https://www.usgs.gov/",
-        "description": "main website"
-      },
+      "value": "https://www.usgs.gov/",
+      "description": "main website",
       "language": "en-us",
       "categories": [],
       "notes": ""
@@ -67,33 +59,27 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-888-ASK-USGS"
-            },
+            "phone_number": "1-888-ASK-USGS",
             "categories": [],
             "language": "English"
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "usgsstore@usgs.gov",
-              "description": "main customer service email"
-            },
+            "value": "usgsstore@usgs.gov",
+            "description": "main customer service email",
             "categories": [],
             "language": "English"
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "12201 Sunrise Valley Drive",
-              "addressLine2": "P.O. Box 15550",
-              "city": "Reston",
-              "stateRegion": "VA",
-              "zipCode": "20192",
-              "country": "USA"
-            },
+            "addressLine1": "12201 Sunrise Valley Drive",
+            "addressLine2": "P.O. Box 15550",
+            "city": "Reston",
+            "stateRegion": "VA",
+            "zipCode": "20192",
+            "country": "USA",
             "categories": [],
             "language": "English",
             "san_code": ""
@@ -101,10 +87,8 @@
         ],
         "urls": [
           {
-            "url": {
-              "value": "https://www.usgs.gov/",
-              "description": "main website"
-            },
+            "value": "https://www.usgs.gov/",
+            "description": "main website",
             "language": "en-us",
             "categories": [],
             "notes": ""

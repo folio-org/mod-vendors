@@ -5,6 +5,7 @@
   "description": "Print monographs in Spanish, books from Brazil",
   "vendor_status": "Active",
   "language": "Portuguese/Spanish",
+  "san_code": "",
   "aliases": [
     {
       "value": "Susan Bach Books from Brazil",
@@ -13,44 +14,35 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "RUA VISCONDE DE CARAVELAS, Nº 17",
-        "addressLine2": "BOTAFOGO",
-        "city": "RIO DE JANEIRO",
-        "stateRegion": "",
-        "zipCode": "22271-021",
-        "country": "Brazil"
-      },
+      "addressLine1": "RUA VISCONDE DE CARAVELAS, Nº 17",
+      "addressLine2": "BOTAFOGO",
+      "city": "RIO DE JANEIRO",
+      "stateRegion": "",
+      "zipCode": "22271-021",
+      "country": "Brazil",
       "categories": [],
-      "language": "Portuguese",
-      "san_code": ""
+      "language": "Portuguese"
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "55-55-21-2539-3590"
-      },
+      "phone_number": "55-55-21-2539-3590",
       "categories": [],
       "language": "Portuguese"
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "sbach@sbachbooks.com.br",
-        "description": "Customer Service"
-      },
+      "value": "sbach@sbachbooks.com.br",
+      "description": "Customer Service",
       "categories": [],
       "language": "English"
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "http://www.sbachbooks.com.br/",
-        "description": "main website"
-      },
+      "value": "http://www.sbachbooks.com.br/",
+      "description": "main website",
       "language": "English/Portuguese",
       "categories": [],
       "notes": ""
@@ -67,44 +59,35 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "55-55-21-2539-3590"
-            },
+            "phone_number": "55-55-21-2539-3590",
             "categories": [],
             "language": "Portuguese"
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "sbach@sbachbooks.com.br",
-              "description": "Customer Service"
-            },
+            "value": "sbach@sbachbooks.com.br",
+            "description": "Customer Service",
             "categories": [],
             "language": "English"
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "RUA VISCONDE DE CARAVELAS, Nº 17",
-              "addressLine2": "BOTAFOGO",
-              "city": "RIO DE JANEIRO",
-              "stateRegion": "",
-              "zipCode": "22271-021",
-              "country": "Brazil"
-            },
+            "addressLine1": "RUA VISCONDE DE CARAVELAS, Nº 17",
+            "addressLine2": "BOTAFOGO",
+            "city": "RIO DE JANEIRO",
+            "stateRegion": "",
+            "zipCode": "22271-021",
+            "country": "Brazil",
             "categories": [],
-            "language": "Portuguese",
-            "san_code": ""
+            "language": "Portuguese"
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "http://www.sbachbooks.com.br/",
-              "description": "main website"
-            },
+            "value": "http://www.sbachbooks.com.br/",
+            "description": "main website",
             "language": "English/Portuguese",
             "categories": [],
             "notes": ""

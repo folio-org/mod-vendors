@@ -5,6 +5,7 @@
   "description": "Use for rush orders, replacement requests, and second hand market",
   "vendor_status": "Active",
   "language": "en-us",
+  "san_code": "1234567",
   "aliases": [
     {
       "value": "Amazon",
@@ -13,44 +14,35 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "1 Centerpiece Blvd.",
-        "addressLine2": "P.O. Box 15550",
-        "city": "New Castle",
-        "stateRegion": "DE",
-        "zipCode": "19720-5550",
-        "country": "USA"
-      },
+      "addressLine1": "1 Centerpiece Blvd.",
+      "addressLine2": "P.O. Box 15550",
+      "city": "New Castle",
+      "stateRegion": "DE",
+      "zipCode": "19720-5550",
+      "country": "USA",
       "categories": [],
-      "language": "English",
-      "san_code": ""
+      "language": "English"
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-888-238-22090"
-      },
+      "phone_number": "1-888-238-22090",
       "categories": [],
       "language": "English"
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "cust.service03@amazon.com",
-        "description": "customer service"
-      },
+      "value": "cust.service03@amazon.com",
+      "description": "customer service",
       "categories": [],
       "language": "English"
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "https://www.amazon.com",
-        "description": "main website"
-      },
+      "value": "https://www.amazon.com",
+      "description": "main website",
       "language": "en-us",
       "categories": [],
       "notes": ""
@@ -67,44 +59,35 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-888-238-22090"
-            },
+            "phone_number": "1-888-238-22090",
             "categories": [],
             "language": "English"
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "cust.service03@amazon.com",
-              "description": "customer service"
-            },
+            "value": "cust.service03@amazon.com",
+            "description": "customer service",
             "categories": [],
             "language": "English"
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "1 Centerpiece Blvd.",
-              "addressLine2": "P.O. Box 15550",
-              "city": "New Castle",
-              "stateRegion": "DE",
-              "zipCode": "19720-5550",
-              "country": "USA"
-            },
+            "addressLine1": "1 Centerpiece Blvd.",
+            "addressLine2": "P.O. Box 15550",
+            "city": "New Castle",
+            "stateRegion": "DE",
+            "zipCode": "19720-5550",
+            "country": "USA",
             "categories": [],
-            "language": "English",
-            "san_code": ""
+            "language": "English"
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "https://www.amazon.com",
-              "description": "main website"
-            },
+            "value": "https://www.amazon.com",
+            "description": "main website",
             "language": "en-us",
             "categories": [],
             "notes": ""

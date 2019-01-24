@@ -5,6 +5,7 @@
   "description": "AV streaming services, other onilne content",
   "vendor_status": "Active",
   "language": "en-us",
+  "san_code": "",
   "aliases": [
     {
       "value": "Naxos",
@@ -13,44 +14,35 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "416 Mary Lindsay Polk Dr.",
-        "addressLine2": "",
-        "city": "Franklin",
-        "stateRegion": "TN",
-        "zipCode": "37067",
-        "country": "USA"
-      },
+      "addressLine1": "416 Mary Lindsay Polk Dr.",
+      "addressLine2": "",
+      "city": "Franklin",
+      "stateRegion": "TN",
+      "zipCode": "37067",
+      "country": "USA",
       "categories": [],
       "language": "English",
-      "san_code": ""
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-615-771-9393"
-      },
+      "phone_number": "1-615-771-9393",
       "categories": [],
       "language": "English"
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "service@naxosusa.com",
-        "description": "Customer Service"
-      },
+      "value": "service@naxosusa.com",
+      "description": "Customer Service",
       "categories": [],
       "language": "English"
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "https://www.naxos.com/",
-        "description": "main website"
-      },
+      "value": "https://www.naxos.com/",
+      "description": "main website",
       "language": "en-us",
       "categories": [],
       "notes": ""
@@ -67,44 +59,35 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-615-771-9393"
-            },
+            "phone_number": "1-615-771-9393",
             "categories": [],
             "language": "English"
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "service@naxosusa.com",
-              "description": "Customer Service"
-            },
+            "value": "service@naxosusa.com",
+            "description": "Customer Service",
             "categories": [],
             "language": "English"
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "416 Mary Lindsay Polk Dr.",
-              "addressLine2": "",
-              "city": "Franklin",
-              "stateRegion": "TN",
-              "zipCode": "37067",
-              "country": "USA"
-            },
+            "addressLine1": "416 Mary Lindsay Polk Dr.",
+            "addressLine2": "",
+            "city": "Franklin",
+            "stateRegion": "TN",
+            "zipCode": "37067",
+            "country": "USA",
             "categories": [],
-            "language": "English",
-            "san_code": ""
+            "language": "English"
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "https://www.naxos.com/",
-              "description": "main website"
-            },
+            "value": "https://www.naxos.com/",
+            "description": "main website",
             "language": "en-us",
             "categories": [],
             "notes": ""
