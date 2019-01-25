@@ -98,7 +98,7 @@ public class EmailTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("email").then()
+    getData("/vendor-storage/emails").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class EmailTest {
 
       logger.info("--- mod-vendors-test: Creating email ... ");
       String dataSample = getFile("email.sample");
-      Response response = postData("email", dataSample);
+      Response response = postData("/vendor-storage/emails", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("description", equalTo("Main"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 email was created ... ");
-      getData("email").then().log().ifValidationFails()
+      getData("/vendor-storage/emails").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching email with ID: "+ dataSampleId);
-      getDataById("email", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/emails", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class EmailTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("description", "Gift");
-      response = putData("email", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/emails", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching email with ID: "+ dataSampleId);
-      getDataById("email", dataSampleId).then()
+      getDataById("/vendor-storage/emails", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("description", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting email with ID ... ");
-      deleteData("email", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/emails", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

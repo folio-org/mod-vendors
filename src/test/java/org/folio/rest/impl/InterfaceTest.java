@@ -98,7 +98,7 @@ public class InterfaceTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("interface").then()
+    getData("/vendor-storage/interfaces").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class InterfaceTest {
 
       logger.info("--- mod-vendors-test: Creating interface ... ");
       String dataSample = getFile("interface.sample");
-      Response response = postData("interface", dataSample);
+      Response response = postData("/vendor-storage/interfaces", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("notes", equalTo("This is the store-front for GOBI."));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 interface was created ... ");
-      getData("interface").then().log().ifValidationFails()
+      getData("/vendor-storage/interfaces").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching interface with ID: "+ dataSampleId);
-      getDataById("interface", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/interfaces", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class InterfaceTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("notes", "Gift");
-      response = putData("interface", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/interfaces", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching interface with ID: "+ dataSampleId);
-      getDataById("interface", dataSampleId).then()
+      getDataById("/vendor-storage/interfaces", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("notes", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting interface with ID ... ");
-      deleteData("interface", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/interfaces", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

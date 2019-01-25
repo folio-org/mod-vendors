@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.ContactPerson;
-import org.folio.rest.jaxrs.model.ContactPersonCollection;
-import org.folio.rest.jaxrs.resource.ContactPersonResource;
+import org.folio.rest.jaxrs.model.Address;
+import org.folio.rest.jaxrs.model.AddressCollection;
+import org.folio.rest.jaxrs.resource.VendorStorageAddresses;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ContactPersonAPI implements ContactPersonResource {
-  private static final String CONTACT_PERSON_TABLE = "contact_person";
-  private static final String CONTACT_PERSON_LOCATION_PREFIX = "/contact_person/";
+public class AddressesAPI implements VendorStorageAddresses {
+  private static final String ADDRESS_TABLE = "address";
+  private static final String ADDRESS_LOCATION_PREFIX = "/vendor-storage/addresses/";
 
-  private static final Logger log = LoggerFactory.getLogger(ContactPersonAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(AddressesAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +41,31 @@ public class ContactPersonAPI implements ContactPersonResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public ContactPersonAPI(Vertx vertx, String tenantId) {
+  public AddressesAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getContactPerson(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageAddresses(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", CONTACT_PERSON_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", ADDRESS_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CONTACT_PERSON_TABLE, ContactPerson.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ADDRESS_TABLE, Address.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                ContactPersonCollection collection = new ContactPersonCollection();
+                AddressCollection collection = new AddressCollection();
                 @SuppressWarnings("unchecked")
-                List<ContactPerson> results = (List<ContactPerson>)reply.result().getResults();
-                collection.setContactPersons(results);
+                List<Address> results = (List<Address>)reply.result().getResults();
+                collection.setAddresses(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +76,18 @@ public class ContactPersonAPI implements ContactPersonResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(ContactPersonResource.GetContactPersonResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(ContactPersonResource.GetContactPersonResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(ContactPersonResource.GetContactPersonResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +96,14 @@ public class ContactPersonAPI implements ContactPersonResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(ContactPersonResource.GetContactPersonResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(GetVendorStorageAddressesResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postContactPerson(String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendorStorageAddresses(String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +117,7 @@ public class ContactPersonAPI implements ContactPersonResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          CONTACT_PERSON_TABLE, id, entity,
+          ADDRESS_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +126,22 @@ public class ContactPersonAPI implements ContactPersonResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = ContactPersonResource.PostContactPersonResponse.
-                  withJsonCreated(CONTACT_PERSON_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse.respond201WithApplicationJson(stream,
+                  VendorStorageAddresses.PostVendorStorageAddressesResponse.headersFor201()
+                    .withLocation(ADDRESS_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = ContactPersonResource.PostContactPersonResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse
+                  .respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = ContactPersonResource.PostContactPersonResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +152,7 @@ public class ContactPersonAPI implements ContactPersonResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = ContactPersonResource.PostContactPersonResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorStorageAddresses.PostVendorStorageAddressesResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +160,57 @@ public class ContactPersonAPI implements ContactPersonResource {
   }
 
   @Override
-  public void getContactPersonById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageAddressesById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", contactPersonId);
+        String idArgument = String.format("'%s'", addressId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CONTACT_PERSON_TABLE, ContactPerson.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ADDRESS_TABLE, Address.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
                 @SuppressWarnings("unchecked")
-                List<ContactPerson> results = (List<ContactPerson>) reply.result().getResults();
+                List<Address> results = (List<Address>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.GetContactPersonByIdResponse
-                    .withPlainNotFound(contactPersonId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
+                    .respond404WithTextPlain(addressId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.GetContactPersonByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.GetContactPersonByIdResponse
-                    .withPlainNotFound(contactPersonId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
+                    .respond404WithTextPlain(addressId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.GetContactPersonByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.GetContactPersonByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.GetVendorStorageAddressesByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.GetContactPersonByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAddressesByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteContactPersonById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorStorageAddressesById(String addressId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +219,65 @@ public class ContactPersonAPI implements ContactPersonResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(CONTACT_PERSON_TABLE, contactPersonId, reply -> {
+          postgresClient.delete(ADDRESS_TABLE, addressId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                ContactPersonAPI.DeleteContactPersonByIdResponse.noContent()
+                VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                ContactPersonAPI.DeleteContactPersonByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            ContactPersonAPI.DeleteContactPersonByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        ContactPersonAPI.DeleteContactPersonByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorStorageAddresses.DeleteVendorStorageAddressesByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putContactPersonById(String contactPersonId, String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorStorageAddressesById(String addressId, String lang, Address entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(contactPersonId);
+          entity.setId(addressId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          CONTACT_PERSON_TABLE, entity, contactPersonId,
+          ADDRESS_TABLE, entity, addressId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.PutContactPersonByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.PutContactPersonByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.PutContactPersonByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.PutContactPersonByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(ContactPersonAPI.PutContactPersonByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageAddresses.PutVendorStorageAddressesByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

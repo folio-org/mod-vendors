@@ -4,9 +4,10 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.Category;
-import org.folio.rest.jaxrs.model.CategoryCollection;
-import org.folio.rest.jaxrs.resource.CategoryResource;
+import org.folio.rest.jaxrs.model.Url;
+import org.folio.rest.jaxrs.model.UrlCollection;
+import org.folio.rest.jaxrs.model.Vendor;
+import org.folio.rest.jaxrs.resource.VendorStorageUrls;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class CategoryAPI implements CategoryResource {
-  private static final String CATEGORY_TABLE = "category";
-  private static final String CATEGORY_LOCATION_PREFIX = "/category/";
+public class UrlsAPI implements VendorStorageUrls {
+  private static final String URL_TABLE = "url";
+  private static final String URL_LOCATION_PREFIX = "/vendor-storage/urls/";
 
-  private static final Logger log = LoggerFactory.getLogger(CategoryAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(UrlsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +42,30 @@ public class CategoryAPI implements CategoryResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public CategoryAPI(Vertx vertx, String tenantId) {
+  public UrlsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getCategory(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageUrls(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", CATEGORY_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", URL_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CATEGORY_TABLE, Category.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(URL_TABLE, Url.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                CategoryCollection collection = new CategoryCollection();
-                @SuppressWarnings("unchecked")
-                List<Category> results = (List<Category>)reply.result().getResults();
-                collection.setCategories(results);
+                UrlCollection collection = new UrlCollection();
+                List<Url> results = (List<Url>)reply.result().getResults();
+                collection.setUrls(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +76,18 @@ public class CategoryAPI implements CategoryResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(CategoryResource.GetCategoryResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(CategoryResource.GetCategoryResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(CategoryResource.GetCategoryResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +96,14 @@ public class CategoryAPI implements CategoryResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(CategoryResource.GetCategoryResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postCategory(String lang, Category entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendorStorageUrls(String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +117,7 @@ public class CategoryAPI implements CategoryResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          CATEGORY_TABLE, id, entity,
+          URL_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +126,21 @@ public class CategoryAPI implements CategoryResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = CategoryResource.PostCategoryResponse.
-                  withJsonCreated(CATEGORY_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorStorageUrls.PostVendorStorageUrlsResponse.respond201WithApplicationJson(stream,
+                  VendorStorageUrls.PostVendorStorageUrlsResponse.headersFor201()
+                    .withLocation(URL_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = CategoryResource.PostCategoryResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorStorageUrls.PostVendorStorageUrlsResponse.respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = CategoryResource.PostCategoryResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorStorageUrls.PostVendorStorageUrlsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +151,7 @@ public class CategoryAPI implements CategoryResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = CategoryResource.PostCategoryResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorStorageUrls.PostVendorStorageUrlsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +159,56 @@ public class CategoryAPI implements CategoryResource {
   }
 
   @Override
-  public void getCategoryById(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageUrlsById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", categoryId);
+        String idArgument = String.format("'%s'", urlId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CATEGORY_TABLE, Category.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(URL_TABLE, Url.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
-                List<Category> results = (List<Category>) reply.result().getResults();
+                List<Url> results = (List<Url>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.GetCategoryByIdResponse
-                    .withPlainNotFound(categoryId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsByIdResponse
+                    .respond404WithTextPlain(urlId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.GetCategoryByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.GetCategoryByIdResponse
-                    .withPlainNotFound(categoryId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsByIdResponse
+                    .respond404WithTextPlain(urlId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.GetCategoryByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.GetCategoryByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.GetCategoryByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.GetVendorStorageUrlsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteCategoryById(String categoryId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorStorageUrlsById(String urlId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +217,65 @@ public class CategoryAPI implements CategoryResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(CATEGORY_TABLE, categoryId, reply -> {
+          postgresClient.delete(URL_TABLE, urlId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                CategoryAPI.DeleteCategoryByIdResponse.noContent()
+                VendorStorageUrls.DeleteVendorStorageUrlsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                CategoryAPI.DeleteCategoryByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorStorageUrls.DeleteVendorStorageUrlsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            CategoryAPI.DeleteCategoryByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorStorageUrls.DeleteVendorStorageUrlsByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        CategoryAPI.DeleteCategoryByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorStorageUrls.DeleteVendorStorageUrlsByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putCategoryById(String categoryId, String lang, Category entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorStorageUrlsById(String urlId, String lang, Url entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(categoryId);
+          entity.setId(urlId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          CATEGORY_TABLE, entity, categoryId,
+          URL_TABLE, entity, urlId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.PutCategoryByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.PutVendorStorageUrlsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.PutCategoryByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.PutVendorStorageUrlsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.PutCategoryByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.PutVendorStorageUrlsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.PutCategoryByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.PutVendorStorageUrlsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(CategoryAPI.PutCategoryByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageUrls.PutVendorStorageUrlsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

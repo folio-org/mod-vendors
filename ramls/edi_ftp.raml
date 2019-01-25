@@ -1,35 +1,37 @@
-#%RAML 0.8
-title: "mod-vendors"
+#%RAML 1.0
+title: "Vendors"
 baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors
-    content: <b>This module implements the CRUD interface.</b>
+  - title: EDI FTPs
+    content: <b>CRUD APIs used to manage EDI FTPs.</b>
 
-schemas:
-  - edi_ftp.json: !include acq-models/mod-vendors/schemas/edi_ftp.json
-  - edi_ftp_collection: !include acq-models/mod-vendors/schemas/edi_ftp_collection.json
+types:
+    edi_ftp: !include acq-models/mod-vendors/schemas/edi_ftp.json
+    edi_ftp_collection: !include acq-models/mod-vendors/schemas/edi_ftp_collection.json
+    UUID:
+      type: string
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
 
 traits:
-  - secured: !include raml-util/traits/auth.raml
-  - orderable: !include raml-util/traits/orderable.raml
-  - pageable:  !include raml-util/traits/pageable.raml
-  - searchable: !include raml-util/traits/searchable.raml
-  - language: !include raml-util/traits/language.raml
+    orderable: !include raml-util/traits/orderable.raml
+    pageable:  !include raml-util/traits/pageable.raml
+    searchable: !include raml-util/traits/searchable.raml
+    language: !include raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include raml-util/rtypes/collection.raml
-  - collection-item: !include raml-util/rtypes/item-collection.raml
+    collection: !include raml-util/rtypes/collection.raml
+    collection-item: !include raml-util/rtypes/item-collection.raml
 
 
-/edi_ftp:
+/vendor-storage/edi-ftps:
   type:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/edi_ftp_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/edi_ftp_post.sample
       schemaCollection: edi_ftp_collection
-      schemaItem: edi_ftp.json
+      schemaItem: edi_ftp
   get:
     description: Get list of EDI FTPs
     is: [
@@ -37,7 +39,11 @@ resourceTypes:
       pageable
     ]
   /{id}:
+    uriParameters:
+      id:
+        description: The UUID of a EDI FTPs
+        type: UUID
     type:
       collection-item:
         exampleItem: !include acq-models/mod-vendors/examples/edi_ftp_get.sample
-        schema: edi_ftp.json
+        schema: edi_ftp

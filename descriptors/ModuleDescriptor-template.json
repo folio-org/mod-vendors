@@ -3,622 +3,498 @@
   "name": "Vendor CRUD module",
   "provides": [
     {
-      "id": "account",
+      "id": "vendor-storage.accounts",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/account",
-          "permissionsRequired": ["account.collection.get"]
+          "pathPattern": "/vendor-storage/accounts",
+          "permissionsRequired": ["vendor-storage.accounts.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/account",
-          "permissionsRequired": ["account.item.post"]
+          "pathPattern": "/vendor-storage/accounts",
+          "permissionsRequired": ["vendor-storage.accounts.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/account/{id}",
-          "permissionsRequired": ["account.item.get"]
+          "pathPattern": "/vendor-storage/accounts/{id}",
+          "permissionsRequired": ["vendor-storage.accounts.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/account/{id}",
-          "permissionsRequired": ["account.item.put"]
+          "pathPattern": "/vendor-storage/accounts/{id}",
+          "permissionsRequired": ["vendor-storage.accounts.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/account/{id}",
-          "permissionsRequired": ["account.item.delete"]
+          "pathPattern": "/vendor-storage/accounts/{id}",
+          "permissionsRequired": ["vendor-storage.accounts.item.delete"]
         }
       ]
     },
     {
-      "id": "address",
+      "id": "vendor-storage.addresses",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/address",
-          "permissionsRequired": ["address.collection.get"]
+          "pathPattern": "/vendor-storage/addresses",
+          "permissionsRequired": ["vendor-storage.addresses.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/address",
-          "permissionsRequired": ["address.item.post"]
+          "pathPattern": "/vendor-storage/addresses",
+          "permissionsRequired": ["vendor-storage.addresses.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/address/{id}",
-          "permissionsRequired": ["address.item.get"]
+          "pathPattern": "/vendor-storage/addresses/{id}",
+          "permissionsRequired": ["vendor-storage.addresses.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/address/{id}",
-          "permissionsRequired": ["address.item.put"]
+          "pathPattern": "/vendor-storage/addresses/{id}",
+          "permissionsRequired": ["/vendor-storage.addresses.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/address/{id}",
-          "permissionsRequired": ["address.item.delete"]
+          "pathPattern": "/vendor-storage/addresses/{id}",
+          "permissionsRequired": ["vendor-storage.addresses.item.delete"]
         }
       ]
     },
     {
-      "id": "agreement",
+      "id": "vendor-storage.agreements",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/agreement",
-          "permissionsRequired": ["agreement.collection.get"]
+          "pathPattern": "/vendor-storage/agreements",
+          "permissionsRequired": ["vendor-storage.agreements.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/agreement",
-          "permissionsRequired": ["agreement.item.post"]
+          "pathPattern": "/vendor-storage/agreements",
+          "permissionsRequired": ["vendor-storage.agreement.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/agreement/{id}",
-          "permissionsRequired": ["agreement.item.get"]
+          "pathPattern": "/vendor-storage/agreements/{id}",
+          "permissionsRequired": ["vendor-storage.agreements.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/agreement/{id}",
-          "permissionsRequired": ["agreement.item.put"]
+          "pathPattern": "/vendor-storage/agreements/{id}",
+          "permissionsRequired": ["vendor-storage.agreement.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/agreement/{id}",
-          "permissionsRequired": ["agreement.item.delete"]
+          "pathPattern": "/vendor-storage/agreements/{id}",
+          "permissionsRequired": ["vendor-storage.agreements.item.delete"]
         }
       ]
     },
     {
-      "id": "alias",
+      "id": "vendor-storage.aliases",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/alias",
-          "permissionsRequired": ["alias.collection.get"]
+          "pathPattern": "/vendor-storage/aliases",
+          "permissionsRequired": ["vendor-storage.aliases.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/alias",
-          "permissionsRequired": ["alias.item.post"]
+          "pathPattern": "/vendor-storage/aliases",
+          "permissionsRequired": ["vendor-storage.aliases.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/alias/{id}",
-          "permissionsRequired": ["alias.item.get"]
+          "pathPattern": "/vendor-storage/aliases/{id}",
+          "permissionsRequired": ["vendor-storage.alias.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/alias/{id}",
-          "permissionsRequired": ["alias.item.put"]
+          "pathPattern": "/vendor-storage/aliases/{id}",
+          "permissionsRequired": ["vendor-storage.aliases.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/alias/{id}",
-          "permissionsRequired": ["alias.item.delete"]
+          "pathPattern": "/vendor-storage/aliases/{id}",
+          "permissionsRequired": ["vendor-storage.alias.item.delete"]
         }
       ]
     },
     {
-      "id": "category",
+      "id": "vendor-storage.categories",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/category",
-          "permissionsRequired": ["category.collection.get"]
+          "pathPattern": "/vendor-storage/categories",
+          "permissionsRequired": ["vendor-storage.categories.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/account",
-          "permissionsRequired": ["category.item.post"]
+          "pathPattern": "/vendor-storage/categories",
+          "permissionsRequired": ["vendor-storage.categories.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/category/{id}",
-          "permissionsRequired": ["category.item.get"]
+          "pathPattern": "/vendor-storage/categories/{id}",
+          "permissionsRequired": ["vendor-storage.categories.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/category/{id}",
-          "permissionsRequired": ["category.item.put"]
+          "pathPattern": "/vendor-storage/categories/{id}",
+          "permissionsRequired": ["vendor-storage.categories.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/category/{id}",
-          "permissionsRequired": ["category.item.delete"]
+          "pathPattern": "/vendor-storage/categories/{id}",
+          "permissionsRequired": ["vendor-storage.categories.item.delete"]
         }
       ]
     },
     {
-      "id": "contact_person",
+      "id": "vendor-storage.contact-persons",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/contact_person",
-          "permissionsRequired": ["contact_person.collection.get"]
+          "pathPattern": "/vendor-storage/contact-persons",
+          "permissionsRequired": ["vendor-storage.contact-persons.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/contact_person",
-          "permissionsRequired": ["contact_person.item.post"]
+          "pathPattern": "/vendor-storage/contact-persons",
+          "permissionsRequired": ["vendor-storage.contact-persons.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/contact_person/{id}",
-          "permissionsRequired": ["contact_person.item.get"]
+          "pathPattern": "/vendor-storage/contact-persons/{id}",
+          "permissionsRequired": ["vendor-storage.contact-persons.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/contact_person/{id}",
-          "permissionsRequired": ["contact_person.item.put"]
+          "pathPattern": "/vendor-storage/contact-persons/{id}",
+          "permissionsRequired": ["vendor-storage.contact-persons.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/contact_person/{id}",
-          "permissionsRequired": ["contact_person.item.delete"]
+          "pathPattern": "/vendor-storage/contact-persons/{id}",
+          "permissionsRequired": ["vendor-storage.contact-persons.item.delete"]
         }
       ]
     },
     {
-      "id": "edi",
+      "id": "vendor-storage.edis",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/edi",
-          "permissionsRequired": ["edi.collection.get"]
+          "pathPattern": "/vendor-storage/edis",
+          "permissionsRequired": ["vendor-storage.edis.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/edi",
-          "permissionsRequired": ["edi.item.post"]
+          "pathPattern": "/vendor-storage/edis",
+          "permissionsRequired": ["vendor-storage.edis.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/edi/{id}",
-          "permissionsRequired": ["edi.item.get"]
+          "pathPattern": "/vendor-storage/edis/{id}",
+          "permissionsRequired": ["vendor-storage.edis.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/edi/{id}",
-          "permissionsRequired": ["edi.item.put"]
+          "pathPattern": "/vendor-storage/edis/{id}",
+          "permissionsRequired": ["vendor-storage.edis.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/edi/{id}",
-          "permissionsRequired": ["edi.item.delete"]
+          "pathPattern": "/vendor-storage/edis/{id}",
+          "permissionsRequired": ["vendor-storage.edis.item.delete"]
         }
       ]
     },
     {
-      "id": "edi_ftp",
+      "id": "vendor-storage.edi-ftps",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/edi_ftp",
-          "permissionsRequired": ["edi_ftp.collection.get"]
+          "pathPattern": "/vendor-storage/edi-ftps",
+          "permissionsRequired": ["vendor-storage.edi-ftps.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/edi_ftp",
-          "permissionsRequired": ["edi_ftp.item.post"]
+          "pathPattern": "/vendor-storage/edi-ftps",
+          "permissionsRequired": ["vendor-storage.edi-ftps.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/edi_ftp/{id}",
-          "permissionsRequired": ["edi_ftp.item.get"]
+          "pathPattern": "/vendor-storage/edi-ftps/{id}",
+          "permissionsRequired": ["vendor-storage.edi-ftps.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/edi_ftp/{id}",
-          "permissionsRequired": ["edi_ftp.item.put"]
+          "pathPattern": "/vendor-storage/edi-ftps/{id}",
+          "permissionsRequired": ["vendor-storage.edi-ftps.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/edi_ftp/{id}",
-          "permissionsRequired": ["edi_ftp.item.delete"]
+          "pathPattern": "/vendor-storage/edi-ftps/{id}",
+          "permissionsRequired": ["vendor-storage.edi-ftps.item.delete"]
         }
       ]
     },
     {
-      "id": "edi_job",
+      "id": "vendor-storage.edi-jobs",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/edi_job",
-          "permissionsRequired": ["edi_job.collection.get"]
+          "pathPattern": "/vendor-storage/edi-jobs",
+          "permissionsRequired": ["vendor-storage.edi-jobs.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/edi_job",
-          "permissionsRequired": ["edi_job.item.post"]
+          "pathPattern": "/vendor-storage/edi-jobs",
+          "permissionsRequired": ["vendor-storage.edi-jobs.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/edi_job/{id}",
-          "permissionsRequired": ["edi_job.item.get"]
+          "pathPattern": "/vendor-storage/edi-jobs/{id}",
+          "permissionsRequired": ["vendor-storage.edi-jobs.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/edi_job/{id}",
-          "permissionsRequired": ["edi_job.item.put"]
+          "pathPattern": "/vendor-storage/edi-jobs/{id}",
+          "permissionsRequired": ["vendor-storage.edi-jobs.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/edi_job/{id}",
-          "permissionsRequired": ["edi_job.item.delete"]
+          "pathPattern": "/vendor-storage/edi-jobs/{id}",
+          "permissionsRequired": ["vendor-storage.edi-jobs.item.delete"]
         }
       ]
     },
     {
-      "id": "email",
+      "id": "vendor-storage.emails",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/email",
-          "permissionsRequired": ["email.collection.get"]
+          "pathPattern": "/vendor-storage/emails",
+          "permissionsRequired": ["vendor-storage.emails.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/email",
-          "permissionsRequired": ["email.item.post"]
+          "pathPattern": "/vendor-storage/emails",
+          "permissionsRequired": ["vendor-storage.emails.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/email/{id}",
-          "permissionsRequired": ["email.item.get"]
+          "pathPattern": "/vendor-storage/emails/{id}",
+          "permissionsRequired": ["vendor-storage.emails.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/email/{id}",
-          "permissionsRequired": ["email.item.put"]
+          "pathPattern": "/vendor-storage/emails/{id}",
+          "permissionsRequired": ["vendor-storage.emails.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/email/{id}",
-          "permissionsRequired": ["email.item.delete"]
+          "pathPattern": "/vendor-storage/emails/{id}",
+          "permissionsRequired": ["vendor-storage.emails.item.delete"]
         }
       ]
     },
     {
-      "id": "interface",
+      "id": "vendor-storage.interfaces",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/interface",
-          "permissionsRequired": ["interface.collection.get"]
+          "pathPattern": "/vendor-storage/interfaces",
+          "permissionsRequired": ["vendor-storage.interfaces.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/interface",
-          "permissionsRequired": ["interface.item.post"]
+          "pathPattern": "/vendor-storage/interfaces",
+          "permissionsRequired": ["vendor-storage.interfaces.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/interface/{id}",
-          "permissionsRequired": ["interface.item.get"]
+          "pathPattern": "/vendor-storage/interfaces/{id}",
+          "permissionsRequired": ["vendor-storage.interfaces.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/interface/{id}",
-          "permissionsRequired": ["interface.item.put"]
+          "pathPattern": "/vendor-storage/interfaces/{id}",
+          "permissionsRequired": ["vendor-storage.interfaces.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/interface/{id}",
-          "permissionsRequired": ["interface.item.delete"]
+          "pathPattern": "/vendor-storage/interfaces/{id}",
+          "permissionsRequired": ["vendor-storage.interfaces.item.delete"]
         }
       ]
     },
     {
-      "id": "phone_number",
+      "id": "vendor-storage.phone-numbers",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/phone_number",
-          "permissionsRequired": ["phone_number.collection.get"]
+          "pathPattern": "/vendor-storage/phone-numbers",
+          "permissionsRequired": ["vendor-storage.phone-numbers.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/phone_number",
-          "permissionsRequired": ["phone_number.item.post"]
+          "pathPattern": "/vendor-storage/phone-numbers",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/phone_number/{id}",
-          "permissionsRequired": ["phone_number.item.get"]
+          "pathPattern": "/vendor-storage/phone-numbers/{id}",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/phone_number/{id}",
-          "permissionsRequired": ["phone_number.item.put"]
+          "pathPattern": "/vendor-storage/phone-numbers/{id}",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/phone_number/{id}",
-          "permissionsRequired": ["phone_number.item.delete"]
+          "pathPattern": "/vendor-storage/phone-numbers/{id}",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.delete"]
         }
       ]
     },
     {
-      "id": "url",
+      "id": "vendor-storage.url",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/url",
-          "permissionsRequired": ["url.collection.get"]
+          "pathPattern": "/vendor-storage/urls",
+          "permissionsRequired": ["vendor-storage.urls.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/url",
-          "permissionsRequired": ["url.item.post"]
+          "pathPattern": "/vendor-storage/urls",
+          "permissionsRequired": ["vendor-storage.urls.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/url/{id}",
-          "permissionsRequired": ["url.item.get"]
+          "pathPattern": "/vendor-storage/urls/{id}",
+          "permissionsRequired": ["vendor-storage.urls.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/url/{id}",
-          "permissionsRequired": ["url.item.put"]
+          "pathPattern": "/vendor-storage/urls/{id}",
+          "permissionsRequired": ["vendor-storage.urls.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/url/{id}",
-          "permissionsRequired": ["url.item.delete"]
+          "pathPattern": "/vendor-storage/urls/{id}",
+          "permissionsRequired": ["vendor-storage.urls.item.delete"]
         }
       ]
     },
     {
-      "id": "vendor_address",
+      "id": "vendor-storage.vendor-contact-persons",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor_address",
-          "permissionsRequired": ["vendor_address.collection.get"]
+          "pathPattern": "/vendor-storage/vendor-contact-persons",
+          "permissionsRequired": ["vendors.vendor-contact-persons.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/vendor_address",
-          "permissionsRequired": ["vendor_address.item.post"]
+          "pathPattern": "/vendor-storage/vendor-contact-persons",
+          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor_address/{id}",
-          "permissionsRequired": ["vendor_address.item.get"]
+          "pathPattern": "/vendor-storage/vendor-contact-persons/{id}",
+          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/vendor_address/{id}",
-          "permissionsRequired": ["vendor_address.item.put"]
+          "pathPattern": "/vendor-storage/vendor-contact-persons/{id}",
+          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/vendor_address/{id}",
-          "permissionsRequired": ["vendor_address.item.delete"]
+          "pathPattern": "/vendor-storage/vendor-contact-persons/{id}",
+          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.delete"]
         }
       ]
     },
     {
-      "id": "vendor_contact_person",
+      "id": "vendor-storage.vendor-types",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor_contact_person",
-          "permissionsRequired": ["vendor_contact_person.collection.get"]
+          "pathPattern": "/vendor-storage/vendor-types",
+          "permissionsRequired": ["vendor-storage.vendor-types.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/vendor_contact_person",
-          "permissionsRequired": ["vendor_contact_person.item.post"]
+          "pathPattern": "/vendor-storage/vendor-types",
+          "permissionsRequired": ["vendor-storage.vendor-types.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor_contact_person/{id}",
-          "permissionsRequired": ["vendor_contact_person.item.get"]
+          "pathPattern": "/vendor-storage/vendor-types/{id}",
+          "permissionsRequired": ["vendor-storage.vendor-types.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/vendor_contact_person/{id}",
-          "permissionsRequired": ["vendor_contact_person.item.put"]
+          "pathPattern": "/vendor-storage/vendor-types/{id}",
+          "permissionsRequired": ["vendor-storage.vendor-types.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/vendor_contact_person/{id}",
-          "permissionsRequired": ["vendor_contact_person.item.delete"]
+          "pathPattern": "/vendor-storage/vendor-types/{id}",
+          "permissionsRequired": ["vendor-storage.vendor-types.item.delete"]
         }
       ]
     },
     {
-      "id": "vendor_email",
+      "id": "vendor-storage.vendors",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor_email",
-          "permissionsRequired": ["vendor_email.collection.get"]
+          "pathPattern": "/vendor-storage/vendors",
+          "permissionsRequired": ["vendor-storage.vendors.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/vendor_email",
-          "permissionsRequired": ["vendor_email.item.post"]
+          "pathPattern": "/vendor-storage/vendors",
+          "permissionsRequired": ["vendor-storage.vendors.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor_email/{id}",
-          "permissionsRequired": ["vendor_email.item.get"]
+          "pathPattern": "/vendor-storage/vendors/{vendor_id}",
+          "permissionsRequired": ["vendor-storage.vendors.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/vendor_email/{id}",
-          "permissionsRequired": ["vendor_email.item.put"]
+          "pathPattern": "/vendor-storage/vendors/{vendor_id}",
+          "permissionsRequired": ["vendor-storage.vendors.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/vendor_email/{id}",
-          "permissionsRequired": ["vendor_email.item.delete"]
-        }
-      ]
-    },
-    {
-      "id": "vendor_phone",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor_phone",
-          "permissionsRequired": ["vendor_phone.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendor_phone",
-          "permissionsRequired": ["vendor_phone.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor_phone/{id}",
-          "permissionsRequired": ["vendor_phone.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendor_phone/{id}",
-          "permissionsRequired": ["vendor_phone.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendor_phone/{id}",
-          "permissionsRequired": ["vendor_phone.item.delete"]
-        }
-      ]
-    },
-    {
-      "id": "vendor_type",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor_type",
-          "permissionsRequired": ["vendor_type.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendor_type",
-          "permissionsRequired": ["vendor_type.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor_type/{id}",
-          "permissionsRequired": ["vendor_type.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendor_type/{id}",
-          "permissionsRequired": ["vendor_type.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendor_type/{id}",
-          "permissionsRequired": ["vendor_type.item.delete"]
-        }
-      ]
-    },
-    {
-      "id": "vendor_url",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor_url",
-          "permissionsRequired": ["vendor_url.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendor_url",
-          "permissionsRequired": ["vendor_url.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor_url/{id}",
-          "permissionsRequired": ["vendor_url.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendor_url/{id}",
-          "permissionsRequired": ["vendor_url.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendor_url/{id}",
-          "permissionsRequired": ["vendor_url.item.delete"]
-        }
-      ]
-    },
-    {
-      "id": "vendor",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor",
-          "permissionsRequired": ["vendor.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendor",
-          "permissionsRequired": ["vendor.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor/{vendor_id}",
-          "permissionsRequired": ["vendor.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendor/{vendor_id}",
-          "permissionsRequired": ["vendor.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendor/{vendor_id}",
-          "permissionsRequired": ["vendor.item.delete"]
+          "pathPattern": "/vendor-storage/vendors/{vendor_id}",
+          "permissionsRequired": ["vendor-storage.vendors.item.delete"]
         }
       ]
     },
@@ -636,770 +512,618 @@
   ],
   "permissionSets" : [
     {
-      "permissionName" : "account.collection.get",
+      "permissionName" : "vendor-storage.accounts.collection.get",
       "displayName" : "account collection get",
       "description" : "Get a collection of accounts"
     },
     {
-      "permissionName" : "account.item.post",
+      "permissionName" : "vendor-storage.accounts.item.post",
       "displayName" : "account post",
       "description" : "Create a new account"
     },
     {
-      "permissionName" : "account.item.get",
+      "permissionName" : "vendor-storage.accounts.item.get",
       "displayName" : "account get",
       "description" : "Fetch an account"
     },
     {
-      "permissionName" : "account.item.put",
+      "permissionName" : "vendor-storage.accounts.item.put",
       "displayName" : "account put",
       "description" : "Update an account"
     },
     {
-      "permissionName" : "account.item.delete",
+      "permissionName" : "vendor-storage.accounts.item.delete",
       "displayName" : "account delete",
       "description" : "Delete a account"
     },
     {
-      "permissionName" : "account.all",
+      "permissionName" : "vendor-storage.accounts.all",
       "displayName" : "account all",
       "description" : "All permissions for account",
       "subPermissions" : [
-        "account.collection.get",
-        "account.item.post",
-        "account.item.get",
-        "account.item.put",
-        "account.item.delete"
+        "vendor-storage.accounts.collection.get",
+        "vendor-storage.accounts.item.post",
+        "vendor-storage.accounts.item.get",
+        "vendor-storage.accounts.item.put",
+        "vendor-storage.accounts.item.delete"
       ]
     },
     {
-      "permissionName" : "address.collection.get",
+      "permissionName" : "vendor-storage.addresses.collection.get",
       "displayName" : "address collection get",
       "description" : "Get a collection of addresses"
     },
     {
-      "permissionName" : "address.item.post",
+      "permissionName" : "vendor-storage.addresses.item.post",
       "displayName" : "address post",
       "description" : "Create a new address"
     },
     {
-      "permissionName" : "address.item.get",
+      "permissionName" : "vendor-storage.addresses.item.get",
       "displayName" : "address get",
       "description" : "Fetch a address"
     },
     {
-      "permissionName" : "address.item.put",
+      "permissionName" : "vendor-storage.addresses.item.put",
       "displayName" : "address put",
       "description" : "Update a address"
     },
     {
-      "permissionName" : "address.item.delete",
+      "permissionName" : "vendor-storage.addresses.item.delete",
       "displayName" : "address delete",
       "description" : "Delete a address"
     },
     {
-      "permissionName" : "address.all",
+      "permissionName" : "vendor-storage.addresses.all",
       "displayName" : "address all",
       "description" : "All permissions for address",
       "subPermissions" : [
-        "address.collection.get",
-        "address.item.post",
-        "address.item.get",
-        "address.item.put",
-        "address.item.delete"
+        "vendor-storage.addresses.collection.get",
+        "vendor-storage.addresses.item.post",
+        "vendor-storage.addresses.item.get",
+        "vendor-storage.addresses.item.put",
+        "vendor-storage.addresses.item.delete"
       ]
     },
     {
-      "permissionName" : "agreement.collection.get",
+      "permissionName" : "vendor-storage.agreements.collection.get",
       "displayName" : "agreement collection get",
       "description" : "Get a collection of agreements"
     },
     {
-      "permissionName" : "agreement.item.post",
+      "permissionName" : "vendor-storage.agreements.item.post",
       "displayName" : "agreement post",
       "description" : "Create a new agreement"
     },
     {
-      "permissionName" : "agreement.item.get",
+      "permissionName" : "vendor-storage.agreements.item.get",
       "displayName" : "agreement get",
       "description" : "Fetch a agreement"
     },
     {
-      "permissionName" : "agreement.item.put",
+      "permissionName" : "vendor-storage.agreements.item.put",
       "displayName" : "agreement put",
       "description" : "Update a agreement"
     },
     {
-      "permissionName" : "agreement.item.delete",
+      "permissionName" : "vendor-storage.agreements.item.delete",
       "displayName" : "agreement delete",
       "description" : "Delete a agreement"
     },
     {
-      "permissionName" : "agreement.all",
+      "permissionName" : "vendor-storage.agreements.all",
       "displayName" : "agreement all",
       "description" : "All permissions for agreement",
       "subPermissions" : [
-        "agreement.collection.get",
-        "agreement.item.post",
-        "agreement.item.get",
-        "agreement.item.put",
-        "agreement.item.delete"
+        "vendor-storage.agreements.collection.get",
+        "vendor-storage.agreements.item.post",
+        "vendor-storage.agreements.item.get",
+        "vendor-storage.agreements.item.put",
+        "vendor-storage.agreements.item.delete"
       ]
     },
     {
-      "permissionName" : "alias.collection.get",
+      "permissionName" : "vendor-storage.aliases.collection.get",
       "displayName" : "alias collection get",
       "description" : "Get a collection of aliases"
     },
     {
-      "permissionName" : "alias.item.post",
+      "permissionName" : "vendor-storage.aliases.item.post",
       "displayName" : "alias post",
       "description" : "Create a new alias"
     },
     {
-      "permissionName" : "alias.item.get",
+      "permissionName" : "vendor-storage.aliases.item.get",
       "displayName" : "alias get",
       "description" : "Fetch a alias"
     },
     {
-      "permissionName" : "alias.item.put",
+      "permissionName" : "vendor-storage.aliases.item.put",
       "displayName" : "alias put",
       "description" : "Update a alias"
     },
     {
-      "permissionName" : "alias.item.delete",
+      "permissionName" : "vendor-storage.aliases.item.delete",
       "displayName" : "alias delete",
       "description" : "Delete a alias"
     },
     {
-      "permissionName" : "alias.all",
+      "permissionName" : "vendor-storage.aliases.all",
       "displayName" : "alias all",
       "description" : "All permissions for alias",
       "subPermissions" : [
-        "alias.collection.get",
-        "alias.item.post",
-        "alias.item.get",
-        "alias.item.put",
-        "alias.item.delete"
+        "vendor-storage.aliases.collection.get",
+        "vendor-storage.aliases.item.post",
+        "vendor-storage.aliases.item.get",
+        "vendor-storage.aliases.item.put",
+        "vendor-storage.aliases.item.delete"
       ]
     },
     {
-      "permissionName" : "category.collection.get",
+      "permissionName" : "vendor-storage.categories.collection.get",
       "displayName" : "ccategory collection get",
       "description" : "Get a collection of categories"
     },
     {
-      "permissionName" : "category.item.post",
+      "permissionName" : "vendor-storage.categories.item.post",
       "displayName" : "category post",
       "description" : "Create a new category"
     },
     {
-      "permissionName" : "category.item.get",
+      "permissionName" : "vendor-storage.categories.item.get",
       "displayName" : "category get",
       "description" : "Fetch a category"
     },
     {
-      "permissionName" : "category.item.put",
+      "permissionName" : "vendor-storage.categories.item.put",
       "displayName" : "category put",
       "description" : "Update a category"
     },
     {
-      "permissionName" : "category.item.delete",
+      "permissionName" : "vendor-storage.categories.item.delete",
       "displayName" : "category delete",
       "description" : "Delete a category"
     },
     {
-      "permissionName" : "category.all",
+      "permissionName" : "vendor-storage.categories.all",
       "displayName" : "category all",
       "description" : "All permissions for category",
       "subPermissions" : [
-        "category.collection.get",
-        "category.item.post",
-        "category.item.get",
-        "category.item.put",
-        "category.item.delete"
+        "vendor-storage.categories.collection.get",
+        "vendor-storage.categories.item.post",
+        "vendor-storage.categories.item.get",
+        "vendor-storage.categories.item.put",
+        "vendor-storage.categories.item.delete"
       ]
     },
     {
-      "permissionName" : "contact_person.collection.get",
+      "permissionName" : "vendor-storage.contact-persons.collection.get",
       "displayName" : "ccontact_person collection get",
       "description" : "Get a collection of contact persons"
     },
     {
-      "permissionName" : "contact_person.item.post",
+      "permissionName" : "vendor-storage.contact-persons.item.post",
       "displayName" : "contact_person post",
       "description" : "Create a new contact_person"
     },
     {
-      "permissionName" : "contact_person.item.get",
+      "permissionName" : "vendor-storage.contact-persons.item.get",
       "displayName" : "contact_person get",
       "description" : "Fetch a contact_person"
     },
     {
-      "permissionName" : "contact_person.item.put",
+      "permissionName" : "vendor-storage.contact-persons.item.put",
       "displayName" : "contact_person put",
       "description" : "Update a contact_person"
     },
     {
-      "permissionName" : "contact_person.item.delete",
+      "permissionName" : "vendor-storage.contact-persons.item.delete",
       "displayName" : "contact_person delete",
       "description" : "Delete a contact_person"
     },
     {
-      "permissionName" : "contact_person.all",
+      "permissionName" : "vendor-storage.contact-persons.all",
       "displayName" : "contact_person all",
       "description" : "All permissions for contact_person",
       "subPermissions" : [
-        "contact_person.collection.get",
-        "contact_person.item.post",
-        "contact_person.item.get",
-        "contact_person.item.put",
-        "contact_person.item.delete"
+        "vendor-storage.contact-persons.collection.get",
+        "vendor-storage.contact-persons.item.post",
+        "vendor-storage.contact-persons.item.get",
+        "vendor-storage.contact-persons.item.put",
+        "vendor-storage.contact-persons.item.delete"
       ]
     },
     {
-      "permissionName" : "edi.collection.get",
+      "permissionName" : "vendor-storage.edis.collection.get",
       "displayName" : "edi collection get",
       "description" : "Get a collection of edis"
     },
     {
-      "permissionName" : "edi.item.post",
+      "permissionName" : "vendor-storage.edis.item.post",
       "displayName" : "edi post",
       "description" : "Create a new edi"
     },
     {
-      "permissionName" : "edi.item.get",
+      "permissionName" : "vendor-storage.edis.item.get",
       "displayName" : "edi get",
       "description" : "Fetch a edi"
     },
     {
-      "permissionName" : "edi.item.put",
+      "permissionName" : "vendor-storage.edis.item.put",
       "displayName" : "edi put",
       "description" : "Update a edi"
     },
     {
-      "permissionName" : "edi.item.delete",
+      "permissionName" : "vendor-storage.edis.item.delete",
       "displayName" : "edi delete",
       "description" : "Delete a edi"
     },
     {
-      "permissionName" : "edi.all",
+      "permissionName" : "vendor-storage.edis.all",
       "displayName" : "edi all",
       "description" : "All permissions for edi",
       "subPermissions" : [
-        "edi.collection.get",
-        "edi.item.post",
-        "edi.item.get",
-        "edi.item.put",
-        "edi.item.delete"
+        "vendor-storage.edis.collection.get",
+        "vendor-storage.edis.item.post",
+        "vendor-storage.edis.item.get",
+        "vendor-storage.edis.item.put",
+        "vendor-storage.edis.item.delete"
       ]
     },
     {
-      "permissionName" : "edi_ftp.collection.get",
+      "permissionName" : "vendor-storage.edi-ftps.collection.get",
       "displayName" : "edi_ftp collection get",
       "description" : "Get a collection of edi_ftps"
     },
     {
-      "permissionName" : "edi_ftp.item.post",
+      "permissionName" : "vendor-storage.edi-ftps.item.post",
       "displayName" : "edi_ftp post",
       "description" : "Create a new edi_ftp"
     },
     {
-      "permissionName" : "edi_ftp.item.get",
+      "permissionName" : "vendor-storage.edi-ftps.item.get",
       "displayName" : "edi_ftp get",
       "description" : "Fetch a edi_ftp"
     },
     {
-      "permissionName" : "edi_ftp.item.put",
+      "permissionName" : "vendor-storage.edi-ftps.item.put",
       "displayName" : "edi_ftp put",
       "description" : "Update a edi_ftp"
     },
     {
-      "permissionName" : "edi_ftp.item.delete",
+      "permissionName" : "vendor-storage.edi-ftps.item.delete",
       "displayName" : "edi_ftp delete",
       "description" : "Delete a edi_ftp"
     },
     {
-      "permissionName" : "edi_ftp.all",
+      "permissionName" : "vendor-storage.edi-ftps.all",
       "displayName" : "edi_ftp all",
       "description" : "All permissions for edi_ftp",
       "subPermissions" : [
-        "edi_ftp.collection.get",
-        "edi_ftp.item.post",
-        "edi_ftp.item.get",
-        "edi_ftp.item.put",
-        "edi_ftp.item.delete"
+        "vendor-storage.edi-ftps.collection.get",
+        "vendor-storage.edi-ftps.item.post",
+        "vendor-storage.edi-ftps.item.get",
+        "vendor-storage.edi-ftps.item.put",
+        "vendor-storage.edi-ftps.item.delete"
       ]
     },
     {
-      "permissionName" : "edi_job.collection.get",
+      "permissionName" : "vendor-storage.edi-jobs.collection.get",
       "displayName" : "edi_job collection get",
       "description" : "Get a collection of edi_job"
     },
     {
-      "permissionName" : "edi_job.item.post",
+      "permissionName" : "vendor-storage.edi-jobs.item.post",
       "displayName" : "edi_job post",
       "description" : "Create a new edi_job"
     },
     {
-      "permissionName" : "edi_job.item.get",
+      "permissionName" : "vendor-storage.edi-jobs.item.get",
       "displayName" : "edi_job get",
       "description" : "Fetch a edi_job"
     },
     {
-      "permissionName" : "edi_job.item.put",
+      "permissionName" : "vendor-storage.edi-jobs.item.put",
       "displayName" : "edi_job put",
       "description" : "Update a edi_job"
     },
     {
-      "permissionName" : "edi_job.item.delete",
+      "permissionName" : "vendor-storage.edi-jobs.item.delete",
       "displayName" : "edi_job delete",
       "description" : "Delete a edi_job"
     },
     {
-      "permissionName" : "edi_job.all",
+      "permissionName" : "vendor-storage.edi-jobs.all",
       "displayName" : "edi_job all",
       "description" : "All permissions for edi_job",
       "subPermissions" : [
-        "edi_job.collection.get",
-        "edi_job.item.post",
-        "edi_job.item.get",
-        "edi_job.item.put",
-        "edi_job.item.delete"
+        "vendor-storage.edi-jobs.collection.get",
+        "vendor-storage.edi-jobs.item.post",
+        "vendor-storage.edi-jobs.item.get",
+        "vendor-storage.edi-jobs.item.put",
+        "vendor-storage.edi-jobs.item.delete"
       ]
     },
     {
-      "permissionName" : "email.collection.get",
+      "permissionName" : "vendor-storage.emails.collection.get",
       "displayName" : "email collection get",
       "description" : "Get a collection of emails"
     },
     {
-      "permissionName" : "email.item.post",
+      "permissionName" : "vendor-storage.emails.item.post",
       "displayName" : "email post",
       "description" : "Create a new email"
     },
     {
-      "permissionName" : "email.item.get",
+      "permissionName" : "vendor-storage.emails.item.get",
       "displayName" : "email get",
       "description" : "Fetch a email"
     },
     {
-      "permissionName" : "email.item.put",
+      "permissionName" : "vendor-storage.emails.item.put",
       "displayName" : "email put",
       "description" : "Update a email"
     },
     {
-      "permissionName" : "email.item.delete",
+      "permissionName" : "vendor-storage.emails.item.delete",
       "displayName" : "email delete",
       "description" : "Delete a email"
     },
     {
-      "permissionName" : "email.all",
+      "permissionName" : "vendor-storage.emails.all",
       "displayName" : "email all",
       "description" : "All permissions for email",
       "subPermissions" : [
-        "email.collection.get",
-        "email.item.post",
-        "email.item.get",
-        "email.item.put",
-        "email.item.delete"
+        "vendor-storage.emails.collection.get",
+        "vendor-storage.emails.item.post",
+        "vendor-storage.emails.item.get",
+        "vendor-storage.emails.item.put",
+        "vendor-storage.emails.item.delete"
       ]
     },
     {
-      "permissionName" : "interface.collection.get",
+      "permissionName" : "vendor-storage.interfaces.collection.get",
       "displayName" : "interface collection get",
       "description" : "Get a collection of interface"
     },
     {
-      "permissionName" : "interface.item.post",
+      "permissionName" : "vendor-storage.interfaces.item.post",
       "displayName" : "interface post",
       "description" : "Create a new interface"
     },
     {
-      "permissionName" : "interface.item.get",
+      "permissionName" : "vendor-storage.interfaces.item.get",
       "displayName" : "interface get",
       "description" : "Fetch a interface"
     },
     {
-      "permissionName" : "interface.item.put",
+      "permissionName" : "vendor-storage.interfaces.item.put",
       "displayName" : "interface put",
       "description" : "Update a interface"
     },
     {
-      "permissionName" : "interface.item.delete",
+      "permissionName" : "vendor-storage.interfaces.item.delete",
       "displayName" : "interface delete",
       "description" : "Delete a interface"
     },
     {
-      "permissionName" : "interface.all",
+      "permissionName" : "vendor-storage.interfaces.all",
       "displayName" : "interface all",
       "description" : "All permissions for interface",
       "subPermissions" : [
-        "interface.collection.get",
-        "interface.item.post",
-        "interface.item.get",
-        "interface.item.put",
-        "interface.item.delete"
+        "vendor-storage.interfaces.collection.get",
+        "vendor-storage.interfaces.item.post",
+        "vendor-storage.interfaces.item.get",
+        "vendor-storage.interfaces.item.put",
+        "vendor-storage.interfaces.item.delete"
       ]
     },
     {
-      "permissionName" : "phone_number.collection.get",
+      "permissionName" : "vendor-storage.phone-numbers.collection.get",
       "displayName" : "phone_number collection get",
       "description" : "Get a collection of phone_numbers"
     },
     {
-      "permissionName" : "phone_number.item.post",
+      "permissionName" : "vendor-storage.phone-numbers.item.post",
       "displayName" : "phone_number post",
       "description" : "Create a new phone_number"
     },
     {
-      "permissionName" : "phone_number.item.get",
+      "permissionName" : "vendor-storage.phone-numbers.item.get",
       "displayName" : "phone_number get",
       "description" : "Fetch a phone_number"
     },
     {
-      "permissionName" : "phone_number.item.put",
+      "permissionName" : "vendor-storage.phone-numbers.item.put",
       "displayName" : "phone_number put",
       "description" : "Update a phone_number"
     },
     {
-      "permissionName" : "phone_number.item.delete",
+      "permissionName" : "vendor-storage.phone-numbers.item.delete",
       "displayName" : "phone_number delete",
       "description" : "Delete a phone_number"
     },
     {
-      "permissionName" : "phone_number.all",
+      "permissionName" : "vendor-storage.phone-numbers.all",
       "displayName" : "phone_number all",
       "description" : "All permissions for phone_number",
       "subPermissions" : [
-        "phone_number.collection.get",
-        "phone_number.item.post",
-        "phone_number.item.get",
-        "phone_number.item.put",
-        "phone_number.item.delete"
+        "vendor-storage.phone-numbers.collection.get",
+        "vendor-storage.phone-numbers.item.post",
+        "vendor-storage.phone-numbers.item.get",
+        "vendor-storage.phone-numbers.item.put",
+        "vendor-storage.phone-numbers.item.delete"
       ]
     },
     {
-      "permissionName" : "url.collection.get",
+      "permissionName" : "vendor-storage.urls.collection.get",
       "displayName" : "url collection get",
       "description" : "Get a collection of urls"
     },
     {
-      "permissionName" : "url.item.post",
+      "permissionName" : "vendor-storage.urls.item.post",
       "displayName" : "url post",
       "description" : "Create a new url"
     },
     {
-      "permissionName" : "url.item.get",
+      "permissionName" : "vendor-storage.urls.item.get",
       "displayName" : "url get",
       "description" : "Fetch a url"
     },
     {
-      "permissionName" : "url.item.put",
+      "permissionName" : "vendor-storage.urls.item.put",
       "displayName" : "url put",
       "description" : "Update a url"
     },
     {
-      "permissionName" : "url.item.delete",
+      "permissionName" : "vendor-storage.urls.item.delete",
       "displayName" : "url delete",
       "description" : "Delete a url"
     },
     {
-      "permissionName" : "url.all",
+      "permissionName" : "vendor-storage.urls.all",
       "displayName" : "url all",
       "description" : "All permissions for url",
       "subPermissions" : [
-        "url.collection.get",
-        "url.item.post",
-        "url.item.get",
-        "url.item.put",
-        "url.item.delete"
+        "vendor-storage.urls.collection.get",
+        "vendor-storage.urls.item.post",
+        "vendor-storage.urls.item.get",
+        "vendor-storage.urls.item.put",
+        "vendor-storage.urls.item.delete"
       ]
     },
     {
-      "permissionName" : "vendor_address.collection.get",
-      "displayName" : "vendor_address collection get",
-      "description" : "Get a collection of vendor_addresses"
-    },
-    {
-      "permissionName" : "vendor_address.item.post",
-      "displayName" : "vendor_address post",
-      "description" : "Create a new vendor_address"
-    },
-    {
-      "permissionName" : "vendor_address.item.get",
-      "displayName" : "vendor_address get",
-      "description" : "Fetch a vendor_address"
-    },
-    {
-      "permissionName" : "vendor_address.item.put",
-      "displayName" : "vendor_address put",
-      "description" : "Update a vendor_address"
-    },
-    {
-      "permissionName" : "vendor_address.item.delete",
-      "displayName" : "vendor_address delete",
-      "description" : "Delete a vendor_address"
-    },
-    {
-      "permissionName" : "vendor_address.all",
-      "displayName" : "vendor_address all",
-      "description" : "All permissions for vendor_address",
-      "subPermissions" : [
-        "vendor_address.collection.get",
-        "vendor_address.item.post",
-        "vendor_address.item.get",
-        "vendor_address.item.put",
-        "vendor_address.item.delete"
-      ]
-    },
-    {
-      "permissionName" : "vendor_contact_person.collection.get",
+      "permissionName" : "vendor-storage.vendor-contact-persons.collection.get",
       "displayName" : "vendor_contact_person get",
       "description" : "Get a collection of vendor_contact_persons"
     },
     {
-      "permissionName" : "vendor_contact_person.item.post",
+      "permissionName" : "vendor-storage.vendor-contact-person.item.post",
       "displayName" : "vendor_contact_person post",
       "description" : "Create a new vendor_contact_person"
     },
     {
-      "permissionName" : "vendor_contact_person.item.get",
+      "permissionName" : "vendor-storage.vendor-contact-persons.item.get",
       "displayName" : "vendor_contact_person get",
       "description" : "Fetch a vendor_contact_person"
     },
     {
-      "permissionName" : "vendor_contact_person.item.put",
+      "permissionName" : "vendor-storage.vendor-contact-persons.item.put",
       "displayName" : "vendor_contact_person put",
       "description" : "Update a vendor_contact_person"
     },
     {
-      "permissionName" : "vendor_contact_person.item.delete",
+      "permissionName" : "vendor-storage.vendor-contact-persons.item.delete",
       "displayName" : "vendor_contact_person delete",
       "description" : "Delete a vendor_contact_person"
     },
     {
-      "permissionName" : "vendor_contact_person.all",
+      "permissionName" : "vendor-storage.vendor-contact-persons.all",
       "displayName" : "vendor_contact_person all",
       "description" : "All permissions for vendor_contact_person",
       "subPermissions" : [
-        "vendor_contact_person.collection.get",
-        "vendor_contact_person.item.post",
-        "vendor_contact_person.item.get",
-        "vendor_contact_person.item.put",
-        "vendor_contact_person.item.delete"
+        "vendor-storage.vendor-contact-persons.collection.get",
+        "vendor-storage.vendor-contact-persons.item.post",
+        "vendor-storage.vendor-contact-persons.item.get",
+        "vendor-storage.vendor-contact-persons.item.put",
+        "vendor-storage.vendor-contact-persons.item.delete"
       ]
     },
     {
-      "permissionName" : "vendor_email.collection.get",
-      "displayName" : "vendor_email collection get",
-      "description" : "Get a collection of vendor_emails"
-    },
-    {
-      "permissionName" : "vendor_email.item.post",
-      "displayName" : "vendor_email post",
-      "description" : "Create a new Contact category"
-    },
-    {
-      "permissionName" : "vendor_email.item.get",
-      "displayName" : "vendor_email get",
-      "description" : "Fetch a vendor_email"
-    },
-    {
-      "permissionName" : "vendor_email.item.put",
-      "displayName" : "vendor_email put",
-      "description" : "Update a vendor_email"
-    },
-    {
-      "permissionName" : "vendor_email.item.delete",
-      "displayName" : "vendor_email delete",
-      "description" : "Delete a vendor_email"
-    },
-    {
-      "permissionName" : "vendor_email.all",
-      "displayName" : "vendor_email all",
-      "description" : "All permissions for vendor_email",
-      "subPermissions" : [
-        "vendor_email.collection.get",
-        "vendor_email.item.post",
-        "vendor_email.item.get",
-        "vendor_email.item.put",
-        "vendor_email.item.delete"
-      ]
-    },
-    {
-      "permissionName" : "vendor_phone.collection.get",
-      "displayName" : "vendor_phone collection get",
-      "description" : "Get a collection of vendor_phones"
-    },
-    {
-      "permissionName" : "vendor_phone.item.post",
-      "displayName" : "vendor_phone post",
-      "description" : "Create a new vendor_phone"
-    },
-    {
-      "permissionName" : "vendor_phone.item.get",
-      "displayName" : "vendor_phone get",
-      "description" : "Fetch a vendor_phone"
-    },
-    {
-      "permissionName" : "vendor_phone.item.put",
-      "displayName" : "vendor_phone put",
-      "description" : "Update a vendor_phone"
-    },
-    {
-      "permissionName" : "vendor_phone.item.delete",
-      "displayName" : "vendor_phone delete",
-      "description" : "Delete a vendor_phone"
-    },
-    {
-      "permissionName" : "vendor_phone.all",
-      "displayName" : "vendor_phone all",
-      "description" : "All permissions for vendor_phone",
-      "subPermissions" : [
-        "vendor_phone.collection.get",
-        "vendor_phone.item.post",
-        "vendor_phone.item.get",
-        "vendor_phone.item.put",
-        "vendor_phone.item.delete"
-      ]
-    },
-    {
-      "permissionName" : "vendor_type.collection.get",
+      "permissionName" : "vendor-storage.vendor-types.collection.get",
       "displayName" : "vendor_type collection get",
       "description" : "Get a collection of vendor_types"
     },
     {
-      "permissionName" : "vendor_type.item.post",
+      "permissionName" : "vendor-storage.vendor-types.item.post",
       "displayName" : "vendor_type post",
       "description" : "Create a new vendor_type"
     },
     {
-      "permissionName" : "vendor_type.item.get",
+      "permissionName" : "vendor-storage.vendor-types.item.get",
       "displayName" : "vendor_type get",
       "description" : "Fetch a vendor_type"
     },
     {
-      "permissionName" : "vendor_type.item.put",
+      "permissionName" : "vendor-storage.vendor-types.item.put",
       "displayName" : "vendor_type put",
       "description" : "Update a vendor_type"
     },
     {
-      "permissionName" : "vendor_type.item.delete",
+      "permissionName" : "vendor-storage.vendor-types.item.delete",
       "displayName" : "vendor_type delete",
       "description" : "Delete a vendor_type"
     },
     {
-      "permissionName" : "vendor_type.all",
+      "permissionName" : "vendor-storage.vendor-types.all",
       "displayName" : "vendor_type all",
       "description" : "All permissions for vendor_type",
       "subPermissions" : [
-        "vendor_type.collection.get",
-        "vendor_type.item.post",
-        "vendor_type.item.get",
-        "vendor_type.item.put",
-        "vendor_type.item.delete"
+        "vendor-storage.vendor-types.collection.get",
+        "vendor-storage.vendor-types.item.post",
+        "vendor-storage.vendor-types.item.get",
+        "vendor-storage.vendor-types.item.put",
+        "vendor-storage.vendor-types.item.delete"
       ]
     },
     {
-      "permissionName" : "vendor_url.collection.get",
-      "displayName" : "vendor_url collection get",
-      "description" : "Get a collection of vendor_urls"
-    },
-    {
-      "permissionName" : "vendor_url.item.post",
-      "displayName" : "vendor_url post",
-      "description" : "Create a new vendor_url"
-    },
-    {
-      "permissionName" : "vendor_url.item.get",
-      "displayName" : "vendor_url get",
-      "description" : "Fetch a vendor_url"
-    },
-    {
-      "permissionName" : "vendor_url.item.put",
-      "displayName" : "vendor_url put",
-      "description" : "Update a vendor_url"
-    },
-    {
-      "permissionName" : "vendor_url.item.delete",
-      "displayName" : "vendor_url delete",
-      "description" : "Delete a vendor_url"
-    },
-    {
-      "permissionName" : "vendor_url.all",
-      "displayName" : "vendor_url all",
-      "description" : "All permissions for vendor_url",
-      "subPermissions" : [
-        "vendor_url.collection.get",
-        "vendor_url.item.post",
-        "vendor_url.item.get",
-        "vendor_url.item.put",
-        "vendor_url.item.delete"
-      ]
-    },
-    {
-      "permissionName" : "vendor.collection.get",
+      "permissionName" : "vendor-storage.vendors.collection.get",
       "displayName" : "vendor collection get",
       "description" : "Get a collection of vendors"
     },
     {
-      "permissionName" : "vendor.item.post",
+      "permissionName" : "vendor-storage.vendors.item.post",
       "displayName" : "vendor post",
       "description" : "Create a new vendor"
     },
     {
-      "permissionName" : "vendor.item.get",
+      "permissionName" : "vendor-storage.vendors.item.get",
       "displayName" : "vendor get",
       "description" : "Fetch a vendor"
     },
     {
-      "permissionName" : "vendor.item.put",
+      "permissionName" : "vendor-storage.vendors.item.put",
       "displayName" : "vendor put",
       "description" : "Update a vendor"
     },
     {
-      "permissionName" : "vendor.item.delete",
+      "permissionName" : "vendor-storage.vendors.item.delete",
       "displayName" : "vendor delete",
       "description" : "Delete a vendor"
     },
     {
-      "permissionName" : "vendor.all",
+      "permissionName" : "vendor-storage.vendors.all",
       "displayName" : "vendor all",
       "description" : "All permissions for vendors",
       "subPermissions" : [
-        "vendor.collection.get",
-        "vendor.item.post",
-        "vendor.item.get",
-        "vendor.item.put",
-        "vendor.item.delete"
+        "vendor-storage.vendors.collection.get",
+        "vendor-storage.vendors.item.post",
+        "vendor-storage.vendors.item.get",
+        "vendor-storage.vendors.item.put",
+        "vendor-storage.vendors.item.delete"
       ]
     },
     {
-      "permissionName" : "vendor.module.all",
-      "displayName" : "vendor-module all",
+      "permissionName" : "vendor-storage.module.all",
+      "displayName" : "vendor-storage-module all",
       "description" : "All permissions for the vendor module",
       "subPermissions" : [
-        "account.all",
-        "address.all",
-        "agreement.all",
-        "alias.all",
-        "category.all",
-        "contact_person.all",
-        "edi.all",
-        "edi_ftp.all",
-        "edi_job.all",
-        "email.all",
-        "interface.all",
-        "phone_number.all",
-        "url.all",
-        "vendor.all",
-        "vendor_address.all",
-        "vendor_contact_person.all",
-        "vendor_email.all",
-        "vendor_phone.all",
-        "vendor_type.all",
-        "vendor_url.all"
+        "vendor-storage.accounts.all",
+        "vendor-storage.addresses.all",
+        "vendor-storage.agreements.all",
+        "vendor-storage.aliases.all",
+        "vendor-storage.categories.all",
+        "vendor-storage.contact-persons.all",
+        "vendor-storage.edis.all",
+        "vendor-storage.edi-ftps.all",
+        "vendor-storage.edi-jobs.all",
+        "vendor-storage.emails.all",
+        "vendor-storage.interfaces.all",
+        "vendor-storage.phone-numbers.all",
+        "vendor-storage.urls.all",
+        "vendor-storage.vendors.all",
+        "vendor-storage.vendor-contact-persons.all",
+        "vendor-storage.vendor-types.all"
       ]
     }
   ],

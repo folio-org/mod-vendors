@@ -5,6 +5,7 @@
   "description": "Serials - Domestic",
   "vendor_status": "Active",
   "language": "en-us",
+  "san_code": "",
   "aliases": [
     {
       "value": "Taylor & Francis ",
@@ -13,47 +14,42 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "Suite 300, 6000 Broken Sound Parkway, NW",
-        "addressLine2": "",
-        "city": "Boca Raton",
-        "stateRegion": "FL",
-        "zipCode": "33487",
-        "country": "USA"
-      },
+      "addressLine1": "Suite 300, 6000 Broken Sound Parkway, NW",
+      "addressLine2": "",
+      "city": "Boca Raton",
+      "stateRegion": "FL",
+      "zipCode": "33487",
+      "country": "USA",
       "categories": ["Customer Service","Payments"],
       "language": "English",
-      "san_code": ""
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-800-634-7064"
-      },
+      "phone_number": "1-800-634-7064",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "enquiries@taylorandfrancis.com",
-        "description": "Customer Servicel"
-      },
+      "value": "enquiries@taylorandfrancis.com",
+      "description": "Customer Servicel",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "http://taylorandfrancis.com/",
-        "description": "main website"
-      },
+      "value": "http://taylorandfrancis.com/",
+      "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -67,47 +63,42 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-800-634-7064"
-            },
+            "phone_number": "1-800-634-7064",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "enquiries@taylorandfrancis.com",
-              "description": "Customer Servicel"
-            },
+            "value": "enquiries@taylorandfrancis.com",
+            "description": "Customer Servicel",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "Suite 300, 6000 Broken Sound Parkway, NW",
-              "addressLine2": "",
-              "city": "Boca Raton",
-              "stateRegion": "FL",
-              "zipCode": "33487",
-              "country": "USA"
-            },
+            "addressLine1": "Suite 300, 6000 Broken Sound Parkway, NW",
+            "addressLine2": "",
+            "city": "Boca Raton",
+            "stateRegion": "FL",
+            "zipCode": "33487",
+            "country": "USA",
             "categories": ["Customer Service","Payments"],
             "language": "English",
-            "san_code": ""
+            "isPrimary": true
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "http://taylorandfrancis.com/",
-              "description": "main website"
-            },
+            "value": "http://taylorandfrancis.com/",
+            "description": "main website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

@@ -5,6 +5,7 @@
   "description": "AV streaming services",
   "vendor_status": "Active",
   "language": "en-us",
+  "san_code": "1234567",
   "aliases": [
     {
       "value": "Alexander Street",
@@ -13,47 +14,42 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "3212 Duke Street",
-        "addressLine2": "",
-        "city": "Alexandria",
-        "stateRegion": "VA",
-        "zipCode": "22314",
-        "country": "USA"
-      },
+      "addressLine1": "3212 Duke Street",
+      "addressLine2": "",
+      "city": "Alexandria",
+      "stateRegion": "VA",
+      "zipCode": "22314",
+      "country": "USA",
       "categories": [],
       "language": "English",
-      "san_code": ""
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-800-889-5937"
-      },
+      "phone_number": "1-800-889-5937",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "customerservice@alexanderstreet.com",
-        "description": "main customer service email"
-      },
+      "value": "customerservice@alexanderstreet.com",
+      "description": "main customer service email",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "https://alexanderstreet.com/",
-        "description": "main website"
-      },
+      "value": "https://alexanderstreet.com/",
+      "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -67,47 +63,42 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-800-889-5937"
-            },
+            "phone_number": "1-800-889-5937",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "customerservice@alexanderstreet.com",
-              "description": "main customer service email"
-            },
+            "value": "customerservice@alexanderstreet.com",
+            "description": "main customer service email",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "3212 Duke Street",
-              "addressLine2": "",
-              "city": "Alexandria",
-              "stateRegion": "VA",
-              "zipCode": "22314",
-              "country": "USA"
-            },
+            "addressLine1": "3212 Duke Street",
+            "addressLine2": "",
+            "city": "Alexandria",
+            "stateRegion": "VA",
+            "zipCode": "22314",
+            "country": "USA",
             "categories": [],
             "language": "English",
-            "san_code": ""
+            "isPrimary": true
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "https://alexanderstreet.com/",
-              "description": "main website"
-            },
+            "value": "https://alexanderstreet.com/",
+            "description": "main website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

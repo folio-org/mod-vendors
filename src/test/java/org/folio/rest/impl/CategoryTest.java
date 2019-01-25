@@ -98,7 +98,7 @@ public class CategoryTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("category").then()
+    getData("/vendor-storage/categories").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(4));
@@ -118,19 +118,19 @@ public class CategoryTest {
 
       logger.info("--- mod-vendors-test: Creating category ... ");
       String dataSample = getFile("category.sample");
-      Response response = postData("category", dataSample);
+      Response response = postData("/vendor-storage/categories", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("value", equalTo("Accounting"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 category was created ... ");
-      getData("category").then().log().ifValidationFails()
+      getData("/vendor-storage/categories").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(5));
 
       logger.info("--- mod-vendors-test: Fetching category with ID: "+ dataSampleId);
-      getDataById("category", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/categories", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class CategoryTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("value", "Gift");
-      response = putData("category", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/categories", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching category with ID: "+ dataSampleId);
-      getDataById("category", dataSampleId).then()
+      getDataById("/vendor-storage/categories", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("value", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting category with ID ... ");
-      deleteData("category", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/categories", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

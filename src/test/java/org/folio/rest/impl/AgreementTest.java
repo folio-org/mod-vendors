@@ -98,7 +98,7 @@ public class AgreementTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("agreement").then()
+    getData("/vendor-storage/agreements").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class AgreementTest {
 
       logger.info("--- mod-vendors-test: Creating agreement ... ");
       String dataSample = getFile("agreement.sample");
-      Response response = postData("agreement", dataSample);
+      Response response = postData("/vendor-storage/agreements", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("name", equalTo("History Follower Incentive"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 agreement was created ... ");
-      getData("agreement").then().log().ifValidationFails()
+      getData("/vendor-storage/agreements").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching agreement with ID: "+ dataSampleId);
-      getDataById("agreement", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/agreements", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class AgreementTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("name", "Gift");
-      response = putData("agreement", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/agreements", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching agreement with ID: "+ dataSampleId);
-      getDataById("agreement", dataSampleId).then()
+      getDataById("/vendor-storage/agreements", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("name", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting agreement with ID ... ");
-      deleteData("agreement", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/agreements", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

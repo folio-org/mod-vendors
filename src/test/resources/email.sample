@@ -1,4 +1,5 @@
 {
     "value": "noreply@folio.org",
-    "description": "Main"
+    "description": "Main",
+    "isPrimary": false
 }

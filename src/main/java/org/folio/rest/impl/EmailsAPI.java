@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.VendorEmail;
-import org.folio.rest.jaxrs.model.VendorEmailCollection;
-import org.folio.rest.jaxrs.resource.VendorEmailResource;
+import org.folio.rest.jaxrs.model.Email;
+import org.folio.rest.jaxrs.model.EmailCollection;
+import org.folio.rest.jaxrs.resource.VendorStorageEmails;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class VendorEmailAPI implements VendorEmailResource {
-  private static final String VENDOR_EMAIL_TABLE = "vendor_email";
-  private static final String VENDOR_EMAIL_LOCATION_PREFIX = "/vendor_email/";
+public class EmailsAPI implements VendorStorageEmails {
+  private static final String EMAIL_TABLE = "email";
+  private static final String EMAIL_LOCATION_PREFIX = "/vendor-storage/emails/";
 
-  private static final Logger log = LoggerFactory.getLogger(VendorEmailAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(EmailsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +41,30 @@ public class VendorEmailAPI implements VendorEmailResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public VendorEmailAPI(Vertx vertx, String tenantId) {
+  public EmailsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getVendorEmail(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageEmails(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", VENDOR_EMAIL_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", EMAIL_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(VENDOR_EMAIL_TABLE, VendorEmail.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EMAIL_TABLE, Email.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                VendorEmailCollection collection = new VendorEmailCollection();
-                @SuppressWarnings("unchecked")
-                List<VendorEmail> results = (List<VendorEmail>)reply.result().getResults();
-                collection.setVendorEmails(results);
+                EmailCollection collection = new EmailCollection();
+                List<Email> results = (List<Email>)reply.result().getResults();
+                collection.setEmails(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +75,18 @@ public class VendorEmailAPI implements VendorEmailResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorEmailResource.GetVendorEmailResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorEmailResource.GetVendorEmailResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorEmailResource.GetVendorEmailResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +95,14 @@ public class VendorEmailAPI implements VendorEmailResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorEmailResource.GetVendorEmailResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postVendorEmail(String lang, VendorEmail entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendorStorageEmails(String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +116,7 @@ public class VendorEmailAPI implements VendorEmailResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          VENDOR_EMAIL_TABLE, id, entity,
+          EMAIL_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +125,23 @@ public class VendorEmailAPI implements VendorEmailResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = VendorEmailResource.PostVendorEmailResponse.
-                  withJsonCreated(VENDOR_EMAIL_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorStorageEmails.PostVendorStorageEmailsResponse.respond201WithApplicationJson(stream,
+                  VendorStorageEmails.PostVendorStorageEmailsResponse.headersFor201()
+                    .withLocation(EMAIL_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = VendorEmailResource.PostVendorEmailResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorStorageEmails.PostVendorStorageEmailsResponse
+                  .respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = VendorEmailResource.PostVendorEmailResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorStorageEmails.PostVendorStorageEmailsResponse
+                .respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +152,7 @@ public class VendorEmailAPI implements VendorEmailResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = VendorEmailResource.PostVendorEmailResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorStorageEmails.PostVendorStorageEmailsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +160,56 @@ public class VendorEmailAPI implements VendorEmailResource {
   }
 
   @Override
-  public void getVendorEmailById(String vendorEmailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageEmailsById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", vendorEmailId);
+        String idArgument = String.format("'%s'", emailId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(VENDOR_EMAIL_TABLE, VendorEmail.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EMAIL_TABLE, Email.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
-                List<VendorEmail> results = (List<VendorEmail>) reply.result().getResults();
+                List<Email> results = (List<Email>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.GetVendorEmailByIdResponse
-                    .withPlainNotFound(vendorEmailId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsByIdResponse
+                    .respond404WithTextPlain(emailId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.GetVendorEmailByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.GetVendorEmailByIdResponse
-                    .withPlainNotFound(vendorEmailId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsByIdResponse
+                    .respond404WithTextPlain(emailId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.GetVendorEmailByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.GetVendorEmailByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.GetVendorEmailByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.GetVendorStorageEmailsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteVendorEmailById(String vendorEmailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorStorageEmailsById(String emailId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +218,65 @@ public class VendorEmailAPI implements VendorEmailResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(VENDOR_EMAIL_TABLE, vendorEmailId, reply -> {
+          postgresClient.delete(EMAIL_TABLE, emailId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorEmailAPI.DeleteVendorEmailByIdResponse.noContent()
+                VendorStorageEmails.DeleteVendorStorageEmailsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorEmailAPI.DeleteVendorEmailByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorStorageEmails.DeleteVendorStorageEmailsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            VendorEmailAPI.DeleteVendorEmailByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorStorageEmails.DeleteVendorStorageEmailsByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        VendorEmailAPI.DeleteVendorEmailByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorStorageEmails.DeleteVendorStorageEmailsByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putVendorEmailById(String vendorEmailId, String lang, VendorEmail entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorStorageEmailsById(String emailId, String lang, Email entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(vendorEmailId);
+          entity.setId(emailId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          VENDOR_EMAIL_TABLE, entity, vendorEmailId,
+          EMAIL_TABLE, entity, emailId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.PutVendorEmailByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.PutVendorStorageEmailsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.PutVendorEmailByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.PutVendorStorageEmailsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.PutVendorEmailByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.PutVendorStorageEmailsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.PutVendorEmailByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.PutVendorStorageEmailsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorEmailAPI.PutVendorEmailByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageEmails.PutVendorStorageEmailsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

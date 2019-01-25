@@ -98,7 +98,7 @@ public class VendorTypeTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("vendor_type").then()
+    getData("/vendor-storage/vendor-types").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class VendorTypeTest {
 
       logger.info("--- mod-vendors-test: Creating vendor type ... ");
       String dataSample = getFile("vendorType.sample");
-      Response response = postData("vendor_type", dataSample);
+      Response response = postData("/vendor-storage/vendor-types", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("value", equalTo("Service Provider"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 vendor type was created ... ");
-      getData("vendor_type").then().log().ifValidationFails()
+      getData("/vendor-storage/vendor-types").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching vendor type with ID: "+ dataSampleId);
-      getDataById("vendor_type", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/vendor-types", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class VendorTypeTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("value", "Gift");
-      response = putData("vendor_type", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/vendor-types", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching vendor type with ID: "+ dataSampleId);
-      getDataById("vendor_type", dataSampleId).then()
+      getDataById("/vendor-storage/vendor-types", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("value", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting vendor type with ID ... ");
-      deleteData("vendor_type", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/vendor-types", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

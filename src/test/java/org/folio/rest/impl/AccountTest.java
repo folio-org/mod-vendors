@@ -40,7 +40,7 @@ public class AccountTest {
 
   private String moduleName;      // "mod_vendors";
   private String moduleVersion;   // "1.0.0"
-  private String moduleId;        // "mod-vendors-1.0.0"
+  private String moduleId;        // "mod-vendors-1.1.0-SNAPSHOT"
 
 
   @Before
@@ -98,7 +98,7 @@ public class AccountTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("account").then()
+    getData("/vendor-storage/accounts").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class AccountTest {
 
       logger.info("--- mod-vendors-test: Creating account ... ");
       String accountSample = getFile("account.sample");
-      Response response = postData("account", accountSample);
+      Response response = postData("/vendor-storage/accounts", accountSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("description", equalTo("This is my account description."));
       String accountSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 account was created ... ");
-      getData("account").then().log().ifValidationFails()
+      getData("/vendor-storage/accounts").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching account with ID: "+ accountSampleId);
-      getDataById("account", accountSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/accounts", accountSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(accountSampleId));
 
@@ -138,17 +138,17 @@ public class AccountTest {
       JSONObject catJSON = new JSONObject(accountSample);
       catJSON.put("id", accountSampleId);
       catJSON.put("description", "Gift");
-      response = putData("account", accountSampleId, catJSON.toString());
+      response = putData("/vendor-storage/accounts", accountSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching account with ID: "+ accountSampleId);
-      getDataById("account", accountSampleId).then()
+      getDataById("/vendor-storage/accounts", accountSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("description", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting account with ID ... ");
-      deleteData("account", accountSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/accounts", accountSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

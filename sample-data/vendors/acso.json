@@ -5,6 +5,7 @@
   "description": "Serials - Domestic",
   "vendor_status": "Active",
   "language": "en-us",
+  "san_code": "1234567",
   "aliases": [
     {
       "value": "ACS",
@@ -13,47 +14,42 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "1155 Sixteenth Street, NW",
-        "addressLine2": "",
-        "city": "Washington",
-        "stateRegion": "DC",
-        "zipCode": "20036",
-        "country": "USA"
-      },
+      "addressLine1": "1155 Sixteenth Street, NW",
+      "addressLine2": "",
+      "city": "Washington",
+      "stateRegion": "DC",
+      "zipCode": "20036",
+      "country": "USA",
       "categories": [],
       "language": "English",
-      "san_code": ""
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-800-333-9511"
-      },
+      "phone_number": "1-800-333-9511",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "service@acs.org",
-        "description": "Customer Service"
-      },
+      "value": "service@acs.org",
+      "description": "Customer Service",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "https://www.acs.org/content/acs/en.html",
-        "description": "main English language website"
-      },
+      "value": "https://www.acs.org/content/acs/en.html",
+      "description": "main English language website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -67,47 +63,42 @@
         "notes": "Postal code = 80303",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-800-333-9511"
-            },
+            "phone_number": "1-800-333-9511",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "service@acs.org",
-              "description": "Customer Service"
-            },
+            "value": "service@acs.org",
+            "description": "Customer Service",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "1155 Sixteenth Street, NW",
-              "addressLine2": "",
-              "city": "Washington",
-              "stateRegion": "DC",
-              "zipCode": "20036",
-              "country": "USA"
-            },
+            "addressLine1": "1155 Sixteenth Street, NW",
+            "addressLine2": "",
+            "city": "Washington",
+            "stateRegion": "DC",
+            "zipCode": "20036",
+            "country": "USA",
             "categories": [],
             "language": "English",
-            "san_code": ""
+            "isPrimary": true
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "https://www.acs.org/content/acs/en.html",
-              "description": "main English language website"
-            },
+            "value": "https://www.acs.org/content/acs/en.html",
+            "description": "main English language website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

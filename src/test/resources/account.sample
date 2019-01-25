@@ -1,4 +1,5 @@
 {
+    "id": "588b5c42-8634-4af7-bc9b-5e0116ed96b6",
     "name": "History Account",
     "account_no": "GOBI-HIST-12",
     "description": "This is my account description.",
@@ -7,6 +8,5 @@
     "account_status": "Active",
     "contact_info": "Some basic contact information note.",
     "library_code": "My Library",
-    "library_edi_code": "MY-LIB-1",
-    "notes": ""
+    "library_edi_code": "MY-LIB-1"
 }

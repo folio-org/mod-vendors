@@ -98,7 +98,7 @@ public class EdiTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("edi").then()
+    getData("/vendor-storage/edis").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class EdiTest {
 
       logger.info("--- mod-storage-test: Creating edi ... ");
       String dataSample = getFile("edi.sample");
-      Response response = postData("edi", dataSample);
+      Response response = postData("/vendor-storage/edis", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("vendor_edi_code", equalTo("AQ-GOBI-HIST"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 edi was created ... ");
-      getData("edi").then().log().ifValidationFails()
+      getData("/vendor-storage/edis").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching edi with ID: "+ dataSampleId);
-      getDataById("edi", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/edis", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class EdiTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("vendor_edi_code", "Gift");
-      response = putData("edi", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/edis", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching edi with ID: "+ dataSampleId);
-      getDataById("edi", dataSampleId).then()
+      getDataById("/vendor-storage/edis", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("vendor_edi_code", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting edi with ID ... ");
-      deleteData("edi", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/edis", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

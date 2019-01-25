@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.EdiJob;
-import org.folio.rest.jaxrs.model.EdiJobCollection;
-import org.folio.rest.jaxrs.resource.EdiJobResource;
+import org.folio.rest.annotations.Validate;
+import org.folio.rest.jaxrs.model.AccountCollection;
+import org.folio.rest.jaxrs.resource.VendorStorageAccounts;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class EdiJobAPI implements EdiJobResource {
-  private static final String EDI_JOB_TABLE = "edi_job";
-  private static final String EDI_JOB_LOCATION_PREFIX = "/edi_job/";
+public class AccountsAPI implements VendorStorageAccounts {
+  private static final String ACCOUNT_TABLE = "account";
+  private static final String ACCOUNT_LOCATION_PREFIX = "/vendor-storage/accounts/";
 
-  private static final Logger log = LoggerFactory.getLogger(EdiJobAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(AccountsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +41,32 @@ public class EdiJobAPI implements EdiJobResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public EdiJobAPI(Vertx vertx, String tenantId) {
+  public AccountsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getEdiJob(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  @Validate
+  public void getVendorStorageAccounts(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", EDI_JOB_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", ACCOUNT_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_JOB_TABLE, EdiJob.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ACCOUNT_TABLE, org.folio.rest.jaxrs.model.Account.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                EdiJobCollection collection = new EdiJobCollection();
+                AccountCollection collection = new AccountCollection();
                 @SuppressWarnings("unchecked")
-                List<EdiJob> results = (List<EdiJob>)reply.result().getResults();
-                collection.setEdiJobs(results);
+                List<org.folio.rest.jaxrs.model.Account> results = reply.result().getResults();
+                collection.setAccounts(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +77,18 @@ public class EdiJobAPI implements EdiJobResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiJobResource.GetEdiJobResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageAccounts.GetVendorStorageAccountsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiJobResource.GetEdiJobResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageAccounts.GetVendorStorageAccountsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiJobResource.GetEdiJobResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageAccounts.GetVendorStorageAccountsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +97,15 @@ public class EdiJobAPI implements EdiJobResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(EdiJobResource.GetEdiJobResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageAccounts.GetVendorStorageAccountsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postEdiJob(String lang, EdiJob entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  @Validate
+  public void postVendorStorageAccounts(String lang, org.folio.rest.jaxrs.model.Account entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +119,7 @@ public class EdiJobAPI implements EdiJobResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          EDI_JOB_TABLE, id, entity,
+          ACCOUNT_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +128,20 @@ public class EdiJobAPI implements EdiJobResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = EdiJobResource.PostEdiJobResponse.
-                  withJsonCreated(EDI_JOB_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorStorageAccounts.PostVendorStorageAccountsResponse.
+                  respond201WithApplicationJson(stream, VendorStorageAccounts.PostVendorStorageAccountsResponse.headersFor201().withLocation( ACCOUNT_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = EdiJobResource.PostEdiJobResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorStorageAccounts.PostVendorStorageAccountsResponse.respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = EdiJobResource.PostEdiJobResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorStorageAccounts.PostVendorStorageAccountsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +152,7 @@ public class EdiJobAPI implements EdiJobResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = EdiJobResource.PostEdiJobResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorStorageAccounts.PostVendorStorageAccountsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +160,57 @@ public class EdiJobAPI implements EdiJobResource {
   }
 
   @Override
-  public void getEdiJobById(String ediJobId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  @Validate
+  public void getVendorStorageAccountsById(String accountId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", ediJobId);
+        String idArgument = String.format("'%s'", accountId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_JOB_TABLE, EdiJob.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(ACCOUNT_TABLE, org.folio.rest.jaxrs.model.Account.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
-                List<EdiJob> results = (List<EdiJob>) reply.result().getResults();
+                List<org.folio.rest.jaxrs.model.Account> results = reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.GetEdiJobByIdResponse
-                    .withPlainNotFound(ediJobId)));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAccountsByIdResponse
+                    .respond404WithTextPlain(accountId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.GetEdiJobByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAccountsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.GetEdiJobByIdResponse
-                    .withPlainNotFound(ediJobId)));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAccountsByIdResponse
+                    .respond404WithTextPlain(accountId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.GetEdiJobByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAccountsByIdResponse.respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.GetEdiJobByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAccountsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.GetEdiJobByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(GetVendorStorageAccountsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteEdiJobById(String ediJobId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  @Validate
+  public void deleteVendorStorageAccountsById(String accountId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +219,69 @@ public class EdiJobAPI implements EdiJobResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(EDI_JOB_TABLE, ediJobId, reply -> {
+          postgresClient.delete(ACCOUNT_TABLE, accountId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                EdiJobAPI.DeleteEdiJobByIdResponse.noContent()
+                VendorStorageAccounts.DeleteVendorStorageAccountsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                EdiJobAPI.DeleteEdiJobByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorStorageAccounts.DeleteVendorStorageAccountsByIdResponse.
+                  respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            EdiJobAPI.DeleteEdiJobByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorStorageAccounts.DeleteVendorStorageAccountsByIdResponse.
+              respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        EdiJobAPI.DeleteEdiJobByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorStorageAccounts.DeleteVendorStorageAccountsByIdResponse.
+          respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putEdiJobById(String ediJobId, String lang, EdiJob entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  @Validate
+  public void putVendorStorageAccountsById(String accountId, String lang, org.folio.rest.jaxrs.model.Account entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(ediJobId);
+          entity.setId(accountId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          EDI_JOB_TABLE, entity, ediJobId,
+          ACCOUNT_TABLE, entity, accountId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.PutEdiJobByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(PutVendorStorageAccountsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.PutEdiJobByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(PutVendorStorageAccountsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.PutEdiJobByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(PutVendorStorageAccountsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.PutEdiJobByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(PutVendorStorageAccountsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(EdiJobAPI.PutEdiJobByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(PutVendorStorageAccountsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

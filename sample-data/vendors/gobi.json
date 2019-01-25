@@ -5,6 +5,7 @@
   "description": "Use for print and eBooks, approval plans, firm orders, standing orders, DDA",
   "vendor_status": "Active",
   "language": "en-us",
+  "san_code": "1234567",
   "aliases": [
     {
       "value": "YBP Library Services",
@@ -13,47 +14,42 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "999 Maple Street",
-        "addressLine2": "2",
-        "city": "Contoocook",
-        "stateRegion": "NH",
-        "zipCode": "03229",
-        "country": "USA"
-      },
+      "addressLine1": "999 Maple Street",
+      "addressLine2": "2",
+      "city": "Contoocook",
+      "stateRegion": "NH",
+      "zipCode": "03229",
+      "country": "USA",
       "categories": ["Customer","Service","Shipments"],
       "language": "en",
-      "san_code": "1234567"
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-800-258-3774"
-      },
+      "phone_number": "1-800-258-3774",
       "categories": ["Customer Service"],
-      "language": "en-us"
+      "language": "en-us",
+      "isPrimary": true
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "gobiserviceissue@ebsco.com",
-        "description": "for general questions"
-      },
+      "value": "gobiserviceissue@ebsco.com",
+      "description": "for general questions",
       "categories": ["Customer Service"],
-      "language": "en-us"
+      "language": "en-us",
+      "isPrimary": true
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "https://gobi.ebsco.com/",
-        "description": "main website"
-      },
+      "value": "https://gobi.ebsco.com/",
+      "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -67,47 +63,42 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-800-258-3774"
-            },
+            "phone_number": "1-800-258-3774",
             "categories": ["Customer Service"],
-            "language": "en-us"
+            "language": "en-us",
+            "isPrimary": true
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "gobiserviceissue@ebsco.com",
-              "description": "for general questions"
-            },
+            "value": "gobiserviceissue@ebsco.com",
+            "description": "for general questions",
             "categories": ["Customer Service"],
-            "language": "en-us"
+            "language": "en-us",
+            "isPrimary": true
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "999 Maple Street",
-              "addressLine2": "2",
-              "city": "Contoocook",
-              "stateRegion": "NH",
-              "zipCode": "03229",
-              "country": "USA"
-            },
+            "addressLine1": "999 Maple Street",
+            "addressLine2": "2",
+            "city": "Contoocook",
+            "stateRegion": "NH",
+            "zipCode": "03229",
+            "country": "USA",
             "categories": ["Customer","Service","Shipments"],
             "language": "en",
-            "san_code": "1234567"
+            "isPrimary": true
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "https://gobi.ebsco.com/",
-              "description": "main website"
-            },
+            "value": "https://gobi.ebsco.com/",
+            "description": "main website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

@@ -98,7 +98,7 @@ public class VendorTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("vendor").then()
+    getData("/vendor-storage/vendors").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class VendorTest {
 
       logger.info("--- mod-vendors-test: Creating vendor ... ");
       String dataSample = getFile("vendor.sample");
-      Response response = postData("vendor", dataSample);
+      Response response = postData("/vendor-storage/vendors", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("name", equalTo("GOBI"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 vendor was created ... ");
-      getData("vendor").then().log().ifValidationFails()
+      getData("/vendor-storage/vendors").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching vendor with ID: "+ dataSampleId);
-      getDataById("vendor", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/vendors", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class VendorTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("name", "Gift");
-      response = putData("vendor", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/vendors", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching vendor with ID: "+ dataSampleId);
-      getDataById("vendor", dataSampleId).then()
+      getDataById("/vendor-storage/vendors", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("name", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting vendor with ID ... ");
-      deleteData("vendor", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/vendors", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

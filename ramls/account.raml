@@ -1,35 +1,37 @@
-#%RAML 0.8
-title: "mod-vendors"
+#%RAML 1.0
+title: "Vendors"
 baseUri: https://github.com/folio-org/mod-vendors
 version: v1
 
 documentation:
-  - title: mod-vendors
-    content: <b>This module implements the CRUD interface.</b>
+  - title: Accounts
+    content: <b>CRUD APIs used to manage accounts.</b>
 
-schemas:
-  - account.json: !include acq-models/mod-vendors/schemas/account.json
-  - account_collection: !include acq-models/mod-vendors/schemas/account_collection.json
+types:
+    account: !include acq-models/mod-vendors/schemas/account.json
+    account_collection: !include acq-models/mod-vendors/schemas/account_collection.json
+    UUID:
+      type: string
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$
 
 traits:
-  - secured: !include raml-util/traits/auth.raml
-  - orderable: !include raml-util/traits/orderable.raml
-  - pageable:  !include raml-util/traits/pageable.raml
-  - searchable: !include raml-util/traits/searchable.raml
-  - language: !include raml-util/traits/language.raml
+    orderable: !include raml-util/traits/orderable.raml
+    pageable:  !include raml-util/traits/pageable.raml
+    searchable: !include raml-util/traits/searchable.raml
+    language: !include raml-util/traits/language.raml
 
 resourceTypes:
-  - collection: !include raml-util/rtypes/collection.raml
-  - collection-item: !include raml-util/rtypes/item-collection.raml
+    collection: !include raml-util/rtypes/collection.raml
+    collection-item: !include raml-util/rtypes/item-collection.raml
 
 
-/account:
+/vendor-storage/accounts:
   type:
     collection:
       exampleCollection: !include acq-models/mod-vendors/examples/account_collection.sample
       exampleItem: !include acq-models/mod-vendors/examples/account_post.sample
       schemaCollection: account_collection
-      schemaItem: account.json
+      schemaItem: account
   get:
     description: Get list of accounts
     is: [
@@ -37,7 +39,11 @@ resourceTypes:
       pageable
     ]
   /{id}:
+    uriParameters:
+      id:
+        description: The UUID of a Account
+        type: UUID
     type:
       collection-item:
         exampleItem: !include acq-models/mod-vendors/examples/account_get.sample
-        schema: account.json
+        schema: account

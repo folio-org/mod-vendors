@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.VendorType;
-import org.folio.rest.jaxrs.model.VendorTypeCollection;
-import org.folio.rest.jaxrs.resource.VendorTypeResource;
+import org.folio.rest.jaxrs.model.EdiJob;
+import org.folio.rest.jaxrs.model.EdiJobCollection;
+import org.folio.rest.jaxrs.resource.VendorStorageEdiJobs;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class VendorTypeAPI implements VendorTypeResource {
-  private static final String VENDOR_TYPE_TABLE = "vendor_type";
-  private static final String VENDOR_TYPE_LOCATION_PREFIX = "/vendor_type/";
+public class EdiJobsAPI implements VendorStorageEdiJobs {
+  private static final String EDI_JOB_TABLE = "edi_job";
+  private static final String EDI_JOB_LOCATION_PREFIX = "/vendor-storage/edi-jobs/";
 
-  private static final Logger log = LoggerFactory.getLogger(VendorTypeAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(EdiJobsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,31 +41,30 @@ public class VendorTypeAPI implements VendorTypeResource {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public VendorTypeAPI(Vertx vertx, String tenantId) {
+  public EdiJobsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getVendorType(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageEdiJobs(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
         String[] fieldList = {"*"};
-        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", VENDOR_TYPE_TABLE));
+        CQL2PgJSON cql2PgJSON = new CQL2PgJSON(String.format("%s.jsonb", EDI_JOB_TABLE));
         CQLWrapper cql = new CQLWrapper(cql2PgJSON, query)
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(VENDOR_TYPE_TABLE, VendorType.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_JOB_TABLE, EdiJob.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                VendorTypeCollection collection = new VendorTypeCollection();
-                @SuppressWarnings("unchecked")
-                List<VendorType> results = (List<VendorType>)reply.result().getResults();
-                collection.setVendorTypes(results);
+                EdiJobCollection collection = new EdiJobCollection();
+                List<EdiJob> results = (List<EdiJob>)reply.result().getResults();
+                collection.setEdiJobs(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,18 +75,18 @@ public class VendorTypeAPI implements VendorTypeResource {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorTypeResource.GetVendorTypeResponse
-                  .withJsonOK(collection)));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsResponse
+                  .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorTypeResource.GetVendorTypeResponse
-                  .withPlainBadRequest(reply.cause().getMessage())));
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsResponse
+                  .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorTypeResource.GetVendorTypeResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
@@ -96,14 +95,14 @@ public class VendorTypeAPI implements VendorTypeResource {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorTypeResource.GetVendorTypeResponse
-          .withPlainInternalServerError(message)));
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsResponse
+          .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postVendorType(String lang, VendorType entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void postVendorStorageEdiJobs(String lang, EdiJob entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -117,7 +116,7 @@ public class VendorTypeAPI implements VendorTypeResource {
 
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
         PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          VENDOR_TYPE_TABLE, id, entity,
+          EDI_JOB_TABLE, id, entity,
           reply -> {
             try {
               if (reply.succeeded()) {
@@ -126,20 +125,21 @@ public class VendorTypeAPI implements VendorTypeResource {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = VendorTypeResource.PostVendorTypeResponse.
-                  withJsonCreated(VENDOR_TYPE_LOCATION_PREFIX + persistenceId, stream);
+                Response response = VendorStorageEdiJobs.PostVendorStorageEdiJobsResponse.respond201WithApplicationJson(stream,
+                  VendorStorageEdiJobs.PostVendorStorageEdiJobsResponse.headersFor201()
+                    .withLocation(EDI_JOB_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = VendorTypeResource.PostVendorTypeResponse.withPlainInternalServerError(reply.cause().getMessage());
+                Response response = VendorStorageEdiJobs.PostVendorStorageEdiJobsResponse.respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = VendorTypeResource.PostVendorTypeResponse.withPlainInternalServerError(e.getMessage());
+              Response response = VendorStorageEdiJobs.PostVendorStorageEdiJobsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -150,7 +150,7 @@ public class VendorTypeAPI implements VendorTypeResource {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = VendorTypeResource.PostVendorTypeResponse.withPlainInternalServerError(errMsg);
+        Response response = VendorStorageEdiJobs.PostVendorStorageEdiJobsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -158,57 +158,56 @@ public class VendorTypeAPI implements VendorTypeResource {
   }
 
   @Override
-  public void getVendorTypeById(String vendorTypeId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void getVendorStorageEdiJobsById(String ediJobId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", vendorTypeId);
+        String idArgument = String.format("'%s'", ediJobId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(VENDOR_TYPE_TABLE, VendorType.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(EDI_JOB_TABLE, EdiJob.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                @SuppressWarnings("unchecked")
-                List<VendorType> results = (List<VendorType>) reply.result().getResults();
+                List<EdiJob> results = (List<EdiJob>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(AgreementAPI.GetAgreementByIdResponse
-                    .withPlainNotFound(vendorTypeId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsByIdResponse
+                    .respond404WithTextPlain(ediJobId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.GetVendorTypeByIdResponse
-                    .withJsonOK(results.get(0))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsByIdResponse
+                    .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.GetVendorTypeByIdResponse
-                    .withPlainNotFound(vendorTypeId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsByIdResponse
+                    .respond404WithTextPlain(ediJobId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.GetVendorTypeByIdResponse
-                    .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsByIdResponse
+                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.GetVendorTypeByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.GetVendorTypeByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.GetVendorStorageEdiJobsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteVendorTypeById(String vendorTypeId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void deleteVendorStorageEdiJobsById(String ediJobId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,68 +216,65 @@ public class VendorTypeAPI implements VendorTypeResource {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(VENDOR_TYPE_TABLE, vendorTypeId, reply -> {
+          postgresClient.delete(EDI_JOB_TABLE, ediJobId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorTypeAPI.DeleteVendorTypeByIdResponse.noContent()
+                VendorStorageEdiJobs.DeleteVendorStorageEdiJobsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorTypeAPI.DeleteVendorTypeByIdResponse.
-                  withPlainInternalServerError(reply.cause().getMessage())));
+                VendorStorageEdiJobs.DeleteVendorStorageEdiJobsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            VendorTypeAPI.DeleteVendorTypeByIdResponse.
-              withPlainInternalServerError(e.getMessage())));
+            VendorStorageEdiJobs.DeleteVendorStorageEdiJobsByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        VendorTypeAPI.DeleteVendorTypeByIdResponse.
-          withPlainInternalServerError(e.getMessage())));
+        VendorStorageEdiJobs.DeleteVendorStorageEdiJobsByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putVendorTypeById(String vendorTypeId, String lang, VendorType entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) throws Exception {
+  public void putVendorStorageEdiJobsById(String ediJobId, String lang, EdiJob entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(vendorTypeId);
+          entity.setId(ediJobId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          VENDOR_TYPE_TABLE, entity, vendorTypeId,
+          EDI_JOB_TABLE, entity, ediJobId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.PutVendorTypeByIdResponse
-                    .withPlainNotFound(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.PutVendorStorageEdiJobsByIdResponse
+                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.PutVendorTypeByIdResponse
-                    .withNoContent()));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.PutVendorStorageEdiJobsByIdResponse
+                    .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.PutVendorTypeByIdResponse
-                  .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+                asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.PutVendorStorageEdiJobsByIdResponse
+                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.PutVendorTypeByIdResponse
-                .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.PutVendorStorageEdiJobsByIdResponse
+                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorTypeAPI.PutVendorTypeByIdResponse
-          .withPlainInternalServerError(messages.getMessage(lang, MessageConsts.InternalServerError))));
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageEdiJobs.PutVendorStorageEdiJobsByIdResponse
+          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }

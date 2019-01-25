@@ -98,7 +98,7 @@ public class UrlTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("url").then()
+    getData("/vendor-storage/urls").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class UrlTest {
 
       logger.info("--- mod-vendors-test: Creating url ... ");
       String dataSample = getFile("url.sample");
-      Response response = postData("url", dataSample);
+      Response response = postData("/vendor-storage/urls", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("description", equalTo("test"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 url was created ... ");
-      getData("url").then().log().ifValidationFails()
+      getData("/vendor-storage/urls").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching url with ID: "+ dataSampleId);
-      getDataById("url", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/urls", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class UrlTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("description", "Gift");
-      response = putData("url", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/urls", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching url with ID: "+ dataSampleId);
-      getDataById("url", dataSampleId).then()
+      getDataById("/vendor-storage/urls", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("description", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting url with ID ... ");
-      deleteData("url", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/urls", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

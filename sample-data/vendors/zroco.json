@@ -5,6 +5,7 @@
   "description": "Distributor of documentary films",
   "vendor_status": "Active",
   "language": "English",
+  "san_code": "",
   "aliases": [
     {
       "value": "Ro*Co Films Educational",
@@ -13,47 +14,42 @@
   ],
   "addresses": [
     {
-      "address": {
-        "addressLine1": "80 LIBERTY SHIP WAY7",
-        "addressLine2": "SUITE 5",
-        "city": "SAUSALITO",
-        "stateRegion": "CA",
-        "zipCode": "94965",
-        "country": "USA"
-      },
+      "addressLine1": "80 LIBERTY SHIP WAY7",
+      "addressLine2": "SUITE 5",
+      "city": "SAUSALITO",
+      "stateRegion": "CA",
+      "zipCode": "94965",
+      "country": "USA",
       "categories": [],
       "language": "English",
-      "san_code": ""
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": {
-        "phone_number": "1-415-332-6471"
-      },
+      "phone_number": "1-415-332-6471",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
     {
-      "email": {
-        "value": "info@rocofilms.com",
-        "description": "initial contact address"
-      },
+      "value": "info@rocofilms.com",
+      "description": "initial contact address",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
     {
-      "url": {
-        "value": "http://www.rocofilms.com/",
-        "description": "main website"
-      },
+      "value": "http://www.rocofilms.com/",
+      "description": "main website",
       "language": "English",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -67,47 +63,42 @@
         "notes": "",
         "phone_numbers": [
           {
-            "phone_number": {
-              "phone_number": "1-415-332-6471"
-            },
+            "phone_number": "1-415-332-6471",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
           {
-            "email": {
-              "value": "info@rocofilms.com",
-              "description": "initial contact address"
-            },
+            "value": "info@rocofilms.com",
+            "description": "initial contact address",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
           {
-            "address": {
-              "addressLine1": "80 LIBERTY SHIP WAY7",
-              "addressLine2": "SUITE 5",
-              "city": "SAUSALITO",
-              "stateRegion": "CA",
-              "zipCode": "94965",
-              "country": "USA"
-            },
+            "addressLine1": "80 LIBERTY SHIP WAY7",
+            "addressLine2": "SUITE 5",
+            "city": "SAUSALITO",
+            "stateRegion": "CA",
+            "zipCode": "94965",
+            "country": "USA",
             "categories": [],
             "language": "English",
-            "san_code": ""
+            "isPrimary": true
           }
         ],
         "urls": [
           {
-            "url": {
-              "value": "http://www.rocofilms.com/",
-              "description": "main website"
-            },
+            "value": "http://www.rocofilms.com/",
+            "description": "main website",
             "language": "English",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },
