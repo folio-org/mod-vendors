@@ -344,33 +344,33 @@
       ]
     },
     {
-      "id": "vendor-storage.phone_numbers",
+      "id": "vendor-storage.phone-numbers",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor-storage/phone_numbers",
-          "permissionsRequired": ["vendor-storage.phone_numbers.collection.get"]
+          "pathPattern": "/vendor-storage/phone-numbers",
+          "permissionsRequired": ["vendor-storage.phone-numbers.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/vendor-storage/phone_numbers",
-          "permissionsRequired": ["vendor-storage.phone_numbers.item.post"]
+          "pathPattern": "/vendor-storage/phone-numbers",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor-storage/phone_numbers/{id}",
-          "permissionsRequired": ["vendor-storage.phone_numbers.item.get"]
+          "pathPattern": "/vendor-storage/phone-numbers/{id}",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/vendor-storage/phone_numbers/{id}",
-          "permissionsRequired": ["vendor-storage.phone_numbers.item.put"]
+          "pathPattern": "/vendor-storage/phone-numbers/{id}",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/vendor-storage/phone_numbers/{id}",
-          "permissionsRequired": ["vendor-storage.phone_numbers.item.delete"]
+          "pathPattern": "/vendor-storage/phone-numbers/{id}",
+          "permissionsRequired": ["vendor-storage.phone-numbers.item.delete"]
         }
       ]
     },
@@ -919,40 +919,40 @@
       ]
     },
     {
-      "permissionName" : "vendor-storage.phone_numbers.collection.get",
+      "permissionName" : "vendor-storage.phone-numbers.collection.get",
       "displayName" : "phone_number collection get",
       "description" : "Get a collection of phone_numbers"
     },
     {
-      "permissionName" : "vendor-storage.phone_numbers.item.post",
+      "permissionName" : "vendor-storage.phone-numbers.item.post",
       "displayName" : "phone_number post",
       "description" : "Create a new phone_number"
     },
     {
-      "permissionName" : "vendor-storage.phone_numbers.item.get",
+      "permissionName" : "vendor-storage.phone-numbers.item.get",
       "displayName" : "phone_number get",
       "description" : "Fetch a phone_number"
     },
     {
-      "permissionName" : "vendor-storage.phone_numbers.item.put",
+      "permissionName" : "vendor-storage.phone-numbers.item.put",
       "displayName" : "phone_number put",
       "description" : "Update a phone_number"
     },
     {
-      "permissionName" : "vendor-storage.phone_numbers.item.delete",
+      "permissionName" : "vendor-storage.phone-numbers.item.delete",
       "displayName" : "phone_number delete",
       "description" : "Delete a phone_number"
     },
     {
-      "permissionName" : "vendor-storage.phone_numbers.all",
+      "permissionName" : "vendor-storage.phone-numbers.all",
       "displayName" : "phone_number all",
       "description" : "All permissions for phone_number",
       "subPermissions" : [
-        "vendor-storage.phone_numbers.collection.get",
-        "vendor-storage.phone_numbers.item.post",
-        "vendor-storage.phone_numbers.item.get",
-        "vendor-storage.phone_numbers.item.put",
-        "vendor-storage.phone_numbers.item.delete"
+        "vendor-storage.phone-numbers.collection.get",
+        "vendor-storage.phone-numbers.item.post",
+        "vendor-storage.phone-numbers.item.get",
+        "vendor-storage.phone-numbers.item.put",
+        "vendor-storage.phone-numbers.item.delete"
       ]
     },
     {
@@ -1119,7 +1119,7 @@
         "vendor-storage.edi-jobs.all",
         "vendor-storage.emails.all",
         "vendor-storage.interfaces.all",
-        "vendor-storage.phone_numbers.all",
+        "vendor-storage.phone-numbers.all",
         "vendor-storage.urls.all",
         "vendor-storage.vendors.all",
         "vendor-storage.vendor-contact-persons.all",
