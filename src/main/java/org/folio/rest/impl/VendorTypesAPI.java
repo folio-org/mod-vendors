@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class VendorTypesAPI implements VendorStorageVendorTypes {
   private static final String VENDOR_TYPE_TABLE = "vendor_type";
-  private static final String VENDOR_TYPE_LOCATION_PREFIX = "/vendor-storage/vendor_types/";
+  private static final String VENDOR_TYPE_LOCATION_PREFIX = "/vendor-storage/vendor-types/";
 
   private static final Logger log = LoggerFactory.getLogger(VendorTypesAPI.class);
   private final Messages messages = Messages.getInstance();

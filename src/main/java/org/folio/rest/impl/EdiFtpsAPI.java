@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class EdiFtpsAPI implements VendorStorageEdiFtps {
   private static final String EDI_FTP_TABLE = "edi_ftp";
-  private static final String EDI_FTP_LOCATION_PREFIX = "/vendor-storage/edi_ftps/";
+  private static final String EDI_FTP_LOCATION_PREFIX = "/vendor-storage/edi-ftps/";
 
   private static final Logger log = LoggerFactory.getLogger(EdiFtpsAPI.class);
   private final Messages messages = Messages.getInstance();

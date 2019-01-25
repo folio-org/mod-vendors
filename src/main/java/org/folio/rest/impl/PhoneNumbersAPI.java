@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class PhoneNumbersAPI implements VendorStoragePhoneNumbers {
   private static final String PHONE_NUMBER_TABLE = "phone_number";
-  private static final String PHONE_NUMBER_LOCATION_PREFIX = "/vendor-storage/phone_numbers/";
+  private static final String PHONE_NUMBER_LOCATION_PREFIX = "/vendor-storage/phone-numbers/";
 
   private static final Logger log = LoggerFactory.getLogger(PhoneNumbersAPI.class);
   private final Messages messages = Messages.getInstance();

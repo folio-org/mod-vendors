@@ -98,7 +98,7 @@ public class PhoneNumberTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("/vendor-storage/phone_numbers").then()
+    getData("/vendor-storage/phone-numbers").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class PhoneNumberTest {
 
       logger.info("--- mod-vendors-test: Creating phone number ... ");
       String dataSample = getFile("phoneNumber.sample");
-      Response response = postData("/vendor-storage/phone_numbers", dataSample);
+      Response response = postData("/vendor-storage/phone-numbers", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("phone_number", equalTo("1978999999"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 phone number was created ... ");
-      getData("/vendor-storage/phone_numbers").then().log().ifValidationFails()
+      getData("/vendor-storage/phone-numbers").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching phone number with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/phone_numbers", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/phone-numbers", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class PhoneNumberTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("phone_number", "1234567890");
-      response = putData("/vendor-storage/phone_numbers", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/phone-numbers", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching phone number with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/phone_numbers", dataSampleId).then()
+      getDataById("/vendor-storage/phone-numbers", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("phone_number", equalTo("1234567890"));
 
       logger.info("--- mod-vendors-test: Deleting phone number with ID ... ");
-      deleteData("/vendor-storage/phone_numbers", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/phone-numbers", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

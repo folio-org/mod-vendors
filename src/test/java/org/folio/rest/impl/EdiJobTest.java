@@ -98,7 +98,7 @@ public class EdiJobTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("/vendor-storage/edi_jobs").then()
+    getData("/vendor-storage/edi-jobs").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class EdiJobTest {
 
       logger.info("--- mod-vendors-test: Creating edi job ... ");
       String dataSample = getFile("ediJob.sample");
-      Response response = postData("/vendor-storage/edi_jobs", dataSample);
+      Response response = postData("/vendor-storage/edi-jobs", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("send_to_emails", equalTo("email1@site.com, email2@site.com"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 edi job was created ... ");
-      getData("/vendor-storage/edi_jobs").then().log().ifValidationFails()
+      getData("/vendor-storage/edi-jobs").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching edi job with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/edi_jobs", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/edi-jobs", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class EdiJobTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("send_to_emails", "Gift");
-      response = putData("/vendor-storage/edi_jobs", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/edi-jobs", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching edi job with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/edi_jobs", dataSampleId).then()
+      getDataById("/vendor-storage/edi-jobs", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("send_to_emails", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting edi job with ID ... ");
-      deleteData("/vendor-storage/edi_jobs", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/edi-jobs", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

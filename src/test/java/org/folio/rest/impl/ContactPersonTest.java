@@ -98,7 +98,7 @@ public class ContactPersonTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("/vendor-storage/contact_persons").then()
+    getData("/vendor-storage/contact-persons").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class ContactPersonTest {
 
       logger.info("--- mod-vendors-test: Creating contact_person ... ");
       String dataSample = getFile("contactPerson.sample");
-      Response response = postData("/vendor-storage/contact_persons", dataSample);
+      Response response = postData("/vendor-storage/contact-persons", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("prefix", equalTo("Director"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 contact_person was created ... ");
-      getData("/vendor-storage/contact_persons").then().log().ifValidationFails()
+      getData("/vendor-storage/contact-persons").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching contact_person with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/contact_persons", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/contact-persons", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class ContactPersonTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("prefix", "Gift");
-      response = putData("/vendor-storage/contact_persons", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/contact-persons", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching contact_person with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/contact_persons", dataSampleId).then()
+      getDataById("/vendor-storage/contact-persons", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("prefix", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting contact_person with ID ... ");
-      deleteData("/vendor-storage/contact_persons", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/contact-persons", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }

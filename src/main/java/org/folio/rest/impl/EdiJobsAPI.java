@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class EdiJobsAPI implements VendorStorageEdiJobs {
   private static final String EDI_JOB_TABLE = "edi_job";
-  private static final String EDI_JOB_LOCATION_PREFIX = "/vendor-storage/edi_jobs/";
+  private static final String EDI_JOB_LOCATION_PREFIX = "/vendor-storage/edi-jobs/";
 
   private static final Logger log = LoggerFactory.getLogger(EdiJobsAPI.class);
   private final Messages messages = Messages.getInstance();

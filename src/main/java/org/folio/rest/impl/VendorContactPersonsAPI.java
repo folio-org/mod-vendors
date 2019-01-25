@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class VendorContactPersonsAPI implements VendorStorageVendorContactPersons {
   private static final String VENDOR_CONTACT_PERSON_TABLE = "vendor_contact_person";
-  private static final String VENDOR_CONTACT_PERSON_LOCATION_PREFIX = "/vendor-storage/vendor_contact_persons/";
+  private static final String VENDOR_CONTACT_PERSON_LOCATION_PREFIX = "/vendor-storage/vendor-contact-persons/";
 
   private static final Logger log = LoggerFactory.getLogger(VendorContactPersonsAPI.class);
   private final Messages messages = Messages.getInstance();

@@ -98,7 +98,7 @@ public class EdiFtpTest {
   private void verifyCollection() {
 
     // Verify that there are no existing po_line records
-    getData("/vendor-storage/edi_ftps").then()
+    getData("/vendor-storage/edi-ftps").then()
       .log().all()
       .statusCode(200)
       .body("total_records", equalTo(0));
@@ -118,19 +118,19 @@ public class EdiFtpTest {
 
       logger.info("--- mod-vendors-test: Creating edi ftp... ");
       String dataSample = getFile("ediFtp.sample");
-      Response response = postData("/vendor-storage/edi_ftps", dataSample);
+      Response response = postData("/vendor-storage/edi-ftps", dataSample);
       response.then().log().ifValidationFails()
         .statusCode(201)
         .body("ftp_format", equalTo("SFTP"));
       String dataSampleId = response.then().extract().path("id");
 
       logger.info("--- mod-vendors-test: Verifying only 1 edi ftp was created ... ");
-      getData("/vendor-storage/edi_ftps").then().log().ifValidationFails()
+      getData("/vendor-storage/edi-ftps").then().log().ifValidationFails()
         .statusCode(200)
         .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching edi ftp with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/edi_ftps", dataSampleId).then().log().ifValidationFails()
+      getDataById("/vendor-storage/edi-ftps", dataSampleId).then().log().ifValidationFails()
         .statusCode(200)
         .body("id", equalTo(dataSampleId));
 
@@ -138,17 +138,17 @@ public class EdiFtpTest {
       JSONObject catJSON = new JSONObject(dataSample);
       catJSON.put("id", dataSampleId);
       catJSON.put("ftp_format", "Gift");
-      response = putData("/vendor-storage/edi_ftps", dataSampleId, catJSON.toString());
+      response = putData("/vendor-storage/edi-ftps", dataSampleId, catJSON.toString());
       response.then().log().ifValidationFails()
         .statusCode(204);
 
       logger.info("--- mod-vendors-test: Fetching edi ftp with ID: "+ dataSampleId);
-      getDataById("/vendor-storage/edi_ftps", dataSampleId).then()
+      getDataById("/vendor-storage/edi-ftps", dataSampleId).then()
         .statusCode(200).log().ifValidationFails()
         .body("ftp_format", equalTo("Gift"));
 
       logger.info("--- mod-vendors-test: Deleting edi with ID ... ");
-      deleteData("/vendor-storage/edi_ftps", dataSampleId).then().log().ifValidationFails()
+      deleteData("/vendor-storage/edi-ftps", dataSampleId).then().log().ifValidationFails()
         .statusCode(204);
 
     }
