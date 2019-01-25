@@ -21,14 +21,16 @@
       "zipCode": "01938",
       "country": "USA",
       "categories": [],
-      "language": "en"
+      "language": "en",
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
       "phone_number": "1-800-653-2726",
       "categories": [],
-      "language": "en-us"
+      "language": "en-us",
+      "isPrimary": true
     }
   ],
   "emails": [
@@ -36,7 +38,8 @@
       "value": "jbeck@ebsco.com",
       "description": "Customer Service Rep",
       "categories": [],
-      "language": "en-us"
+      "language": "en-us",
+      "isPrimary": true
     }
   ],
   "urls": [
@@ -45,7 +48,8 @@
       "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -61,7 +65,8 @@
           {
             "phone_number": "1-800-653-2726",
             "categories": [],
-            "language": "en-us"
+            "language": "en-us",
+            "isPrimary": true
           }
         ],
         "emails": [
@@ -69,7 +74,8 @@
             "value": "jbeck@ebsco.com",
             "description": "Customer Service Rep",
             "categories": [],
-            "language": "en-us"
+            "language": "en-us",
+            "isPrimary": true
           }
         ],
         "addresses": [
@@ -81,7 +87,8 @@
             "zipCode": "01938",
             "country": "USA",
             "categories": [],
-            "language": "en"
+            "language": "en",
+            "isPrimary": true
           }
         ],
         "urls": [
@@ -90,7 +97,8 @@
             "description": "main website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

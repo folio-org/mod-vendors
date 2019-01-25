@@ -3,5 +3,6 @@
     "city": "Ipswich",
     "stateRegion": "MA",
     "zipCode": "01938",
-    "country": "USA"
+    "country": "USA",
+    "isPrimary": true
 }

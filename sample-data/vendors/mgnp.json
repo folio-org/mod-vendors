@@ -21,14 +21,16 @@
       "zipCode": "1346",
       "country": "New Zealand",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
       "phone_number": "64-95-783-996",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
@@ -36,7 +38,8 @@
       "value": "magnolia@mapress.com",
       "description": "Customer Service",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
@@ -45,7 +48,8 @@
       "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -61,7 +65,8 @@
           {
             "phone_number": "64-95-783-996",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
@@ -69,7 +74,8 @@
             "value": "magnolia@mapress.com",
             "description": "Customer Service",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
@@ -81,7 +87,8 @@
             "zipCode": "1346",
             "country": "New Zealand",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "urls": [
@@ -90,7 +97,8 @@
             "description": "main website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

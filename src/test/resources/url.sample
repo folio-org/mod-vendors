@@ -1,4 +1,5 @@
 {
     "value": "http://folio.org",
-    "description": "test"
+    "description": "test",
+    "isPrimary": true
 }

@@ -21,14 +21,16 @@
       "zipCode": "94965",
       "country": "USA",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
       "phone_number": "1-415-332-6471",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
@@ -36,7 +38,8 @@
       "value": "info@rocofilms.com",
       "description": "initial contact address",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
@@ -45,7 +48,8 @@
       "description": "main website",
       "language": "English",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -61,7 +65,8 @@
           {
             "phone_number": "1-415-332-6471",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
@@ -69,7 +74,8 @@
             "value": "info@rocofilms.com",
             "description": "initial contact address",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
@@ -81,7 +87,8 @@
             "zipCode": "94965",
             "country": "USA",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "urls": [
@@ -90,7 +97,8 @@
             "description": "main website",
             "language": "English",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

@@ -21,14 +21,16 @@
       "zipCode": "20192",
       "country": "USA",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
       "phone_number": "1-888-ASK-USGS",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
@@ -36,7 +38,8 @@
       "value": "usgsstore@usgs.gov",
       "description": "main customer service email",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
@@ -45,7 +48,8 @@
       "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -61,7 +65,8 @@
           {
             "phone_number": "1-888-ASK-USGS",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
@@ -69,7 +74,8 @@
             "value": "usgsstore@usgs.gov",
             "description": "main customer service email",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
@@ -82,7 +88,7 @@
             "country": "USA",
             "categories": [],
             "language": "English",
-            "san_code": ""
+            "isPrimary": true
           }
         ],
         "urls": [
@@ -91,7 +97,8 @@
             "description": "main website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

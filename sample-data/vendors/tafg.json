@@ -21,14 +21,16 @@
       "zipCode": "33487",
       "country": "USA",
       "categories": ["Customer Service","Payments"],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
       "phone_number": "1-800-634-7064",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "emails": [
@@ -36,7 +38,8 @@
       "value": "enquiries@taylorandfrancis.com",
       "description": "Customer Servicel",
       "categories": [],
-      "language": "English"
+      "language": "English",
+      "isPrimary": true
     }
   ],
   "urls": [
@@ -45,7 +48,8 @@
       "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -61,7 +65,8 @@
           {
             "phone_number": "1-800-634-7064",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "emails": [
@@ -69,7 +74,8 @@
             "value": "enquiries@taylorandfrancis.com",
             "description": "Customer Servicel",
             "categories": [],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "addresses": [
@@ -81,7 +87,8 @@
             "zipCode": "33487",
             "country": "USA",
             "categories": ["Customer Service","Payments"],
-            "language": "English"
+            "language": "English",
+            "isPrimary": true
           }
         ],
         "urls": [
@@ -90,7 +97,8 @@
             "description": "main website",
             "language": "en-us",
             "categories": [],
-            "notes": ""
+            "notes": "",
+            "isPrimary": true
           }
         ]
       },

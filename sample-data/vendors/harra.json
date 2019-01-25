@@ -21,14 +21,16 @@
       "zipCode": "65205",
       "country": "Germany",
       "categories": ["Customer Service","Payments","Returns","Shipments"],
-      "language": "German"
+      "language": "German",
+      "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
       "phone_number": "49-611-530 ext. 0",
       "categories": ["Customer Service","Payments","Returns","Shipments"],
-      "language": "German"
+      "language": "German",
+      "isPrimary": true
     }
   ],
   "emails": [
@@ -36,7 +38,8 @@
       "value": "service@harrassowitz.de",
       "description": "customer service",
       "categories": [],
-      "language": "German and English"
+      "language": "German and English",
+      "isPrimary": true
     }
   ],
   "urls": [
@@ -45,7 +48,8 @@
       "description": "main website",
       "language": "en-us",
       "categories": [],
-      "notes": ""
+      "notes": "",
+      "isPrimary": true
     }
   ],
   "contacts": [
@@ -61,7 +65,8 @@
           {
             "phone_number": "49-611-530 ext. 0",
             "categories": ["Customer Service","Payments","Returns","Shipments"],
-            "language": "German"
+            "language": "German",
+            "isPrimary": true
           }
         ],
         "emails": [
@@ -69,7 +74,8 @@
             "value": "service@harrassowitz.de",
             "description": "customer service",
             "categories": [],
-            "language": "German and English"
+            "language": "German and English",
+            "isPrimary": true
           }
         ],
         "addresses": [
@@ -81,7 +87,8 @@
             "zipCode": "65205",
             "country": "Germany",
             "categories": ["Customer Service","Payments","Returns","Shipments"],
-            "language": "German"
+            "language": "German",
+            "isPrimary": true
           }
         ],
         "emails": [
@@ -89,7 +96,8 @@
             "value": "service@harrassowitz.de",
             "description": "customer service",
             "categories": [],
-            "language": "German and English"
+            "language": "German and English",
+            "isPrimary": true
           }
         ]
       },
