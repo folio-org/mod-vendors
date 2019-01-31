@@ -55,7 +55,7 @@
         {
           "methods": ["PUT"],
           "pathPattern": "/vendor-storage/addresses/{id}",
-          "permissionsRequired": ["/vendor-storage.addresses.item.put"]
+          "permissionsRequired": ["vendor-storage.addresses.item.put"]
         },
         {
           "methods": ["DELETE"],
@@ -76,7 +76,7 @@
         {
           "methods": ["POST"],
           "pathPattern": "/vendor-storage/agreements",
-          "permissionsRequired": ["vendor-storage.agreement.item.post"]
+          "permissionsRequired": ["vendor-storage.agreements.item.post"]
         },
         {
           "methods": ["GET"],
@@ -86,7 +86,7 @@
         {
           "methods": ["PUT"],
           "pathPattern": "/vendor-storage/agreements/{id}",
-          "permissionsRequired": ["vendor-storage.agreement.item.put"]
+          "permissionsRequired": ["vendor-storage.agreements.item.put"]
         },
         {
           "methods": ["DELETE"],
@@ -112,7 +112,7 @@
         {
           "methods": ["GET"],
           "pathPattern": "/vendor-storage/aliases/{id}",
-          "permissionsRequired": ["vendor-storage.alias.item.get"]
+          "permissionsRequired": ["vendor-storage.aliases.item.get"]
         },
         {
           "methods": ["PUT"],
@@ -412,7 +412,7 @@
         {
           "methods": ["GET"],
           "pathPattern": "/vendor-storage/vendor-contact-persons",
-          "permissionsRequired": ["vendors.vendor-contact-persons.collection.get"]
+          "permissionsRequired": ["vendor-storage.vendor-contact-persons.collection.get"]
         },
         {
           "methods": ["POST"],
