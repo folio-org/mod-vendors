@@ -128,6 +128,7 @@
   "expected_invoice_interval": 30,
   "renewal_activation_interval": 0,
   "subscription_interval": 0,
+  "expected_receipt_interval": 30,
   "liable_for_vat": false,
   "tax_id": "888888888",
   "tax_percentage": 0,
