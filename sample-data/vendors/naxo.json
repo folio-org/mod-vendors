@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "English",
-      "contact_person": {
-        "prefix": "Prof.",
-        "first_name": "Marie",
-        "last_name": "Curie",
-        "language": "English",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "1-615-771-9393",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "service@naxosusa.com",
-            "description": "Customer Service",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "416 Mary Lindsay Polk Dr.",
-            "addressLine2": "",
-            "city": "Franklin",
-            "stateRegion": "TN",
-            "zipCode": "37067",
-            "country": "USA",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "https://www.naxos.com/",
-            "description": "main website",
-            "language": "en-us",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "Prof.",
+      "first_name": "Marie",
+      "last_name": "Curie",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "1-615-771-9393",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "service@naxosusa.com",
+          "description": "Customer Service",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "416 Mary Lindsay Polk Dr.",
+          "addressLine2": "",
+          "city": "Franklin",
+          "stateRegion": "TN",
+          "zipCode": "37067",
+          "country": "USA",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "https://www.naxos.com/",
+          "description": "main website",
+          "language": "en-us",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "English",
-      "contact_person": {
-        "prefix": "Mr.",
-        "first_name": "Ryan",
-        "last_name": "Zinke",
-        "language": "English",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "1-888-ASK-USGS",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "usgsstore@usgs.gov",
-            "description": "main customer service email",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "12201 Sunrise Valley Drive",
-            "addressLine2": "P.O. Box 15550",
-            "city": "Reston",
-            "stateRegion": "VA",
-            "zipCode": "20192",
-            "country": "USA",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "https://www.usgs.gov/",
-            "description": "main website",
-            "language": "en-us",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "Mr.",
+      "first_name": "Ryan",
+      "last_name": "Zinke",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "1-888-ASK-USGS",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "usgsstore@usgs.gov",
+          "description": "main customer service email",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "12201 Sunrise Valley Drive",
+          "addressLine2": "P.O. Box 15550",
+          "city": "Reston",
+          "stateRegion": "VA",
+          "zipCode": "20192",
+          "country": "USA",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "https://www.usgs.gov/",
+          "description": "main website",
+          "language": "en-us",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

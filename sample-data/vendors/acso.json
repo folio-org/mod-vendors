@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "English",
-      "contact_person": {
-        "prefix": "Dr.",
-        "first_name": "John",
-        "last_name": "Denver",
-        "language": "English",
-        "notes": "Postal code = 80303",
-        "phone_numbers": [
-          {
-            "phone_number": "1-800-333-9511",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "service@acs.org",
-            "description": "Customer Service",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "1155 Sixteenth Street, NW",
-            "addressLine2": "",
-            "city": "Washington",
-            "stateRegion": "DC",
-            "zipCode": "20036",
-            "country": "USA",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "https://www.acs.org/content/acs/en.html",
-            "description": "main English language website",
-            "language": "en-us",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "Dr.",
+      "first_name": "John",
+      "last_name": "Denver",
+      "notes": "Postal code = 80303",
+      "phone_numbers": [
+        {
+          "phone_number": "1-800-333-9511",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "service@acs.org",
+          "description": "Customer Service",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "1155 Sixteenth Street, NW",
+          "addressLine2": "",
+          "city": "Washington",
+          "stateRegion": "DC",
+          "zipCode": "20036",
+          "country": "USA",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "https://www.acs.org/content/acs/en.html",
+          "description": "main English language website",
+          "language": "en-us",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

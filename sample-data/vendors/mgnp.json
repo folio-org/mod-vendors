@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "English",
-      "contact_person": {
-        "prefix": "Mrs.",
-        "first_name": "Siouxsie",
-        "last_name": "Sioux ",
-        "language": "English",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "64-95-783-996",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "magnolia@mapress.com",
-            "description": "Customer Service",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "Saint Lukes",
-            "addressLine2": "P.O. Box 41383",
-            "city": "Auckland",
-            "stateRegion": "",
-            "zipCode": "1346",
-            "country": "New Zealand",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "http://www.mapress.com/j/",
-            "description": "main website",
-            "language": "en-us",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "Mrs.",
+      "first_name": "Siouxsie",
+      "last_name": "Sioux ",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "64-95-783-996",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "magnolia@mapress.com",
+          "description": "Customer Service",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "Saint Lukes",
+          "addressLine2": "P.O. Box 41383",
+          "city": "Auckland",
+          "stateRegion": "",
+          "zipCode": "1346",
+          "country": "New Zealand",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "http://www.mapress.com/j/",
+          "description": "main website",
+          "language": "en-us",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

@@ -4,9 +4,9 @@ import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.folio.rest.RestVerticle;
-import org.folio.rest.jaxrs.model.ContactPerson;
-import org.folio.rest.jaxrs.model.ContactPersonCollection;
-import org.folio.rest.jaxrs.resource.VendorStorageContactPersons;
+import org.folio.rest.jaxrs.model.Contact;
+import org.folio.rest.jaxrs.model.ContactCollection;
+import org.folio.rest.jaxrs.resource.VendorStorageContacts;
 import org.folio.rest.persist.Criteria.Criteria;
 import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ContactPersonsAPI implements VendorStorageContactPersons {
-  private static final String CONTACT_PERSON_TABLE = "contact_person";
-  private static final String CONTACT_PERSON_LOCATION_PREFIX = "/vendor-storage/contact-persons/";
+public class ContactsAPI implements VendorStorageContacts {
+  private static final String CONTACT_PERSON_TABLE = "contact";
+  private static final String CONTACT_PERSON_LOCATION_PREFIX = "/vendor-storage/contacts/";
 
-  private static final Logger log = LoggerFactory.getLogger(ContactPersonsAPI.class);
+  private static final Logger log = LoggerFactory.getLogger(ContactsAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
 
@@ -41,13 +41,13 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
     return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
   }
 
-  public ContactPersonsAPI(Vertx vertx, String tenantId) {
+  public ContactsAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
   }
 
 
   @Override
-  public void getVendorStorageContactPersons(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorStorageContacts(String query, int offset, int limit, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext((Void v) -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
@@ -58,14 +58,14 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
           .setLimit(new Limit(limit))
           .setOffset(new Offset(offset));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CONTACT_PERSON_TABLE, ContactPerson.class, fieldList, cql,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CONTACT_PERSON_TABLE, Contact.class, fieldList, cql,
           true, false, reply -> {
             try {
               if(reply.succeeded()){
-                ContactPersonCollection collection = new ContactPersonCollection();
+                ContactCollection collection = new ContactCollection();
                 @SuppressWarnings("unchecked")
-                List<ContactPerson> results = (List<ContactPerson>)reply.result().getResults();
-                collection.setContactPersons(results);
+                List<Contact> results = (List<Contact>)reply.result().getResults();
+                collection.setContacts(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
                 Integer first = 0;
@@ -76,17 +76,17 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
                 }
                 collection.setFirst(first);
                 collection.setLast(last);
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsResponse
                   .respond200WithApplicationJson(collection)));
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
-                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsResponse
+                asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsResponse
                   .respond400WithTextPlain(reply.cause().getMessage())));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsResponse
+              asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsResponse
                 .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
@@ -96,14 +96,14 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
         if(e.getCause() != null && e.getCause().getClass().getSimpleName().endsWith("CQLParseException")){
           message = " CQL parse error " + e.getLocalizedMessage();
         }
-        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsResponse
+        asyncResultHandler.handle(io.vertx.core.Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsResponse
           .respond500WithTextPlain(message)));
       }
     });
   }
 
   @Override
-  public void postVendorStorageContactPersons(String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void postVendorStorageContacts(String lang, Contact entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
 
       try {
@@ -126,21 +126,21 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
                 OutStream stream = new OutStream();
                 stream.setData(entity);
 
-                Response response = VendorStorageContactPersons.PostVendorStorageContactPersonsResponse.respond201WithApplicationJson(stream,
-                  VendorStorageContactPersons.PostVendorStorageContactPersonsResponse.headersFor201()
+                Response response = VendorStorageContacts.PostVendorStorageContactsResponse.respond201WithApplicationJson(stream,
+                  VendorStorageContacts.PostVendorStorageContactsResponse.headersFor201()
                     .withLocation(CONTACT_PERSON_LOCATION_PREFIX + persistenceId));
                 respond(asyncResultHandler, response);
               }
               else {
                 log.error(reply.cause().getMessage(), reply.cause());
-                Response response = VendorStorageContactPersons.PostVendorStorageContactPersonsResponse.respond500WithTextPlain(reply.cause().getMessage());
+                Response response = VendorStorageContacts.PostVendorStorageContactsResponse.respond500WithTextPlain(reply.cause().getMessage());
                 respond(asyncResultHandler, response);
               }
             }
             catch (Exception e) {
               log.error(e.getMessage(), e);
 
-              Response response = VendorStorageContactPersons.PostVendorStorageContactPersonsResponse.respond500WithTextPlain(e.getMessage());
+              Response response = VendorStorageContacts.PostVendorStorageContactsResponse.respond500WithTextPlain(e.getMessage());
               respond(asyncResultHandler, response);
             }
 
@@ -151,7 +151,7 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
         log.error(e.getMessage(), e);
 
         String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = VendorStorageContactPersons.PostVendorStorageContactPersonsResponse.respond500WithTextPlain(errMsg);
+        Response response = VendorStorageContacts.PostVendorStorageContactsResponse.respond500WithTextPlain(errMsg);
         respond(asyncResultHandler, response);
       }
 
@@ -159,56 +159,56 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
   }
 
   @Override
-  public void getVendorStorageContactPersonsById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void getVendorStorageContactsById(String contactId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       try {
         String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
 
-        String idArgument = String.format("'%s'", contactPersonId);
+        String idArgument = String.format("'%s'", contactId);
         Criterion c = new Criterion(
           new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
 
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CONTACT_PERSON_TABLE, ContactPerson.class, c, true,
+        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(CONTACT_PERSON_TABLE, Contact.class, c, true,
           reply -> {
             try {
               if (reply.succeeded()) {
-                List<ContactPerson> results = (List<ContactPerson>) reply.result().getResults();
+                List<Contact> results = (List<Contact>) reply.result().getResults();
                 if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsByIdResponse
-                    .respond404WithTextPlain(contactPersonId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsByIdResponse
+                    .respond404WithTextPlain(contactId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsByIdResponse
                     .respond200WithApplicationJson(results.get(0))));
                 }
               }
               else{
                 log.error(reply.cause().getMessage(), reply.cause());
                 if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsByIdResponse
-                    .respond404WithTextPlain(contactPersonId)));
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsByIdResponse
+                    .respond404WithTextPlain(contactId)));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsByIdResponse
                     .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
                 }
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsByIdResponse
                 .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.GetVendorStorageContactPersonsByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsByIdResponse
           .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });
   }
 
   @Override
-  public void deleteVendorStorageContactPersonsById(String contactPersonId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void deleteVendorStorageContactsById(String contactId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     String tenantId = TenantTool.tenantId(okapiHeaders);
 
     try {
@@ -217,64 +217,64 @@ public class ContactPersonsAPI implements VendorStorageContactPersons {
           vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
 
         try {
-          postgresClient.delete(CONTACT_PERSON_TABLE, contactPersonId, reply -> {
+          postgresClient.delete(CONTACT_PERSON_TABLE, contactId, reply -> {
             if (reply.succeeded()) {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorStorageContactPersons.DeleteVendorStorageContactPersonsByIdResponse.noContent()
+                VendorStorageContacts.DeleteVendorStorageContactsByIdResponse.noContent()
                   .build()));
             } else {
               asyncResultHandler.handle(Future.succeededFuture(
-                VendorStorageContactPersons.DeleteVendorStorageContactPersonsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
+                VendorStorageContacts.DeleteVendorStorageContactsByIdResponse.respond500WithTextPlain(reply.cause().getMessage())));
             }
           });
         } catch (Exception e) {
           asyncResultHandler.handle(Future.succeededFuture(
-            VendorStorageContactPersons.DeleteVendorStorageContactPersonsByIdResponse.respond500WithTextPlain(e.getMessage())));
+            VendorStorageContacts.DeleteVendorStorageContactsByIdResponse.respond500WithTextPlain(e.getMessage())));
         }
       });
     }
     catch(Exception e) {
       asyncResultHandler.handle(Future.succeededFuture(
-        VendorStorageContactPersons.DeleteVendorStorageContactPersonsByIdResponse.respond500WithTextPlain(e.getMessage())));
+        VendorStorageContacts.DeleteVendorStorageContactsByIdResponse.respond500WithTextPlain(e.getMessage())));
     }
   }
 
   @Override
-  public void putVendorStorageContactPersonsById(String contactPersonId, String lang, ContactPerson entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+  public void putVendorStorageContactsById(String contactId, String lang, Contact entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
     vertxContext.runOnContext(v -> {
       String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
       try {
         if(entity.getId() == null){
-          entity.setId(contactPersonId);
+          entity.setId(contactId);
         }
         PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          CONTACT_PERSON_TABLE, entity, contactPersonId,
+          CONTACT_PERSON_TABLE, entity, contactId,
           reply -> {
             try {
               if(reply.succeeded()){
                 if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.PutVendorStorageContactPersonsByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.PutVendorStorageContactsByIdResponse
                     .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
                 }
                 else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.PutVendorStorageContactPersonsByIdResponse
+                  asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.PutVendorStorageContactsByIdResponse
                     .respond204()));
                 }
               }
               else{
                 log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.PutVendorStorageContactPersonsByIdResponse
+                asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.PutVendorStorageContactsByIdResponse
                   .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
               }
             } catch (Exception e) {
               log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.PutVendorStorageContactPersonsByIdResponse
+              asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.PutVendorStorageContactsByIdResponse
                 .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
             }
           });
       } catch (Exception e) {
         log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorStorageContactPersons.PutVendorStorageContactPersonsByIdResponse
+        asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.PutVendorStorageContactsByIdResponse
           .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
       }
     });

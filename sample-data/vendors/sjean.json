@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "English",
-      "contact_person": {
-        "prefix": "Sister",
-        "first_name": "Jean",
-        "last_name": "Simmons",
-        "language": "English",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "1-773-274-3000",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "sister@luc.edu",
-            "description": "personal email ",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "1032 W. Sheridan Rd",
-            "addressLine2": "",
-            "city": "Chicago",
-            "stateRegion": "IL",
-            "zipCode": "60660",
-            "country": "USA",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "",
-            "description": "",
-            "language": "",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "Sister",
+      "first_name": "Jean",
+      "last_name": "Simmons",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "1-773-274-3000",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "sister@luc.edu",
+          "description": "personal email ",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "1032 W. Sheridan Rd",
+          "addressLine2": "",
+          "city": "Chicago",
+          "stateRegion": "IL",
+          "zipCode": "60660",
+          "country": "USA",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "",
+          "description": "",
+          "language": "",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

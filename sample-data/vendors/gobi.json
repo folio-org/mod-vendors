@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "en-us",
-      "contact_person": {
-        "prefix": "",
-        "first_name": "Sarah",
-        "last_name": "Silverman",
-        "language": "en-us",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "1-800-258-3774",
-            "categories": ["Customer Service"],
-            "language": "en-us",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "gobiserviceissue@ebsco.com",
-            "description": "for general questions",
-            "categories": ["Customer Service"],
-            "language": "en-us",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "999 Maple Street",
-            "addressLine2": "2",
-            "city": "Contoocook",
-            "stateRegion": "NH",
-            "zipCode": "03229",
-            "country": "USA",
-            "categories": ["Customer","Service","Shipments"],
-            "language": "en",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "https://gobi.ebsco.com/",
-            "description": "main website",
-            "language": "en-us",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "",
+      "first_name": "Sarah",
+      "last_name": "Silverman",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "1-800-258-3774",
+          "categories": ["Customer Service"],
+          "language": "en-us",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "gobiserviceissue@ebsco.com",
+          "description": "for general questions",
+          "categories": ["Customer Service"],
+          "language": "en-us",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "999 Maple Street",
+          "addressLine2": "2",
+          "city": "Contoocook",
+          "stateRegion": "NH",
+          "zipCode": "03229",
+          "country": "USA",
+          "categories": ["Customer","Service","Shipments"],
+          "language": "en",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "https://gobi.ebsco.com/",
+          "description": "main website",
+          "language": "en-us",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

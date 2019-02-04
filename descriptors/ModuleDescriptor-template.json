@@ -158,33 +158,33 @@
       ]
     },
     {
-      "id": "vendor-storage.contact-persons",
+      "id": "vendor-storage.contacts",
       "version": "1.0",
       "handlers": [
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor-storage/contact-persons",
-          "permissionsRequired": ["vendor-storage.contact-persons.collection.get"]
+          "pathPattern": "/vendor-storage/contacts",
+          "permissionsRequired": ["vendor-storage.contacts.collection.get"]
         },
         {
           "methods": ["POST"],
-          "pathPattern": "/vendor-storage/contact-persons",
-          "permissionsRequired": ["vendor-storage.contact-persons.item.post"]
+          "pathPattern": "/vendor-storage/contacts",
+          "permissionsRequired": ["vendor-storage.contacts.item.post"]
         },
         {
           "methods": ["GET"],
-          "pathPattern": "/vendor-storage/contact-persons/{id}",
-          "permissionsRequired": ["vendor-storage.contact-persons.item.get"]
+          "pathPattern": "/vendor-storage/contacts/{id}",
+          "permissionsRequired": ["vendor-storage.contacts.item.get"]
         },
         {
           "methods": ["PUT"],
-          "pathPattern": "/vendor-storage/contact-persons/{id}",
-          "permissionsRequired": ["vendor-storage.contact-persons.item.put"]
+          "pathPattern": "/vendor-storage/contacts/{id}",
+          "permissionsRequired": ["vendor-storage.contacts.item.put"]
         },
         {
           "methods": ["DELETE"],
-          "pathPattern": "/vendor-storage/contact-persons/{id}",
-          "permissionsRequired": ["vendor-storage.contact-persons.item.delete"]
+          "pathPattern": "/vendor-storage/contacts/{id}",
+          "permissionsRequired": ["vendor-storage.contacts.item.delete"]
         }
       ]
     },
@@ -402,37 +402,6 @@
           "methods": ["DELETE"],
           "pathPattern": "/vendor-storage/urls/{id}",
           "permissionsRequired": ["vendor-storage.urls.item.delete"]
-        }
-      ]
-    },
-    {
-      "id": "vendor-storage.vendor-contact-persons",
-      "version": "1.0",
-      "handlers": [
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor-storage/vendor-contact-persons",
-          "permissionsRequired": ["vendor-storage.vendor-contact-persons.collection.get"]
-        },
-        {
-          "methods": ["POST"],
-          "pathPattern": "/vendor-storage/vendor-contact-persons",
-          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.post"]
-        },
-        {
-          "methods": ["GET"],
-          "pathPattern": "/vendor-storage/vendor-contact-persons/{id}",
-          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.get"]
-        },
-        {
-          "methods": ["PUT"],
-          "pathPattern": "/vendor-storage/vendor-contact-persons/{id}",
-          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.put"]
-        },
-        {
-          "methods": ["DELETE"],
-          "pathPattern": "/vendor-storage/vendor-contact-persons/{id}",
-          "permissionsRequired": ["vendor-storage.vendor-contact-persons.item.delete"]
         }
       ]
     },
@@ -697,40 +666,40 @@
       ]
     },
     {
-      "permissionName" : "vendor-storage.contact-persons.collection.get",
-      "displayName" : "ccontact_person collection get",
-      "description" : "Get a collection of contact persons"
+      "permissionName" : "vendor-storage.contacts.collection.get",
+      "displayName" : "contact collection get",
+      "description" : "Get a collection of contacts"
     },
     {
-      "permissionName" : "vendor-storage.contact-persons.item.post",
-      "displayName" : "contact_person post",
-      "description" : "Create a new contact_person"
+      "permissionName" : "vendor-storage.contacts.item.post",
+      "displayName" : "contact post",
+      "description" : "Create a new contact"
     },
     {
-      "permissionName" : "vendor-storage.contact-persons.item.get",
-      "displayName" : "contact_person get",
-      "description" : "Fetch a contact_person"
+      "permissionName" : "vendor-storage.contacts.item.get",
+      "displayName" : "contact get",
+      "description" : "Fetch a contact"
     },
     {
-      "permissionName" : "vendor-storage.contact-persons.item.put",
-      "displayName" : "contact_person put",
-      "description" : "Update a contact_person"
+      "permissionName" : "vendor-storage.contacts.item.put",
+      "displayName" : "contact put",
+      "description" : "Update a contact"
     },
     {
-      "permissionName" : "vendor-storage.contact-persons.item.delete",
-      "displayName" : "contact_person delete",
-      "description" : "Delete a contact_person"
+      "permissionName" : "vendor-storage.contacts.item.delete",
+      "displayName" : "contact delete",
+      "description" : "Delete a contact"
     },
     {
-      "permissionName" : "vendor-storage.contact-persons.all",
-      "displayName" : "contact_person all",
-      "description" : "All permissions for contact_person",
+      "permissionName" : "vendor-storage.contacts.all",
+      "displayName" : "contact all",
+      "description" : "All permissions for contact",
       "subPermissions" : [
-        "vendor-storage.contact-persons.collection.get",
-        "vendor-storage.contact-persons.item.post",
-        "vendor-storage.contact-persons.item.get",
-        "vendor-storage.contact-persons.item.put",
-        "vendor-storage.contact-persons.item.delete"
+        "vendor-storage.contacts.collection.get",
+        "vendor-storage.contacts.item.post",
+        "vendor-storage.contacts.item.get",
+        "vendor-storage.contacts.item.put",
+        "vendor-storage.contacts.item.delete"
       ]
     },
     {
@@ -993,43 +962,6 @@
       ]
     },
     {
-      "permissionName" : "vendor-storage.vendor-contact-persons.collection.get",
-      "displayName" : "vendor_contact_person get",
-      "description" : "Get a collection of vendor_contact_persons"
-    },
-    {
-      "permissionName" : "vendor-storage.vendor-contact-person.item.post",
-      "displayName" : "vendor_contact_person post",
-      "description" : "Create a new vendor_contact_person"
-    },
-    {
-      "permissionName" : "vendor-storage.vendor-contact-persons.item.get",
-      "displayName" : "vendor_contact_person get",
-      "description" : "Fetch a vendor_contact_person"
-    },
-    {
-      "permissionName" : "vendor-storage.vendor-contact-persons.item.put",
-      "displayName" : "vendor_contact_person put",
-      "description" : "Update a vendor_contact_person"
-    },
-    {
-      "permissionName" : "vendor-storage.vendor-contact-persons.item.delete",
-      "displayName" : "vendor_contact_person delete",
-      "description" : "Delete a vendor_contact_person"
-    },
-    {
-      "permissionName" : "vendor-storage.vendor-contact-persons.all",
-      "displayName" : "vendor_contact_person all",
-      "description" : "All permissions for vendor_contact_person",
-      "subPermissions" : [
-        "vendor-storage.vendor-contact-persons.collection.get",
-        "vendor-storage.vendor-contact-persons.item.post",
-        "vendor-storage.vendor-contact-persons.item.get",
-        "vendor-storage.vendor-contact-persons.item.put",
-        "vendor-storage.vendor-contact-persons.item.delete"
-      ]
-    },
-    {
       "permissionName" : "vendor-storage.vendor-types.collection.get",
       "displayName" : "vendor_type collection get",
       "description" : "Get a collection of vendor_types"
@@ -1113,7 +1045,7 @@
         "vendor-storage.agreements.all",
         "vendor-storage.aliases.all",
         "vendor-storage.categories.all",
-        "vendor-storage.contact-persons.all",
+        "vendor-storage.contacts.all",
         "vendor-storage.edis.all",
         "vendor-storage.edi-ftps.all",
         "vendor-storage.edi-jobs.all",
@@ -1122,7 +1054,6 @@
         "vendor-storage.phone-numbers.all",
         "vendor-storage.urls.all",
         "vendor-storage.vendors.all",
-        "vendor-storage.vendor-contact-persons.all",
         "vendor-storage.vendor-types.all"
       ]
     }
