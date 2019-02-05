@@ -172,7 +172,7 @@ public class ContactsAPI implements VendorStorageContacts {
           reply -> {
             try {
               if (reply.succeeded()) {
-                List<Contact> results = (List<Contact>) reply.result().getResults();
+                List<Contact> results = reply.result().getResults();
                 if (results.isEmpty()) {
                   asyncResultHandler.handle(Future.succeededFuture(VendorStorageContacts.GetVendorStorageContactsByIdResponse
                     .respond404WithTextPlain(contactId)));
