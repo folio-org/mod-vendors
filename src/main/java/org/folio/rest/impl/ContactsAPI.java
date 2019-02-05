@@ -64,7 +64,7 @@ public class ContactsAPI implements VendorStorageContacts {
               if(reply.succeeded()){
                 ContactCollection collection = new ContactCollection();
                 @SuppressWarnings("unchecked")
-                List<Contact> results = (List<Contact>)reply.result().getResults();
+                List<Contact> results = reply.result().getResults();
                 collection.setContacts(results);
                 Integer totalRecords = reply.result().getResultInfo().getTotalRecords();
                 collection.setTotalRecords(totalRecords);
