@@ -89,12 +89,13 @@
           "isPrimary": true
         }
       ],
-      "emails": [
+      "urls": [
         {
-          "value": "service@harrassowitz.de",
-          "description": "customer service",
+          "value": "https://www.harrassowitz.de/",
+          "description": "main website",
+          "language": "en-us",
           "categories": [],
-          "language": "German and English",
+          "notes": "",
           "isPrimary": true
         }
       ],
@@ -142,19 +143,19 @@
     "notes": "",
     "edi_ftp": {
       "ftp_format": "SFTP",
-      "server_address": "ftp.harrassowitz.de",
+      "server_address": "ftps://ftp.harrassowitz.de",
       "username": "sample",
       "password": "password",
       "ftp_mode": "binary",
       "ftp_conn_mode": "Passive",
-      "ftp_port": "22",
+      "ftp_port": 22,
       "order_directory": "/orders",
       "invoice_directory": "/invoices",
       "notes": ""
     },
     "edi_job": {
       "schedule_edi": true,
-      "date": null,
+      "scheduling_date": null,
       "time": null,
       "is_monday": false,
       "is_tuesday": false,
