@@ -129,47 +129,6 @@
   "liable_for_vat": false,
   "tax_id": "",
   "tax_percentage": 0,
-  "edi": {
-    "vendor_edi_code": "",
-    "vendor_edi_type": "",
-    "lib_edi_code": "",
-    "lib_edi_type": "",
-    "prorate_tax": false,
-    "prorate_fees": false,
-    "edi_naming_convention": "",
-    "send_acct_num": false,
-    "support_order": false,
-    "support_invoice": false,
-    "notes": "",
-    "edi_ftp": {
-      "ftp_format": "",
-      "server_address": "",
-      "username": "",
-      "password": "",
-      "ftp_mode": "",
-      "ftp_conn_mode": "",
-      "ftp_port": 22,
-      "order_directory": "",
-      "invoice_directory": "",
-      "notes": ""
-    },
-    "edi_job": {
-      "schedule_edi": false,
-      "scheduling_date": null,
-      "time": null,
-      "is_monday": false,
-      "is_tuesday": false,
-      "is_wednesday": false,
-      "is_thursday": false,
-      "is_friday": false,
-      "is_saturday": false,
-      "is_sunday": false,
-      "send_to_emails": "",
-      "notify_all_edi": false,
-      "notify_invoice_only": false,
-      "notify_error_only": false
-    }
-  },
   "interfaces": [
     {
       "name": "Naxos Digital Services, U.S.",
