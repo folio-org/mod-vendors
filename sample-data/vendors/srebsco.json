@@ -131,9 +131,9 @@
   "tax_percentage": 0,
   "edi": {
     "vendor_edi_code": "xx-xxx014186",
-    "vendor_edi_type": "31B",
+    "vendor_edi_type": "31B/US-SAN",
     "lib_edi_code": "VOY0081",
-    "lib_edi_type": "31B",
+    "lib_edi_type": "31B/US-SAN",
     "prorate_tax": true,
     "prorate_fees": false,
     "edi_naming_convention": "*.edu",

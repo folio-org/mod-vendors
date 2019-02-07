@@ -131,9 +131,7 @@
   "tax_percentage": 0,
   "edi": {
     "vendor_edi_code": "v10063",
-    "vendor_edi_type": "",
     "lib_edi_code": "COB",
-    "lib_edi_type": "",
     "prorate_tax": false,
     "prorate_fees": false,
     "edi_naming_convention": "****.edu",
