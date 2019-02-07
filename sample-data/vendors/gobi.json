@@ -143,19 +143,19 @@
     "notes": "no EDI invoices for our tech services invoices",
     "edi_ftp": {
       "ftp_format": "SFTP",
-      "server_address": "ftp.ybp.com",
+      "server_address": "sftp://ftp.ybp.com",
       "username": "sample",
       "password": "password",
       "ftp_mode": "binary",
       "ftp_conn_mode": "Passive",
-      "ftp_port": "22",
+      "ftp_port": 22,
       "order_directory": "/dropoff",
       "invoice_directory": "/invoices",
       "notes": "separate directories for EOCRs and cat records"
     },
     "edi_job": {
       "schedule_edi": true,
-      "date": null,
+      "scheduling_date": null,
       "time": null,
       "is_monday": false,
       "is_tuesday": false,

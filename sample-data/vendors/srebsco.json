@@ -44,7 +44,7 @@
   ],
   "urls": [
     {
-      "value": "www.ebsco.com",
+      "value": "http://www.ebsco.com",
       "description": "main website",
       "language": "en-us",
       "categories": [],
@@ -91,7 +91,7 @@
       ],
       "urls": [
         {
-          "value": "www.ebsco.com",
+          "value": "http://www.ebsco.com",
           "description": "main website",
           "language": "en-us",
           "categories": [],
@@ -143,19 +143,19 @@
     "notes": "",
     "edi_ftp": {
       "ftp_format": "SFTP",
-      "server_address": "ftp.ebsco.com",
+      "server_address": "ftps://ftp.ebsco.com",
       "username": "edi_username",
       "password": "edi_password",
       "ftp_mode": "binary",
       "ftp_conn_mode": "Passive",
-      "ftp_port": "22",
+      "ftp_port": 22,
       "order_directory": "",
       "invoice_directory": "",
       "notes": ""
     },
     "edi_job": {
       "schedule_edi": false,
-      "date": null,
+      "scheduling_date": null,
       "time": null,
       "is_monday": false,
       "is_tuesday": false,
