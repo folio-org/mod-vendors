@@ -146,7 +146,7 @@
       "server_address": "ftps://ftp.ebsco.com",
       "username": "edi_username",
       "password": "edi_password",
-      "ftp_mode": "binary",
+      "ftp_mode": "Binary",
       "ftp_conn_mode": "Passive",
       "ftp_port": 22,
       "order_directory": "",
