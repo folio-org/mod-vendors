@@ -7,39 +7,27 @@ import org.folio.rest.RestVerticle;
 import org.folio.rest.jaxrs.model.PhoneNumber;
 import org.folio.rest.jaxrs.model.PhoneNumberCollection;
 import org.folio.rest.jaxrs.resource.VendorStoragePhoneNumbers;
-import org.folio.rest.persist.Criteria.Criteria;
-import org.folio.rest.persist.Criteria.Criterion;
 import org.folio.rest.persist.Criteria.Limit;
 import org.folio.rest.persist.Criteria.Offset;
 import org.folio.rest.persist.PostgresClient;
 import org.folio.rest.persist.cql.CQLWrapper;
 import org.folio.rest.tools.messages.MessageConsts;
 import org.folio.rest.tools.messages.Messages;
-import org.folio.rest.tools.utils.OutStream;
 import org.folio.rest.tools.utils.TenantTool;
 import org.z3950.zing.cql.cql2pgjson.CQL2PgJSON;
+import org.folio.rest.annotations.Validate;
+import org.folio.rest.persist.PgUtil;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class PhoneNumbersAPI implements VendorStoragePhoneNumbers {
   private static final String PHONE_NUMBER_TABLE = "phone_number";
-  private static final String PHONE_NUMBER_LOCATION_PREFIX = "/vendor-storage/phone-numbers/";
 
   private static final Logger log = LoggerFactory.getLogger(PhoneNumbersAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
-
-  private static void respond(Handler<AsyncResult<Response>> handler, Response response) {
-    AsyncResult<Response> result = Future.succeededFuture(response);
-    handler.handle(result);
-  }
-
-  private boolean isInvalidUUID (String errorMessage) {
-    return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
-  }
 
   public PhoneNumbersAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
@@ -103,184 +91,30 @@ public class PhoneNumbersAPI implements VendorStoragePhoneNumbers {
   }
 
   @Override
-  public void postVendorStoragePhoneNumbers(String lang, PhoneNumber entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
-    vertxContext.runOnContext(v -> {
-
-      try {
-        String id = UUID.randomUUID().toString();
-        if(entity.getId() == null){
-          entity.setId(id);
-        }
-        else{
-          id = entity.getId();
-        }
-
-        String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).save(
-          PHONE_NUMBER_TABLE, id, entity,
-          reply -> {
-            try {
-              if (reply.succeeded()) {
-                String persistenceId = reply.result();
-                entity.setId(persistenceId);
-                OutStream stream = new OutStream();
-                stream.setData(entity);
-
-                Response response = VendorStoragePhoneNumbers.PostVendorStoragePhoneNumbersResponse.respond201WithApplicationJson(stream,
-                  VendorStoragePhoneNumbers.PostVendorStoragePhoneNumbersResponse.headersFor201()
-                    .withLocation(PHONE_NUMBER_LOCATION_PREFIX + persistenceId));
-                respond(asyncResultHandler, response);
-              }
-              else {
-                log.error(reply.cause().getMessage(), reply.cause());
-                Response response = VendorStoragePhoneNumbers.PostVendorStoragePhoneNumbersResponse
-                  .respond500WithTextPlain(reply.cause().getMessage());
-                respond(asyncResultHandler, response);
-              }
-            }
-            catch (Exception e) {
-              log.error(e.getMessage(), e);
-
-              Response response = VendorStoragePhoneNumbers.PostVendorStoragePhoneNumbersResponse.respond500WithTextPlain(e.getMessage());
-              respond(asyncResultHandler, response);
-            }
-
-          }
-        );
-      }
-      catch (Exception e) {
-        log.error(e.getMessage(), e);
-
-        String errMsg = messages.getMessage(lang, MessageConsts.InternalServerError);
-        Response response = VendorStoragePhoneNumbers.PostVendorStoragePhoneNumbersResponse.respond500WithTextPlain(errMsg);
-        respond(asyncResultHandler, response);
-      }
-
-    });
+  @Validate
+  public void postVendorStoragePhoneNumbers(String lang, org.folio.rest.jaxrs.model.PhoneNumber entity,
+                                        Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+    PgUtil.post(PHONE_NUMBER_TABLE, entity, okapiHeaders, vertxContext, PostVendorStoragePhoneNumbersResponse.class, asyncResultHandler);
   }
 
   @Override
-  public void getVendorStoragePhoneNumbersById(String phoneNumberId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
-    vertxContext.runOnContext(v -> {
-      try {
-        String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
-
-        String idArgument = String.format("'%s'", phoneNumberId);
-        Criterion c = new Criterion(
-          new Criteria().addField(idFieldName).setJSONB(false).setOperation("=").setValue(idArgument));
-
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).get(PHONE_NUMBER_TABLE, PhoneNumber.class, c, true,
-          reply -> {
-            try {
-              if (reply.succeeded()) {
-                List<PhoneNumber> results = (List<PhoneNumber>) reply.result().getResults();
-                if (results.isEmpty()) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.GetVendorStoragePhoneNumbersByIdResponse
-                    .respond404WithTextPlain(phoneNumberId)));
-                }
-                else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.GetVendorStoragePhoneNumbersByIdResponse
-                    .respond200WithApplicationJson(results.get(0))));
-                }
-              }
-              else{
-                log.error(reply.cause().getMessage(), reply.cause());
-                if (isInvalidUUID(reply.cause().getMessage())) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.GetVendorStoragePhoneNumbersByIdResponse
-                    .respond404WithTextPlain(phoneNumberId)));
-                }
-                else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.GetVendorStoragePhoneNumbersByIdResponse
-                    .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
-                }
-              }
-            } catch (Exception e) {
-              log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.GetVendorStoragePhoneNumbersByIdResponse
-                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
-            }
-          });
-      } catch (Exception e) {
-        log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.GetVendorStoragePhoneNumbersByIdResponse
-          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
-      }
-    });
+  @Validate
+  public void getVendorStoragePhoneNumbersById(String id, String lang, Map<String, String> okapiHeaders,
+                                           Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+    PgUtil.getById(PHONE_NUMBER_TABLE, PhoneNumber.class, id, okapiHeaders,vertxContext, GetVendorStoragePhoneNumbersByIdResponse.class, asyncResultHandler);
   }
 
   @Override
-  public void deleteVendorStoragePhoneNumbersById(String phoneNumberId, String lang, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
-    String tenantId = TenantTool.tenantId(okapiHeaders);
-
-    try {
-      vertxContext.runOnContext(v -> {
-        PostgresClient postgresClient = PostgresClient.getInstance(
-          vertxContext.owner(), TenantTool.calculateTenantId(tenantId));
-
-        try {
-          postgresClient.delete(PHONE_NUMBER_TABLE, phoneNumberId, reply -> {
-            if (reply.succeeded()) {
-              asyncResultHandler.handle(Future.succeededFuture(
-                VendorStoragePhoneNumbers.DeleteVendorStoragePhoneNumbersByIdResponse.noContent()
-                  .build()));
-            } else {
-              asyncResultHandler.handle(Future.succeededFuture(
-                VendorStoragePhoneNumbers.DeleteVendorStoragePhoneNumbersByIdResponse.
-                  respond500WithTextPlain(reply.cause().getMessage())));
-            }
-          });
-        } catch (Exception e) {
-          asyncResultHandler.handle(Future.succeededFuture(
-            VendorStoragePhoneNumbers.DeleteVendorStoragePhoneNumbersByIdResponse.
-              respond500WithTextPlain(e.getMessage())));
-        }
-      });
-    }
-    catch(Exception e) {
-      asyncResultHandler.handle(Future.succeededFuture(
-        VendorStoragePhoneNumbers.DeleteVendorStoragePhoneNumbersByIdResponse.
-          respond500WithTextPlain(e.getMessage())));
-    }
+  @Validate
+  public void deleteVendorStoragePhoneNumbersById(String id, String lang, Map<String, String> okapiHeaders,
+                                              Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+    PgUtil.deleteById(PHONE_NUMBER_TABLE, id, okapiHeaders, vertxContext, DeleteVendorStoragePhoneNumbersByIdResponse.class, asyncResultHandler);
   }
 
   @Override
-  public void putVendorStoragePhoneNumbersById(String phoneNumberId, String lang, PhoneNumber entity, Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
-    vertxContext.runOnContext(v -> {
-      String tenantId = TenantTool.calculateTenantId( okapiHeaders.get(RestVerticle.OKAPI_HEADER_TENANT) );
-      try {
-        if(entity.getId() == null){
-          entity.setId(phoneNumberId);
-        }
-        PostgresClient.getInstance(vertxContext.owner(), tenantId).update(
-          PHONE_NUMBER_TABLE, entity, phoneNumberId,
-          reply -> {
-            try {
-              if(reply.succeeded()){
-                if (reply.result().getUpdated() == 0) {
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.PutVendorStoragePhoneNumbersByIdResponse
-                    .respond404WithTextPlain(messages.getMessage(lang, MessageConsts.NoRecordsUpdated))));
-                }
-                else{
-                  asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.PutVendorStoragePhoneNumbersByIdResponse
-                    .respond204()));
-                }
-              }
-              else{
-                log.error(reply.cause().getMessage());
-                asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.PutVendorStoragePhoneNumbersByIdResponse
-                  .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
-              }
-            } catch (Exception e) {
-              log.error(e.getMessage(), e);
-              asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.PutVendorStoragePhoneNumbersByIdResponse
-                .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
-            }
-          });
-      } catch (Exception e) {
-        log.error(e.getMessage(), e);
-        asyncResultHandler.handle(Future.succeededFuture(VendorStoragePhoneNumbers.PutVendorStoragePhoneNumbersByIdResponse
-          .respond500WithTextPlain(messages.getMessage(lang, MessageConsts.InternalServerError))));
-      }
-    });
+  @Validate
+  public void putVendorStoragePhoneNumbersById(String id, String lang, org.folio.rest.jaxrs.model.PhoneNumber entity,
+                                           Map<String, String> okapiHeaders, Handler<AsyncResult<Response>> asyncResultHandler, Context vertxContext) {
+    PgUtil.put(PHONE_NUMBER_TABLE, entity, id, okapiHeaders, vertxContext, PutVendorStoragePhoneNumbersByIdResponse.class, asyncResultHandler);
   }
 }
