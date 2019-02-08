@@ -24,20 +24,10 @@ import java.util.Map;
 
 public class AliasesAPI implements VendorStorageAliases {
   private static final String ALIAS_TABLE = "alias";
-  private static final String ALIAS_LOCATION_PREFIX = "/vendor-storage/aliases/";
 
   private static final Logger log = LoggerFactory.getLogger(AliasesAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
-
-  private static void respond(Handler<AsyncResult<Response>> handler, Response response) {
-    AsyncResult<Response> result = Future.succeededFuture(response);
-    handler.handle(result);
-  }
-
-  private boolean isInvalidUUID (String errorMessage) {
-    return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
-  }
 
   public AliasesAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);

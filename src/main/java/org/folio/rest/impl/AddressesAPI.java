@@ -24,20 +24,10 @@ import java.util.Map;
 
 public class AddressesAPI implements VendorStorageAddresses {
   private static final String ADDRESS_TABLE = "address";
-  private static final String ADDRESS_LOCATION_PREFIX = "/vendor-storage/addresses/";
 
   private static final Logger log = LoggerFactory.getLogger(AddressesAPI.class);
   private final Messages messages = Messages.getInstance();
   private String idFieldName = "id";
-
-  private static void respond(Handler<AsyncResult<Response>> handler, Response response) {
-    AsyncResult<Response> result = Future.succeededFuture(response);
-    handler.handle(result);
-  }
-
-  private boolean isInvalidUUID (String errorMessage) {
-    return (errorMessage != null && errorMessage.contains("invalid input syntax for uuid"));
-  }
 
   public AddressesAPI(Vertx vertx, String tenantId) {
     PostgresClient.getInstance(vertx, tenantId).setIdField(idFieldName);
