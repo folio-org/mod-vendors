@@ -70,27 +70,6 @@
       "populateJsonWithId": true
     },
     {
-      "tableName": "edi",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
-      "tableName": "edi_ftp",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
-      "tableName": "edi_job",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
       "tableName": "email",
       "generateId": true,
       "fromModuleVersion": 1.0,
