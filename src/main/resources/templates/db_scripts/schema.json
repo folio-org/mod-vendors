@@ -63,7 +63,7 @@
       "populateJsonWithId": true
     },
     {
-      "tableName": "contact_person",
+      "tableName": "contact",
       "generateId": true,
       "fromModuleVersion": 1.0,
       "withMetadata": true,
@@ -141,13 +141,6 @@
     },
     {
       "tableName": "vendor_category",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
-    },
-    {
-      "tableName": "vendor_contact_person",
       "generateId": true,
       "fromModuleVersion": 1.0,
       "withMetadata": true,

@@ -55,52 +55,49 @@
   "contacts": [
     {
       "language": "German and English",
-      "contact_person": {
-        "prefix": "Frau",
-        "first_name": "Gabriele",
-        "last_name": "Kerner",
-        "language": "German and English",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "49-611-530 ext. 0",
-            "categories": ["Customer Service","Payments","Returns","Shipments"],
-            "language": "German",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "service@harrassowitz.de",
-            "description": "customer service",
-            "categories": [],
-            "language": "German and English",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "Kreuzberger Ring 6 b-d",
-            "addressLine2": "",
-            "city": "Wiesbaden",
-            "stateRegion": "",
-            "zipCode": "65205",
-            "country": "Germany",
-            "categories": ["Customer Service","Payments","Returns","Shipments"],
-            "language": "German",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "service@harrassowitz.de",
-            "description": "customer service",
-            "categories": [],
-            "language": "German and English",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "Frau",
+      "first_name": "Gabriele",
+      "last_name": "Kerner",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "49-611-530 ext. 0",
+          "categories": ["Customer Service","Payments","Returns","Shipments"],
+          "language": "German",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "service@harrassowitz.de",
+          "description": "customer service",
+          "categories": [],
+          "language": "German and English",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "Kreuzberger Ring 6 b-d",
+          "addressLine2": "",
+          "city": "Wiesbaden",
+          "stateRegion": "",
+          "zipCode": "65205",
+          "country": "Germany",
+          "categories": ["Customer Service","Payments","Returns","Shipments"],
+          "language": "German",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "service@harrassowitz.de",
+          "description": "customer service",
+          "categories": [],
+          "language": "German and English",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

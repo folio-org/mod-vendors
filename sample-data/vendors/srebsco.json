@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "en-us",
-      "contact_person": {
-        "prefix": "",
-        "first_name": "Josh",
-        "last_name": "Beck",
-        "language": "en-us",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "1-800-653-2726",
-            "categories": [],
-            "language": "en-us",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "jbeck@ebsco.com",
-            "description": "Customer Service Rep",
-            "categories": [],
-            "language": "en-us",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "10 ESTES ST",
-            "addressLine2": "PO BOX 682",
-            "city": "Ipswich",
-            "stateRegion": "MA",
-            "zipCode": "01938",
-            "country": "USA",
-            "categories": [],
-            "language": "en",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "www.ebsco.com",
-            "description": "main website",
-            "language": "en-us",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "",
+      "first_name": "Josh",
+      "last_name": "Beck",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "1-800-653-2726",
+          "categories": [],
+          "language": "en-us",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "jbeck@ebsco.com",
+          "description": "Customer Service Rep",
+          "categories": [],
+          "language": "en-us",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "10 ESTES ST",
+          "addressLine2": "PO BOX 682",
+          "city": "Ipswich",
+          "stateRegion": "MA",
+          "zipCode": "01938",
+          "country": "USA",
+          "categories": [],
+          "language": "en",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "www.ebsco.com",
+          "description": "main website",
+          "language": "en-us",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],

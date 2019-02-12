@@ -55,53 +55,50 @@
   "contacts": [
     {
       "language": "English",
-      "contact_person": {
-        "prefix": "",
-        "first_name": "Dana",
-        "last_name": "Clark",
-        "language": "English",
-        "notes": "",
-        "phone_numbers": [
-          {
-            "phone_number": "1-415-332-6471",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "emails": [
-          {
-            "value": "info@rocofilms.com",
-            "description": "initial contact address",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "addresses": [
-          {
-            "addressLine1": "80 LIBERTY SHIP WAY7",
-            "addressLine2": "SUITE 5",
-            "city": "SAUSALITO",
-            "stateRegion": "CA",
-            "zipCode": "94965",
-            "country": "USA",
-            "categories": [],
-            "language": "English",
-            "isPrimary": true
-          }
-        ],
-        "urls": [
-          {
-            "value": "http://www.rocofilms.com/",
-            "description": "main website",
-            "language": "English",
-            "categories": [],
-            "notes": "",
-            "isPrimary": true
-          }
-        ]
-      },
+      "prefix": "",
+      "first_name": "Dana",
+      "last_name": "Clark",
+      "notes": "",
+      "phone_numbers": [
+        {
+          "phone_number": "1-415-332-6471",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "emails": [
+        {
+          "value": "info@rocofilms.com",
+          "description": "initial contact address",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "addresses": [
+        {
+          "addressLine1": "80 LIBERTY SHIP WAY7",
+          "addressLine2": "SUITE 5",
+          "city": "SAUSALITO",
+          "stateRegion": "CA",
+          "zipCode": "94965",
+          "country": "USA",
+          "categories": [],
+          "language": "English",
+          "isPrimary": true
+        }
+      ],
+      "urls": [
+        {
+          "value": "http://www.rocofilms.com/",
+          "description": "main website",
+          "language": "English",
+          "categories": [],
+          "notes": "",
+          "isPrimary": true
+        }
+      ],
       "categories": []
     }
   ],
