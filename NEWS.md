@@ -1,8 +1,11 @@
 ## 2.0.2 Release
-*Updated RAML versions to v2.0
-*Re-ordered release notes so newest are at the top
+* Fixed error with release number in NEWS.md
 
-## 2.0.0 Release
+## 2.0.1 Release - Unreleased
+* Updated RAML versions to v2.0
+* Re-ordered release notes so newest are at the top
+
+## 2.0.0 Release - Unreleased
 * Project converted to RAML 1.0
   Jira: https://issues.folio.org/projects/MODVEND/issues/MODVEND-72
 * San code moved into vendor record
