@@ -1,42 +1,42 @@
 {
-  "id": null,
-  "name": "Susan Bach Books (Brazil)",
-  "code": "ZSUSANBA$*",
-  "description": "Print monographs in Spanish, books from Brazil",
+  "id": "14fb6608-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "Ro*Co films",
+  "code": "ZROCO$",
+  "description": "Distributor of documentary films",
   "vendor_status": "Active",
-  "language": "Portuguese/Spanish",
+  "language": "English",
   "san_code": "",
   "aliases": [
     {
-      "value": "Susan Bach Books from Brazil",
+      "value": "Ro*Co Films Educational",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "RUA VISCONDE DE CARAVELAS, Nº 17",
-      "addressLine2": "BOTAFOGO",
-      "city": "RIO DE JANEIRO",
-      "stateRegion": "",
-      "zipCode": "22271-021",
-      "country": "Brazil",
+      "addressLine1": "80 LIBERTY SHIP WAY7",
+      "addressLine2": "SUITE 5",
+      "city": "SAUSALITO",
+      "stateRegion": "CA",
+      "zipCode": "94965",
+      "country": "USA",
       "categories": [],
-      "language": "Portuguese",
+      "language": "English",
       "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": "55-55-21-2539-3590",
+      "phone_number": "1-415-332-6471",
       "categories": [],
-      "language": "Portuguese",
+      "language": "English",
       "isPrimary": true
     }
   ],
   "emails": [
     {
-      "value": "sbach@sbachbooks.com.br",
-      "description": "Customer Service",
+      "value": "info@rocofilms.com",
+      "description": "initial contact address",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -44,9 +44,9 @@
   ],
   "urls": [
     {
-      "value": "http://www.sbachbooks.com.br/",
+      "value": "http://www.rocofilms.com/",
       "description": "main website",
-      "language": "English/Portuguese",
+      "language": "English",
       "categories": [],
       "notes": "",
       "isPrimary": true
@@ -56,21 +56,21 @@
     {
       "language": "English",
       "prefix": "",
-      "first_name": "Susan",
-      "last_name": "Bach",
+      "first_name": "Dana",
+      "last_name": "Clark",
       "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "55-55-21-2539-3590",
+          "phone_number": "1-415-332-6471",
           "categories": [],
-          "language": "Portuguese",
+          "language": "English",
           "isPrimary": true
         }
       ],
       "emails": [
         {
-          "value": "sbach@sbachbooks.com.br",
-          "description": "Customer Service",
+          "value": "info@rocofilms.com",
+          "description": "initial contact address",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -78,22 +78,22 @@
       ],
       "addresses": [
         {
-          "addressLine1": "RUA VISCONDE DE CARAVELAS, Nº 17",
-          "addressLine2": "BOTAFOGO",
-          "city": "RIO DE JANEIRO",
-          "stateRegion": "",
-          "zipCode": "22271-021",
-          "country": "Brazil",
+          "addressLine1": "80 LIBERTY SHIP WAY7",
+          "addressLine2": "SUITE 5",
+          "city": "SAUSALITO",
+          "stateRegion": "CA",
+          "zipCode": "94965",
+          "country": "USA",
           "categories": [],
-          "language": "Portuguese",
+          "language": "English",
           "isPrimary": true
         }
       ],
       "urls": [
         {
-          "value": "http://www.sbachbooks.com.br/",
+          "value": "http://www.rocofilms.com/",
           "description": "main website",
-          "language": "English/Portuguese",
+          "language": "English",
           "categories": [],
           "notes": "",
           "isPrimary": true
@@ -104,25 +104,25 @@
   ],
   "agreements": [
     {
-      "name": "",
-      "discount": 0,
+      "name": "50% discount if buying DVD (PPR included) + streaming license",
+      "discount": 50,
       "reference_url": "",
       "notes": ""
     }
   ],
-  "erp_code": "G64758-74827",
+  "erp_code": "G64758-74825",
   "payment_method": "EFT",
   "access_provider": false,
   "governmental": false,
-  "licensor": false,
+  "licensor": true,
   "material_supplier": true,
   "vendor_currencies": [
     "USD"
   ],
-  "claiming_interval": 60,
-  "discount_percent": 20,
+  "claiming_interval": 30,
+  "discount_percent": 0,
   "expected_activation_interval": 0,
-  "expected_invoice_interval": 0,
+  "expected_invoice_interval": 30,
   "renewal_activation_interval": 0,
   "subscription_interval": 0,
   "expected_receipt_interval": 30,
@@ -146,13 +146,13 @@
   ],
   "accounts": [
     {
-      "name": "Monograph",
-      "account_no": "852-987",
-      "description": "one time monographs",
+      "name": "library orders",
+      "account_no": "library orders 5000",
+      "description": "DVD/PPR/Streaming movies",
       "app_system_no": "",
       "payment_method": "EFT/Procard",
       "account_status": "Active",
-      "contact_info": "service@naxosusa.com",
+      "contact_info": "dana@rocofilms.com",
       "library_code": "pfirm",
       "library_edi_code": "765987610",
       "notes": ""

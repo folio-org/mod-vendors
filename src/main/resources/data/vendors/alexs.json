@@ -1,24 +1,24 @@
 {
-  "id": null,
-  "name": "American Chemical Society",
-  "code": "ACSO",
-  "description": "Serials - Domestic",
+  "id": "11fb627a-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "Alexander Street Press",
+  "code": "ALEXS",
+  "description": "AV streaming services",
   "vendor_status": "Active",
   "language": "en-us",
   "san_code": "1234567",
   "aliases": [
     {
-      "value": "ACS",
+      "value": "Alexander Street",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "1155 Sixteenth Street, NW",
+      "addressLine1": "3212 Duke Street",
       "addressLine2": "",
-      "city": "Washington",
-      "stateRegion": "DC",
-      "zipCode": "20036",
+      "city": "Alexandria",
+      "stateRegion": "VA",
+      "zipCode": "22314",
       "country": "USA",
       "categories": [],
       "language": "English",
@@ -27,7 +27,7 @@
   ],
   "phone_numbers": [
     {
-      "phone_number": "1-800-333-9511",
+      "phone_number": "1-800-889-5937",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,8 +35,8 @@
   ],
   "emails": [
     {
-      "value": "service@acs.org",
-      "description": "Customer Service",
+      "value": "customerservice@alexanderstreet.com",
+      "description": "main customer service email",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -44,8 +44,8 @@
   ],
   "urls": [
     {
-      "value": "https://www.acs.org/content/acs/en.html",
-      "description": "main English language website",
+      "value": "https://alexanderstreet.com/",
+      "description": "main website",
       "language": "en-us",
       "categories": [],
       "notes": "",
@@ -55,13 +55,13 @@
   "contacts": [
     {
       "language": "English",
-      "prefix": "Dr.",
-      "first_name": "John",
-      "last_name": "Denver",
-      "notes": "Postal code = 80303",
+      "prefix": "Mr.",
+      "first_name": "David",
+      "last_name": "Grohl",
+      "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "1-800-333-9511",
+          "phone_number": "1-800-889-5937",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,8 +69,8 @@
       ],
       "emails": [
         {
-          "value": "service@acs.org",
-          "description": "Customer Service",
+          "value": "customerservice@alexanderstreet.com",
+          "description": "main customer service email",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -78,11 +78,11 @@
       ],
       "addresses": [
         {
-          "addressLine1": "1155 Sixteenth Street, NW",
+          "addressLine1": "3212 Duke Street",
           "addressLine2": "",
-          "city": "Washington",
-          "stateRegion": "DC",
-          "zipCode": "20036",
+          "city": "Alexandria",
+          "stateRegion": "VA",
+          "zipCode": "22314",
           "country": "USA",
           "categories": [],
           "language": "English",
@@ -91,8 +91,8 @@
       ],
       "urls": [
         {
-          "value": "https://www.acs.org/content/acs/en.html",
-          "description": "main English language website",
+          "value": "https://alexanderstreet.com/",
+          "description": "main website",
           "language": "en-us",
           "categories": [],
           "notes": "",
@@ -104,14 +104,14 @@
   ],
   "agreements": [
     {
-      "name": "ACS Web Editions",
+      "name": "library access",
       "discount": 0,
-      "reference_url": "F:\\Sample\\Licensing\\License and Renewal Agreements\\Content Providers\\American Chemical Society",
-      "notes": "Multiyear agreement (2018-2020)"
+      "reference_url": "",
+      "notes": ""
     }
   ],
-  "erp_code": "G64758-74831",
-  "payment_method": "EFT",
+  "erp_code": "G64758-74828",
+  "payment_method": "check",
   "access_provider": true,
   "governmental": false,
   "licensor": true,
@@ -121,7 +121,7 @@
   ],
   "claiming_interval": 0,
   "discount_percent": 0,
-  "expected_activation_interval": 30,
+  "expected_activation_interval": 1,
   "expected_invoice_interval": 30,
   "renewal_activation_interval": 365,
   "subscription_interval": 365,
@@ -131,28 +131,28 @@
   "tax_percentage": 0,
   "interfaces": [
     {
-      "name": "American Chemical Society Web Editions",
-      "uri": "https://pubs.acs.org/",
-      "username": "",
-      "password": "",
+      "name": "Academic Video Online",
+      "uri": "https://search.alexanderstreet.com/avon",
+      "username": "****",
+      "password": "****",
       "notes": "",
-      "available": true,
-      "delivery_method": "online",
-      "statistics_format": "COUNTER",
-      "locally_stored": "https://www.lib.sample.edu/staff/collectiondevelopment/",
-      "online_location": "http://www.acs.org/content/acs/en.html",
+      "available": false,
+      "delivery_method": "",
+      "statistics_format": "",
+      "locally_stored": "",
+      "online_location": "",
       "statistics_notes": ""
     }
   ],
   "accounts": [
     {
-      "name": "Serialst",
-      "account_no": "xxxx2149",
-      "description": "Libraries",
+      "name": "Library account",
+      "account_no": "1234",
+      "description": "Main library account",
       "app_system_no": "",
-      "payment_method": "EFT",
+      "payment_method": "check",
       "account_status": "Active",
-      "contact_info": "liblink@acs.org",
+      "contact_info": "customerservice@alexanderstreet.com",
       "library_code": "COB",
       "library_edi_code": "765987610",
       "notes": ""

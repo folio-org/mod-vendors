@@ -1,24 +1,24 @@
 {
-  "id": null,
-  "name": "United States Geological Survey",
-  "code": "USGS",
-  "description": "Maps and materials from the USGS",
+  "id": "e0fb5df2-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "Amazon.com",
+  "code": "AMAZ",
+  "description": "Use for rush orders, replacement requests, and second hand market",
   "vendor_status": "Active",
   "language": "en-us",
-  "san_code": "",
+  "san_code": "1234567",
   "aliases": [
     {
-      "value": "USGS",
+      "value": "Amazon",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "12201 Sunrise Valley Drive",
+      "addressLine1": "1 Centerpiece Blvd.",
       "addressLine2": "P.O. Box 15550",
-      "city": "Reston",
-      "stateRegion": "VA",
-      "zipCode": "20192",
+      "city": "New Castle",
+      "stateRegion": "DE",
+      "zipCode": "19720-5550",
       "country": "USA",
       "categories": [],
       "language": "English",
@@ -27,7 +27,7 @@
   ],
   "phone_numbers": [
     {
-      "phone_number": "1-888-ASK-USGS",
+      "phone_number": "1-888-238-22090",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,8 +35,8 @@
   ],
   "emails": [
     {
-      "value": "usgsstore@usgs.gov",
-      "description": "main customer service email",
+      "value": "cust.service03@amazon.com",
+      "description": "customer service",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -44,7 +44,7 @@
   ],
   "urls": [
     {
-      "value": "https://www.usgs.gov/",
+      "value": "https://www.amazon.com",
       "description": "main website",
       "language": "en-us",
       "categories": [],
@@ -55,13 +55,13 @@
   "contacts": [
     {
       "language": "English",
-      "prefix": "Mr.",
-      "first_name": "Ryan",
-      "last_name": "Zinke",
+      "prefix": "Ms.",
+      "first_name": "Carrie",
+      "last_name": "Brownstein",
       "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "1-888-ASK-USGS",
+          "phone_number": "1-888-238-22090",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,8 +69,8 @@
       ],
       "emails": [
         {
-          "value": "usgsstore@usgs.gov",
-          "description": "main customer service email",
+          "value": "cust.service03@amazon.com",
+          "description": "customer service",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -78,11 +78,11 @@
       ],
       "addresses": [
         {
-          "addressLine1": "12201 Sunrise Valley Drive",
+          "addressLine1": "1 Centerpiece Blvd.",
           "addressLine2": "P.O. Box 15550",
-          "city": "Reston",
-          "stateRegion": "VA",
-          "zipCode": "20192",
+          "city": "New Castle",
+          "stateRegion": "DE",
+          "zipCode": "19720-5550",
           "country": "USA",
           "categories": [],
           "language": "English",
@@ -91,7 +91,7 @@
       ],
       "urls": [
         {
-          "value": "https://www.usgs.gov/",
+          "value": "https://www.amazon.com",
           "description": "main website",
           "language": "en-us",
           "categories": [],
@@ -110,10 +110,10 @@
       "notes": ""
     }
   ],
-  "erp_code": "G64758-74833",
+  "erp_code": "G64758-74834",
   "payment_method": "credit card",
   "access_provider": false,
-  "governmental": true,
+  "governmental": false,
   "licensor": false,
   "material_supplier": true,
   "vendor_currencies": [
@@ -131,8 +131,8 @@
   "tax_percentage": 0,
   "interfaces": [
     {
-      "name": "USGS Store",
-      "uri": "https://store.usgs.gov/",
+      "name": "Amazon",
+      "uri": "www.amazon.com",
       "username": "****",
       "password": "****",
       "notes": "",
@@ -146,13 +146,13 @@
   ],
   "accounts": [
     {
-      "name": "Cartographic account",
+      "name": "Monographic ordering unit account",
       "account_no": "1234",
-      "description": "Monographic ordering unit accountt",
+      "description": "Monographic ordering unit account",
       "app_system_no": "",
       "payment_method": "credit card",
       "account_status": "Active",
-      "contact_info": "usgsstore@usgs.gov",
+      "contact_info": "cust.service03@amazon.com",
       "library_code": "COB",
       "library_edi_code": "765987610",
       "notes": ""

@@ -1,24 +1,24 @@
 {
-  "id": null,
-  "name": "Naxos of America, Inc.",
-  "code": "NAXO",
-  "description": "AV streaming services, other onilne content",
+  "id": "80fb5168-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "American Chemical Society",
+  "code": "ACSO",
+  "description": "Serials - Domestic",
   "vendor_status": "Active",
   "language": "en-us",
-  "san_code": "",
+  "san_code": "1234567",
   "aliases": [
     {
-      "value": "Naxos",
+      "value": "ACS",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "416 Mary Lindsay Polk Dr.",
+      "addressLine1": "1155 Sixteenth Street, NW",
       "addressLine2": "",
-      "city": "Franklin",
-      "stateRegion": "TN",
-      "zipCode": "37067",
+      "city": "Washington",
+      "stateRegion": "DC",
+      "zipCode": "20036",
       "country": "USA",
       "categories": [],
       "language": "English",
@@ -27,7 +27,7 @@
   ],
   "phone_numbers": [
     {
-      "phone_number": "1-615-771-9393",
+      "phone_number": "1-800-333-9511",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,7 +35,7 @@
   ],
   "emails": [
     {
-      "value": "service@naxosusa.com",
+      "value": "service@acs.org",
       "description": "Customer Service",
       "categories": [],
       "language": "English",
@@ -44,8 +44,8 @@
   ],
   "urls": [
     {
-      "value": "https://www.naxos.com/",
-      "description": "main website",
+      "value": "https://www.acs.org/content/acs/en.html",
+      "description": "main English language website",
       "language": "en-us",
       "categories": [],
       "notes": "",
@@ -55,13 +55,13 @@
   "contacts": [
     {
       "language": "English",
-      "prefix": "Prof.",
-      "first_name": "Marie",
-      "last_name": "Curie",
-      "notes": "",
+      "prefix": "Dr.",
+      "first_name": "John",
+      "last_name": "Denver",
+      "notes": "Postal code = 80303",
       "phone_numbers": [
         {
-          "phone_number": "1-615-771-9393",
+          "phone_number": "1-800-333-9511",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,7 +69,7 @@
       ],
       "emails": [
         {
-          "value": "service@naxosusa.com",
+          "value": "service@acs.org",
           "description": "Customer Service",
           "categories": [],
           "language": "English",
@@ -78,11 +78,11 @@
       ],
       "addresses": [
         {
-          "addressLine1": "416 Mary Lindsay Polk Dr.",
+          "addressLine1": "1155 Sixteenth Street, NW",
           "addressLine2": "",
-          "city": "Franklin",
-          "stateRegion": "TN",
-          "zipCode": "37067",
+          "city": "Washington",
+          "stateRegion": "DC",
+          "zipCode": "20036",
           "country": "USA",
           "categories": [],
           "language": "English",
@@ -91,8 +91,8 @@
       ],
       "urls": [
         {
-          "value": "https://www.naxos.com/",
-          "description": "main website",
+          "value": "https://www.acs.org/content/acs/en.html",
+          "description": "main English language website",
           "language": "en-us",
           "categories": [],
           "notes": "",
@@ -104,13 +104,13 @@
   ],
   "agreements": [
     {
-      "name": "Naxos Music Library, Naxos Video Library",
+      "name": "ACS Web Editions",
       "discount": 0,
-      "reference_url": "F:\\Serials\\Licensing\\License and Renewal Agreements\\Content Providers\\NAXOS",
-      "notes": ""
+      "reference_url": "F:\\Sample\\Licensing\\License and Renewal Agreements\\Content Providers\\American Chemical Society",
+      "notes": "Multiyear agreement (2018-2020)"
     }
   ],
-  "erp_code": "G64758-74827",
+  "erp_code": "G64758-74831",
   "payment_method": "EFT",
   "access_provider": true,
   "governmental": false,
@@ -131,28 +131,28 @@
   "tax_percentage": 0,
   "interfaces": [
     {
-      "name": "Naxos Digital Services, U.S.",
-      "uri": "https://www.naxosmusiclibrary.com",
+      "name": "American Chemical Society Web Editions",
+      "uri": "https://pubs.acs.org/",
       "username": "",
       "password": "",
-      "notes": "See also http://sample.naxosvideolibrary.com/ for Naxos Video Library",
+      "notes": "",
       "available": true,
       "delivery_method": "online",
-      "statistics_format": "Non-COUNTER",
+      "statistics_format": "COUNTER",
       "locally_stored": "https://www.lib.sample.edu/staff/collectiondevelopment/",
-      "online_location": "http://www.naxosmusiclibrary.com/",
-      "statistics_notes": "Login on interface used to access content."
+      "online_location": "http://www.acs.org/content/acs/en.html",
+      "statistics_notes": ""
     }
   ],
   "accounts": [
     {
-      "name": "Serials",
-      "account_no": "xxxx4367",
+      "name": "Serialst",
+      "account_no": "xxxx2149",
       "description": "Libraries",
       "app_system_no": "",
       "payment_method": "EFT",
       "account_status": "Active",
-      "contact_info": "service@naxosusa.com",
+      "contact_info": "liblink@acs.org",
       "library_code": "COB",
       "library_edi_code": "765987610",
       "notes": ""
