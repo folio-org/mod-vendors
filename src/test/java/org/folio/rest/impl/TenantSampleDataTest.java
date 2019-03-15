@@ -96,8 +96,7 @@ public class TenantSampleDataTest extends TestBase{
       postToTenant(PARTIAL_TENANT_HEADER, jsonBody)
         .assertThat()
         .statusCode(201);
-      VendorCollection vendorCollection = getData(VENDOR.getEndpoint(), PARTIAL_TENANT_HEADER).then().extract().response().as(VendorCollection.class);
-      /*VendorCollection vendorCollection = getData(VENDOR.getEndpoint(), PARTIAL_TENANT_HEADER)
+      VendorCollection vendorCollection = getData(VENDOR.getEndpoint(), PARTIAL_TENANT_HEADER)
         .then()
         .extract()
         .response()
@@ -105,7 +104,7 @@ public class TenantSampleDataTest extends TestBase{
 
       for (Vendor vendor : vendorCollection.getVendors()) {
         deleteData(VENDOR.getEndpointWithId(), vendor.getId(), PARTIAL_TENANT_HEADER);
-      }*/
+      }
 
       jsonBody = TenantApiTestUtil.prepareTenantBody(true, true);
       postToTenant(PARTIAL_TENANT_HEADER, jsonBody)
