@@ -1,24 +1,24 @@
 {
-  "id": null,
-  "name": "Jean Simmons",
-  "code": "SJEAN",
-  "description": "Individual donor to library archives",
-  "vendor_status": "Active",
-  "language": "en-us",
+  "id": "14fb6608-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "Ro*Co films",
+  "code": "ZROCO$",
+  "description": "Distributor of documentary films",
+  "vendor_status": "Inactive",
+  "language": "English",
   "san_code": "",
   "aliases": [
     {
-      "value": "Sister Jean",
+      "value": "Ro*Co Films Educational",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "1032 W. Sheridan Rd",
-      "addressLine2": "",
-      "city": "Chicago",
-      "stateRegion": "IL",
-      "zipCode": "60660",
+      "addressLine1": "80 LIBERTY SHIP WAY7",
+      "addressLine2": "SUITE 5",
+      "city": "SAUSALITO",
+      "stateRegion": "CA",
+      "zipCode": "94965",
       "country": "USA",
       "categories": [],
       "language": "English",
@@ -27,7 +27,7 @@
   ],
   "phone_numbers": [
     {
-      "phone_number": "1-773-274-3000",
+      "phone_number": "1-415-332-6471",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,8 +35,8 @@
   ],
   "emails": [
     {
-      "value": "sister@luc.edu",
-      "description": "personal email ",
+      "value": "info@rocofilms.com",
+      "description": "initial contact address",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -44,9 +44,9 @@
   ],
   "urls": [
     {
-      "value": "",
-      "description": "",
-      "language": "",
+      "value": "http://www.rocofilms.com/",
+      "description": "main website",
+      "language": "English",
       "categories": [],
       "notes": "",
       "isPrimary": true
@@ -55,13 +55,13 @@
   "contacts": [
     {
       "language": "English",
-      "prefix": "Sister",
-      "first_name": "Jean",
-      "last_name": "Simmons",
+      "prefix": "",
+      "first_name": "Dana",
+      "last_name": "Clark",
       "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "1-773-274-3000",
+          "phone_number": "1-415-332-6471",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,8 +69,8 @@
       ],
       "emails": [
         {
-          "value": "sister@luc.edu",
-          "description": "personal email ",
+          "value": "info@rocofilms.com",
+          "description": "initial contact address",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -78,11 +78,11 @@
       ],
       "addresses": [
         {
-          "addressLine1": "1032 W. Sheridan Rd",
-          "addressLine2": "",
-          "city": "Chicago",
-          "stateRegion": "IL",
-          "zipCode": "60660",
+          "addressLine1": "80 LIBERTY SHIP WAY7",
+          "addressLine2": "SUITE 5",
+          "city": "SAUSALITO",
+          "stateRegion": "CA",
+          "zipCode": "94965",
           "country": "USA",
           "categories": [],
           "language": "English",
@@ -91,9 +91,9 @@
       ],
       "urls": [
         {
-          "value": "",
-          "description": "",
-          "language": "",
+          "value": "http://www.rocofilms.com/",
+          "description": "main website",
+          "language": "English",
           "categories": [],
           "notes": "",
           "isPrimary": true
@@ -102,20 +102,27 @@
       "categories": []
     }
   ],
-  "agreements": [],
-  "erp_code": "G64758-74830",
-  "payment_method": "check",
+  "agreements": [
+    {
+      "name": "50% discount if buying DVD (PPR included) + streaming license",
+      "discount": 50,
+      "reference_url": "",
+      "notes": ""
+    }
+  ],
+  "erp_code": "G64758-74825",
+  "payment_method": "EFT",
   "access_provider": false,
   "governmental": false,
-  "licensor": false,
+  "licensor": true,
   "material_supplier": true,
   "vendor_currencies": [
     "USD"
   ],
-  "claiming_interval": 0,
+  "claiming_interval": 30,
   "discount_percent": 0,
   "expected_activation_interval": 0,
-  "expected_invoice_interval": 0,
+  "expected_invoice_interval": 30,
   "renewal_activation_interval": 0,
   "subscription_interval": 0,
   "expected_receipt_interval": 30,
@@ -139,14 +146,14 @@
   ],
   "accounts": [
     {
-      "name": "SJean account",
-      "account_no": "1234",
-      "description": "Donor account",
+      "name": "library orders",
+      "account_no": "library orders 5000",
+      "description": "DVD/PPR/Streaming movies",
       "app_system_no": "",
-      "payment_method": "check",
+      "payment_method": "EFT/Procard",
       "account_status": "Active",
-      "contact_info": "sister@luc.edu",
-      "library_code": "COB",
+      "contact_info": "dana@rocofilms.com",
+      "library_code": "pfirm",
       "library_edi_code": "765987610",
       "notes": ""
     }

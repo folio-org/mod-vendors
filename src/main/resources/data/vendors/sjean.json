@@ -1,24 +1,24 @@
 {
-  "id": null,
-  "name": "Amazon.com",
-  "code": "AMAZ",
-  "description": "Use for rush orders, replacement requests, and second hand market",
+  "id": "60fb4bfa-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "Jean Simmons",
+  "code": "SJEAN",
+  "description": "Individual donor to library archives",
   "vendor_status": "Active",
   "language": "en-us",
-  "san_code": "1234567",
+  "san_code": "",
   "aliases": [
     {
-      "value": "Amazon",
+      "value": "Sister Jean",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "1 Centerpiece Blvd.",
-      "addressLine2": "P.O. Box 15550",
-      "city": "New Castle",
-      "stateRegion": "DE",
-      "zipCode": "19720-5550",
+      "addressLine1": "1032 W. Sheridan Rd",
+      "addressLine2": "",
+      "city": "Chicago",
+      "stateRegion": "IL",
+      "zipCode": "60660",
       "country": "USA",
       "categories": [],
       "language": "English",
@@ -27,7 +27,7 @@
   ],
   "phone_numbers": [
     {
-      "phone_number": "1-888-238-22090",
+      "phone_number": "1-773-274-3000",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,8 +35,8 @@
   ],
   "emails": [
     {
-      "value": "cust.service03@amazon.com",
-      "description": "customer service",
+      "value": "sister@luc.edu",
+      "description": "personal email ",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -44,9 +44,9 @@
   ],
   "urls": [
     {
-      "value": "https://www.amazon.com",
-      "description": "main website",
-      "language": "en-us",
+      "value": "",
+      "description": "",
+      "language": "",
       "categories": [],
       "notes": "",
       "isPrimary": true
@@ -55,13 +55,13 @@
   "contacts": [
     {
       "language": "English",
-      "prefix": "Ms.",
-      "first_name": "Carrie",
-      "last_name": "Brownstein",
+      "prefix": "Sister",
+      "first_name": "Jean",
+      "last_name": "Simmons",
       "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "1-888-238-22090",
+          "phone_number": "1-773-274-3000",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,8 +69,8 @@
       ],
       "emails": [
         {
-          "value": "cust.service03@amazon.com",
-          "description": "customer service",
+          "value": "sister@luc.edu",
+          "description": "personal email ",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -78,11 +78,11 @@
       ],
       "addresses": [
         {
-          "addressLine1": "1 Centerpiece Blvd.",
-          "addressLine2": "P.O. Box 15550",
-          "city": "New Castle",
-          "stateRegion": "DE",
-          "zipCode": "19720-5550",
+          "addressLine1": "1032 W. Sheridan Rd",
+          "addressLine2": "",
+          "city": "Chicago",
+          "stateRegion": "IL",
+          "zipCode": "60660",
           "country": "USA",
           "categories": [],
           "language": "English",
@@ -91,9 +91,9 @@
       ],
       "urls": [
         {
-          "value": "https://www.amazon.com",
-          "description": "main website",
-          "language": "en-us",
+          "value": "",
+          "description": "",
+          "language": "",
           "categories": [],
           "notes": "",
           "isPrimary": true
@@ -102,16 +102,9 @@
       "categories": []
     }
   ],
-  "agreements": [
-    {
-      "name": "",
-      "discount": 0,
-      "reference_url": "",
-      "notes": ""
-    }
-  ],
-  "erp_code": "G64758-74834",
-  "payment_method": "credit card",
+  "agreements": [],
+  "erp_code": "G64758-74830",
+  "payment_method": "check",
   "access_provider": false,
   "governmental": false,
   "licensor": false,
@@ -119,7 +112,7 @@
   "vendor_currencies": [
     "USD"
   ],
-  "claiming_interval": 45,
+  "claiming_interval": 0,
   "discount_percent": 0,
   "expected_activation_interval": 0,
   "expected_invoice_interval": 0,
@@ -131,28 +124,28 @@
   "tax_percentage": 0,
   "interfaces": [
     {
-      "name": "Amazon",
-      "uri": "www.amazon.com",
-      "username": "****",
-      "password": "****",
+      "name": "",
+      "uri": "",
+      "username": "",
+      "password": "",
       "notes": "",
       "available": false,
       "delivery_method": "",
       "statistics_format": "",
-      "locally_stored": false,
+      "locally_stored": "",
       "online_location": "",
       "statistics_notes": ""
     }
   ],
   "accounts": [
     {
-      "name": "Monographic ordering unit account",
+      "name": "SJean account",
       "account_no": "1234",
-      "description": "Monographic ordering unit account",
+      "description": "Donor account",
       "app_system_no": "",
-      "payment_method": "credit card",
+      "payment_method": "check",
       "account_status": "Active",
-      "contact_info": "cust.service03@amazon.com",
+      "contact_info": "sister@luc.edu",
       "library_code": "COB",
       "library_edi_code": "765987610",
       "notes": ""

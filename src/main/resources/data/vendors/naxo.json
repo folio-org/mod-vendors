@@ -1,25 +1,25 @@
 {
-  "id": null,
-  "name": "Magnolia Press",
-  "code": "MGNP",
-  "description": "Serials-Foreign",
+  "id": "70fb4e66-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "Naxos of America, Inc.",
+  "code": "NAXO",
+  "description": "AV streaming services, other onilne content",
   "vendor_status": "Active",
   "language": "en-us",
   "san_code": "",
   "aliases": [
     {
-      "value": "Mangolia Press NZ",
+      "value": "Naxos",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "Saint Lukes",
-      "addressLine2": "P.O. Box 41383",
-      "city": "Auckland",
-      "stateRegion": "",
-      "zipCode": "1346",
-      "country": "New Zealand",
+      "addressLine1": "416 Mary Lindsay Polk Dr.",
+      "addressLine2": "",
+      "city": "Franklin",
+      "stateRegion": "TN",
+      "zipCode": "37067",
+      "country": "USA",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -27,7 +27,7 @@
   ],
   "phone_numbers": [
     {
-      "phone_number": "64-95-783-996",
+      "phone_number": "1-615-771-9393",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,7 +35,7 @@
   ],
   "emails": [
     {
-      "value": "magnolia@mapress.com",
+      "value": "service@naxosusa.com",
       "description": "Customer Service",
       "categories": [],
       "language": "English",
@@ -44,7 +44,7 @@
   ],
   "urls": [
     {
-      "value": "http://www.mapress.com/j/",
+      "value": "https://www.naxos.com/",
       "description": "main website",
       "language": "en-us",
       "categories": [],
@@ -55,13 +55,13 @@
   "contacts": [
     {
       "language": "English",
-      "prefix": "Mrs.",
-      "first_name": "Siouxsie",
-      "last_name": "Sioux ",
+      "prefix": "Prof.",
+      "first_name": "Marie",
+      "last_name": "Curie",
       "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "64-95-783-996",
+          "phone_number": "1-615-771-9393",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,7 +69,7 @@
       ],
       "emails": [
         {
-          "value": "magnolia@mapress.com",
+          "value": "service@naxosusa.com",
           "description": "Customer Service",
           "categories": [],
           "language": "English",
@@ -78,12 +78,12 @@
       ],
       "addresses": [
         {
-          "addressLine1": "Saint Lukes",
-          "addressLine2": "P.O. Box 41383",
-          "city": "Auckland",
-          "stateRegion": "",
-          "zipCode": "1346",
-          "country": "New Zealand",
+          "addressLine1": "416 Mary Lindsay Polk Dr.",
+          "addressLine2": "",
+          "city": "Franklin",
+          "stateRegion": "TN",
+          "zipCode": "37067",
+          "country": "USA",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -91,7 +91,7 @@
       ],
       "urls": [
         {
-          "value": "http://www.mapress.com/j/",
+          "value": "https://www.naxos.com/",
           "description": "main website",
           "language": "en-us",
           "categories": [],
@@ -104,20 +104,20 @@
   ],
   "agreements": [
     {
-      "name": "Zootaxa ",
-      "discount": 10,
-      "reference_url": "F:\\Serials\\Licensing\\License and Renewal Agreements\\Content Providers\\Magnolia Press",
-      "notes": "Acquisition of 2008-2010 Journal Archives"
+      "name": "Naxos Music Library, Naxos Video Library",
+      "discount": 0,
+      "reference_url": "F:\\Serials\\Licensing\\License and Renewal Agreements\\Content Providers\\NAXOS",
+      "notes": ""
     }
   ],
-  "erp_code": "G64758-74829",
+  "erp_code": "G64758-74827",
   "payment_method": "EFT",
   "access_provider": true,
   "governmental": false,
   "licensor": true,
   "material_supplier": true,
   "vendor_currencies": [
-    "NZD"
+    "USD"
   ],
   "claiming_interval": 0,
   "discount_percent": 0,
@@ -127,32 +127,32 @@
   "subscription_interval": 365,
   "expected_receipt_interval": 30,
   "liable_for_vat": false,
-  "tax_id": "1819468",
-  "tax_percentage": 5,
+  "tax_id": "",
+  "tax_percentage": 0,
   "interfaces": [
     {
-      "name": "Mapress",
-      "uri": "http://www.mapress.com/j/",
+      "name": "Naxos Digital Services, U.S.",
+      "uri": "https://www.naxosmusiclibrary.com",
       "username": "",
       "password": "",
-      "notes": "",
-      "available": false,
-      "delivery_method": "",
-      "statistics_format": "",
-      "locally_stored": "",
-      "online_location": "",
-      "statistics_notes": ""
+      "notes": "See also http://sample.naxosvideolibrary.com/ for Naxos Video Library",
+      "available": true,
+      "delivery_method": "online",
+      "statistics_format": "Non-COUNTER",
+      "locally_stored": "https://www.lib.sample.edu/staff/collectiondevelopment/",
+      "online_location": "http://www.naxosmusiclibrary.com/",
+      "statistics_notes": "Login on interface used to access content."
     }
   ],
   "accounts": [
     {
       "name": "Serials",
-      "account_no": "xxxx7859",
+      "account_no": "xxxx4367",
       "description": "Libraries",
       "app_system_no": "",
       "payment_method": "EFT",
       "account_status": "Active",
-      "contact_info": "magnolia@mapress.com",
+      "contact_info": "service@naxosusa.com",
       "library_code": "COB",
       "library_edi_code": "765987610",
       "notes": ""

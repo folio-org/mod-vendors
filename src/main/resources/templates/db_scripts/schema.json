@@ -1,16 +1,4 @@
 {
-  "scripts": [
-    {
-      "run": "after",
-      "snippet": "COPY contact_category (jsonb) FROM 'data/contact_category.data' ENCODING 'UTF8';",
-      "fromModuleVersion": "1.0"
-    },
-    {
-      "run": "after",
-      "snippet": "COPY category (jsonb) FROM 'data/category.data' ENCODING 'UTF8';",
-      "fromModuleVersion": "1.0"
-    }
-  ],
   "tables": [
     {
       "tableName": "account",
@@ -54,13 +42,6 @@
           "removeAccents": true
         }
       ]
-    },
-    {
-      "tableName": "contact_category",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
     },
     {
       "tableName": "contact",
@@ -117,13 +98,6 @@
           "removeAccents": true
         }
       ]
-    },
-    {
-      "tableName": "vendor_category",
-      "generateId": true,
-      "fromModuleVersion": 1.0,
-      "withMetadata": true,
-      "populateJsonWithId": true
     },
     {
       "tableName": "vendor_type",

@@ -38,9 +38,9 @@ public class CategoryTest {
   private final String TENANT_NAME = "diku";
   private final Header TENANT_HEADER = new Header("X-Okapi-Tenant", TENANT_NAME);
 
-  private String moduleName;      // "mod_orders_storage";
-  private String moduleVersion;   // "1.0.0"
-  private String moduleId;        // "mod-orders-storage-1.0.0"
+  private String moduleName;      // "mod-vendors";
+  private String moduleVersion;   // "2.0.0"
+  private String moduleId;        // "mod-vendors-2.0.0"
 
 
   @Before
@@ -64,7 +64,6 @@ public class CategoryTest {
       PostgresClient.getInstance(vertx).dropCreateDatabase(TENANT_NAME + "_" + PomReader.INSTANCE.getModuleName());
 
     } catch (Exception e) {
-      //e.printStackTrace();
       logger.info(e);
       context.fail(e);
       return;
@@ -94,14 +93,13 @@ public class CategoryTest {
     });
   }
 
-  // Validates that there are zero po_line records in the DB
   private void verifyCollection() {
 
-    // Verify that there are no existing po_line records
+    // Verify that there are no existing records
     getData("/vendor-storage/categories").then()
       .log().all()
       .statusCode(200)
-      .body("total_records", equalTo(4));
+      .body("total_records", equalTo(0));
   }
 
   @Test
@@ -127,7 +125,7 @@ public class CategoryTest {
       logger.info("--- mod-vendors-test: Verifying only 1 category was created ... ");
       getData("/vendor-storage/categories").then().log().ifValidationFails()
         .statusCode(200)
-        .body("total_records", equalTo(5));
+        .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching category with ID: "+ dataSampleId);
       getDataById("/vendor-storage/categories", dataSampleId).then().log().ifValidationFails()

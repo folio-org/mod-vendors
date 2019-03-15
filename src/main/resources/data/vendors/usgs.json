@@ -1,24 +1,24 @@
 {
-  "id": null,
-  "name": "Ro*Co films",
-  "code": "ZROCO$",
-  "description": "Distributor of documentary films",
+  "id": "13fb64dc-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "United States Geological Survey",
+  "code": "USGS",
+  "description": "Maps and materials from the USGS",
   "vendor_status": "Active",
-  "language": "English",
+  "language": "en-us",
   "san_code": "",
   "aliases": [
     {
-      "value": "Ro*Co Films Educational",
+      "value": "USGS",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "80 LIBERTY SHIP WAY7",
-      "addressLine2": "SUITE 5",
-      "city": "SAUSALITO",
-      "stateRegion": "CA",
-      "zipCode": "94965",
+      "addressLine1": "12201 Sunrise Valley Drive",
+      "addressLine2": "P.O. Box 15550",
+      "city": "Reston",
+      "stateRegion": "VA",
+      "zipCode": "20192",
       "country": "USA",
       "categories": [],
       "language": "English",
@@ -27,7 +27,7 @@
   ],
   "phone_numbers": [
     {
-      "phone_number": "1-415-332-6471",
+      "phone_number": "1-888-ASK-USGS",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,8 +35,8 @@
   ],
   "emails": [
     {
-      "value": "info@rocofilms.com",
-      "description": "initial contact address",
+      "value": "usgsstore@usgs.gov",
+      "description": "main customer service email",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -44,9 +44,9 @@
   ],
   "urls": [
     {
-      "value": "http://www.rocofilms.com/",
+      "value": "https://www.usgs.gov/",
       "description": "main website",
-      "language": "English",
+      "language": "en-us",
       "categories": [],
       "notes": "",
       "isPrimary": true
@@ -55,13 +55,13 @@
   "contacts": [
     {
       "language": "English",
-      "prefix": "",
-      "first_name": "Dana",
-      "last_name": "Clark",
+      "prefix": "Mr.",
+      "first_name": "Ryan",
+      "last_name": "Zinke",
       "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "1-415-332-6471",
+          "phone_number": "1-888-ASK-USGS",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,8 +69,8 @@
       ],
       "emails": [
         {
-          "value": "info@rocofilms.com",
-          "description": "initial contact address",
+          "value": "usgsstore@usgs.gov",
+          "description": "main customer service email",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -78,11 +78,11 @@
       ],
       "addresses": [
         {
-          "addressLine1": "80 LIBERTY SHIP WAY7",
-          "addressLine2": "SUITE 5",
-          "city": "SAUSALITO",
-          "stateRegion": "CA",
-          "zipCode": "94965",
+          "addressLine1": "12201 Sunrise Valley Drive",
+          "addressLine2": "P.O. Box 15550",
+          "city": "Reston",
+          "stateRegion": "VA",
+          "zipCode": "20192",
           "country": "USA",
           "categories": [],
           "language": "English",
@@ -91,9 +91,9 @@
       ],
       "urls": [
         {
-          "value": "http://www.rocofilms.com/",
+          "value": "https://www.usgs.gov/",
           "description": "main website",
-          "language": "English",
+          "language": "en-us",
           "categories": [],
           "notes": "",
           "isPrimary": true
@@ -104,25 +104,25 @@
   ],
   "agreements": [
     {
-      "name": "50% discount if buying DVD (PPR included) + streaming license",
-      "discount": 50,
+      "name": "",
+      "discount": 0,
       "reference_url": "",
       "notes": ""
     }
   ],
-  "erp_code": "G64758-74825",
-  "payment_method": "EFT",
+  "erp_code": "G64758-74833",
+  "payment_method": "credit card",
   "access_provider": false,
-  "governmental": false,
-  "licensor": true,
+  "governmental": true,
+  "licensor": false,
   "material_supplier": true,
   "vendor_currencies": [
     "USD"
   ],
-  "claiming_interval": 30,
+  "claiming_interval": 45,
   "discount_percent": 0,
   "expected_activation_interval": 0,
-  "expected_invoice_interval": 30,
+  "expected_invoice_interval": 0,
   "renewal_activation_interval": 0,
   "subscription_interval": 0,
   "expected_receipt_interval": 30,
@@ -131,29 +131,29 @@
   "tax_percentage": 0,
   "interfaces": [
     {
-      "name": "",
-      "uri": "",
-      "username": "",
-      "password": "",
+      "name": "USGS Store",
+      "uri": "https://store.usgs.gov/",
+      "username": "****",
+      "password": "****",
       "notes": "",
       "available": false,
       "delivery_method": "",
       "statistics_format": "",
-      "locally_stored": "",
+      "locally_stored": false,
       "online_location": "",
       "statistics_notes": ""
     }
   ],
   "accounts": [
     {
-      "name": "library orders",
-      "account_no": "library orders 5000",
-      "description": "DVD/PPR/Streaming movies",
+      "name": "Cartographic account",
+      "account_no": "1234",
+      "description": "Monographic ordering unit accountt",
       "app_system_no": "",
-      "payment_method": "EFT/Procard",
+      "payment_method": "credit card",
       "account_status": "Active",
-      "contact_info": "dana@rocofilms.com",
-      "library_code": "pfirm",
+      "contact_info": "usgsstore@usgs.gov",
+      "library_code": "COB",
       "library_edi_code": "765987610",
       "notes": ""
     }

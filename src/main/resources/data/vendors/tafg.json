@@ -1,33 +1,33 @@
 {
-  "id": null,
-  "name": "Alexander Street Press",
-  "code": "ALEXS",
-  "description": "AV streaming services",
+  "id": "12fb63b0-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "name": "Taylor & Francis Group, LLC ",
+  "code": "TAFG",
+  "description": "Serials - Domestic",
   "vendor_status": "Active",
   "language": "en-us",
-  "san_code": "1234567",
+  "san_code": "",
   "aliases": [
     {
-      "value": "Alexander Street",
+      "value": "Taylor & Francis ",
       "description": ""
     }
   ],
   "addresses": [
     {
-      "addressLine1": "3212 Duke Street",
+      "addressLine1": "Suite 300, 6000 Broken Sound Parkway, NW",
       "addressLine2": "",
-      "city": "Alexandria",
-      "stateRegion": "VA",
-      "zipCode": "22314",
+      "city": "Boca Raton",
+      "stateRegion": "FL",
+      "zipCode": "33487",
       "country": "USA",
-      "categories": [],
+      "categories": ["Customer Service","Payments"],
       "language": "English",
       "isPrimary": true
     }
   ],
   "phone_numbers": [
     {
-      "phone_number": "1-800-889-5937",
+      "phone_number": "1-800-634-7064",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -35,8 +35,8 @@
   ],
   "emails": [
     {
-      "value": "customerservice@alexanderstreet.com",
-      "description": "main customer service email",
+      "value": "enquiries@taylorandfrancis.com",
+      "description": "Customer Servicel",
       "categories": [],
       "language": "English",
       "isPrimary": true
@@ -44,7 +44,7 @@
   ],
   "urls": [
     {
-      "value": "https://alexanderstreet.com/",
+      "value": "http://taylorandfrancis.com/",
       "description": "main website",
       "language": "en-us",
       "categories": [],
@@ -56,12 +56,12 @@
     {
       "language": "English",
       "prefix": "Mr.",
-      "first_name": "David",
-      "last_name": "Grohl",
+      "first_name": "John-Joe",
+      "last_name": "Taylor",
       "notes": "",
       "phone_numbers": [
         {
-          "phone_number": "1-800-889-5937",
+          "phone_number": "1-800-634-7064",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -69,8 +69,8 @@
       ],
       "emails": [
         {
-          "value": "customerservice@alexanderstreet.com",
-          "description": "main customer service email",
+          "value": "enquiries@taylorandfrancis.com",
+          "description": "Customer Servicel",
           "categories": [],
           "language": "English",
           "isPrimary": true
@@ -78,20 +78,20 @@
       ],
       "addresses": [
         {
-          "addressLine1": "3212 Duke Street",
+          "addressLine1": "Suite 300, 6000 Broken Sound Parkway, NW",
           "addressLine2": "",
-          "city": "Alexandria",
-          "stateRegion": "VA",
-          "zipCode": "22314",
+          "city": "Boca Raton",
+          "stateRegion": "FL",
+          "zipCode": "33487",
           "country": "USA",
-          "categories": [],
+          "categories": ["Customer Service","Payments"],
           "language": "English",
           "isPrimary": true
         }
       ],
       "urls": [
         {
-          "value": "https://alexanderstreet.com/",
+          "value": "http://taylorandfrancis.com/",
           "description": "main website",
           "language": "en-us",
           "categories": [],
@@ -104,14 +104,14 @@
   ],
   "agreements": [
     {
-      "name": "library access",
-      "discount": 0,
-      "reference_url": "",
-      "notes": ""
+      "name": "Association of Digital Humanities Journal Package",
+      "discount": 40,
+      "reference_url": "F:\\Sample\\Licensing\\License and Renewal Agreements\\Content Providers\\Taylor & Francis",
+      "notes": "Amendment to Multiyear Master Agreement (2015-2019)"
     }
   ],
-  "erp_code": "G64758-74828",
-  "payment_method": "check",
+  "erp_code": "G64758-74832",
+  "payment_method": "EFT",
   "access_provider": true,
   "governmental": false,
   "licensor": true,
@@ -121,7 +121,7 @@
   ],
   "claiming_interval": 0,
   "discount_percent": 0,
-  "expected_activation_interval": 1,
+  "expected_activation_interval": 30,
   "expected_invoice_interval": 30,
   "renewal_activation_interval": 365,
   "subscription_interval": 365,
@@ -131,28 +131,28 @@
   "tax_percentage": 0,
   "interfaces": [
     {
-      "name": "Academic Video Online",
-      "uri": "https://search.alexanderstreet.com/avon",
-      "username": "****",
-      "password": "****",
+      "name": "Taylor & Francis Online",
+      "uri": "https://www.tandfonline.com",
+      "username": "",
+      "password": "",
       "notes": "",
-      "available": false,
-      "delivery_method": "",
-      "statistics_format": "",
-      "locally_stored": "",
-      "online_location": "",
+      "available": true,
+      "delivery_method": "online",
+      "statistics_format": "COUNTER",
+      "locally_stored": "https://www.lib.sample.edu/staff/collectiondevelopment/",
+      "online_location": "https://accounts.taylorfrancis.com/identity/#/login",
       "statistics_notes": ""
     }
   ],
   "accounts": [
     {
-      "name": "Library account",
-      "account_no": "1234",
-      "description": "Main library account",
+      "name": "Serialst",
+      "account_no": "xxxx4962",
+      "description": "Libraries",
       "app_system_no": "",
-      "payment_method": "check",
+      "payment_method": "EFT",
       "account_status": "Active",
-      "contact_info": "customerservice@alexanderstreet.com",
+      "contact_info": "Richard.Plantagenet@taylorandfrancis.com",
       "library_code": "COB",
       "library_edi_code": "765987610",
       "notes": ""
