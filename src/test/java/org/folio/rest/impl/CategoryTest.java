@@ -127,7 +127,7 @@ public class CategoryTest {
       logger.info("--- mod-vendors-test: Verifying only 1 category was created ... ");
       getData("/vendor-storage/categories").then().log().ifValidationFails()
         .statusCode(200)
-        .body("total_records", equalTo(5));
+        .body("total_records", equalTo(1));
 
       logger.info("--- mod-vendors-test: Fetching category with ID: "+ dataSampleId);
       getDataById("/vendor-storage/categories", dataSampleId).then().log().ifValidationFails()

@@ -32,12 +32,6 @@ import static org.folio.rest.utils.TenantApiTestUtil.prepareTenant;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-  /*EntitiesCrudTest.class,
-  OrdersAPITest.class,
-  PoNumberTest.class,
-  PurchaseOrderLineNumberTest.class,
-  PurchaseOrderNumberUniquenessTest.class,
-  ReceivingHistoryTest.class,*/
   TenantSampleDataTest.class
 })
 
