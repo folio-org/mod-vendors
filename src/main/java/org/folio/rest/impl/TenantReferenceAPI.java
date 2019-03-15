@@ -65,9 +65,8 @@ public class TenantReferenceAPI extends TenantAPI {
         "false"));
     List<Parameter> parameters = tenantAttributes.getParameters();
     for (Parameter parameter : parameters) {
-      if (PARAMETER_LOAD_SAMPLE.equals(parameter.getKey())
-          && "true".equalsIgnoreCase(parameter.getValue())) {
-        loadSample = true;
+      if (PARAMETER_LOAD_SAMPLE.equals(parameter.getKey())) {
+        loadSample = Boolean.parseBoolean(parameter.getValue());
       }
     }
     return loadSample;
