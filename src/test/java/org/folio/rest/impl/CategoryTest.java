@@ -101,7 +101,7 @@ public class CategoryTest {
     getData("/vendor-storage/categories").then()
       .log().all()
       .statusCode(200)
-      .body("total_records", equalTo(4));
+      .body("total_records", equalTo(0));
   }
 
   @Test
