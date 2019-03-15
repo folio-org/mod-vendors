@@ -30,7 +30,7 @@ public class TenantReferenceAPI extends TenantAPI {
         hndlr.handle(res);
         return;
       }
-     
+
       if (isLoadSample(tenantAttributes)) {
         TenantLoading tl = new TenantLoading();
         tl.withKey(PARAMETER_LOAD_SAMPLE)
@@ -46,15 +46,20 @@ public class TenantReferenceAPI extends TenantAPI {
             hndlr.handle(io.vertx.core.Future.succeededFuture(PostTenantResponse
               .respond201WithApplicationJson("")));
           });
+      } else {
+        hndlr.handle(res);
+        return;
       }
     }, cntxt);
 
   }
-  
+
   private boolean isLoadSample(TenantAttributes tenantAttributes) {
-    // if a system parameter is passed from command line, ex: loadSample=true that
+    // if a system parameter is passed from command line, ex: loadSample=true
+    // that
     // value is considered,
-    // Priority of Parameter Tenant Attributes > command line parameter > default
+    // Priority of Parameter Tenant Attributes > command line parameter >
+    // default
     // (false)
     boolean loadSample = Boolean.parseBoolean(MODULE_SPECIFIC_ARGS.getOrDefault(PARAMETER_LOAD_SAMPLE,
         "false"));
@@ -66,7 +71,7 @@ public class TenantReferenceAPI extends TenantAPI {
       }
     }
     return loadSample;
-    
+
   }
 
   @Override
