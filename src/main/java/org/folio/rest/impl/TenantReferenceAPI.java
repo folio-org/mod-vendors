@@ -56,18 +56,14 @@ public class TenantReferenceAPI extends TenantAPI {
 
   private boolean isLoadSample(TenantAttributes tenantAttributes) {
     // if a system parameter is passed from command line, ex: loadSample=true
-    // that
-    // value is considered,
-    // Priority of Parameter Tenant Attributes > command line parameter >
-    // default
-    // (false)
+    // that value is considered,Priority of Parameters:
+    // Tenant Attributes > command line parameter > default(false)
     boolean loadSample = Boolean.parseBoolean(MODULE_SPECIFIC_ARGS.getOrDefault(PARAMETER_LOAD_SAMPLE,
         "false"));
     List<Parameter> parameters = tenantAttributes.getParameters();
     for (Parameter parameter : parameters) {
-      if (PARAMETER_LOAD_SAMPLE.equals(parameter.getKey())
-          && "true".equalsIgnoreCase(parameter.getValue())) {
-        loadSample = true;
+      if (PARAMETER_LOAD_SAMPLE.equals(parameter.getKey())) {
+        loadSample = Boolean.parseBoolean(parameter.getValue());
       }
     }
     return loadSample;

@@ -61,13 +61,13 @@ public class TenantSampleDataTest extends TestBase{
   public void failIfNoUrlToHeader() throws MalformedURLException {
     JsonObject jsonBody = TenantApiTestUtil.prepareTenantBody(true, false);
     given()
-      .header(new Header(OKAPI_HEADER_TENANT, "noURL"))
-      .contentType(ContentType.JSON)
+        .header(new Header(OKAPI_HEADER_TENANT, "noURL"))
+        .contentType(ContentType.JSON)
       .body(jsonBody.encodePrettily())
       .post(storageUrl(TENANT_ENDPOINT))
-      .then()
-      .assertThat()
-      .statusCode(500);
+        .then()
+        .assertThat()
+        .statusCode(500);
   }
 
   @Test

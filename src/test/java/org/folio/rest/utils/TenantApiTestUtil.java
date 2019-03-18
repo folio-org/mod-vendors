@@ -39,22 +39,22 @@ public class TenantApiTestUtil {
 
   public static ValidatableResponse postToTenant(Header tenantHeader, JsonObject jsonBody) throws MalformedURLException {
     return given()
-      .header(tenantHeader)
-      .header(URL_TO_HEADER)
-      .header(USER_ID_HEADER)
-      .contentType(ContentType.JSON)
+        .header(tenantHeader)
+        .header(URL_TO_HEADER)
+        .header(USER_ID_HEADER)
+        .contentType(ContentType.JSON)
       .body(jsonBody.encodePrettily())
       .post(storageUrl(TENANT_ENDPOINT))
-      .then();
+        .then();
   }
 
   public static void deleteTenant(Header tenantHeader)
     throws MalformedURLException {
     given()
-      .header(tenantHeader)
-      .contentType(ContentType.JSON)
+        .header(tenantHeader)
+        .contentType(ContentType.JSON)
       .delete(storageUrl(TENANT_ENDPOINT))
-      .then()
-      .statusCode(204);
+        .then()
+        .statusCode(204);
   }
 }
