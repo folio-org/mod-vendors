@@ -1,3 +1,7 @@
+## 2.1.0 Release
+* Load sample data via tenant API
+  Jira: https://issues.folio.org/browse/MODVEND-81
+
 ## 2.0.2 Release
 * Project converted to RAML 1.0
   Jira: https://issues.folio.org/projects/MODVEND/issues/MODVEND-72
