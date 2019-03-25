@@ -53,54 +53,7 @@
     }
   ],
   "contacts": [
-    {
-      "language": "English",
-      "prefix": "",
-      "first_name": "Susan",
-      "last_name": "Bach",
-      "notes": "",
-      "phone_numbers": [
-        {
-          "phone_number": "55-55-21-2539-3590",
-          "categories": [],
-          "language": "Portuguese",
-          "isPrimary": true
-        }
-      ],
-      "emails": [
-        {
-          "value": "sbach@sbachbooks.com.br",
-          "description": "Customer Service",
-          "categories": [],
-          "language": "English",
-          "isPrimary": true
-        }
-      ],
-      "addresses": [
-        {
-          "addressLine1": "RUA VISCONDE DE CARAVELAS, Nº 17",
-          "addressLine2": "BOTAFOGO",
-          "city": "RIO DE JANEIRO",
-          "stateRegion": "",
-          "zipCode": "22271-021",
-          "country": "Brazil",
-          "categories": [],
-          "language": "Portuguese",
-          "isPrimary": true
-        }
-      ],
-      "urls": [
-        {
-          "value": "http://www.sbachbooks.com.br/",
-          "description": "main website",
-          "language": "English/Portuguese",
-          "categories": [],
-          "notes": "",
-          "isPrimary": true
-        }
-      ],
-      "categories": []
-    }
+    "15fb695a-cdf1-11e8-a8d5-f2801f1b9fd1"
   ],
   "agreements": [
     {

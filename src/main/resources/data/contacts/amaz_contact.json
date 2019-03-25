@@ -1,0 +1,49 @@
+{
+  "id": "e0fb5df2-cdf1-11e8-a8d5-f2801f1b9fd1",
+  "language": "English",
+  "prefix": "Ms.",
+  "first_name": "Carrie",
+  "last_name": "Brownstein",
+  "notes": "",
+  "phone_numbers": [
+    {
+      "phone_number": "1-888-238-22090",
+      "categories": [],
+      "language": "English",
+      "isPrimary": true
+    }
+  ],
+  "emails": [
+    {
+      "value": "cust.service03@amazon.com",
+      "description": "customer service",
+      "categories": [],
+      "language": "English",
+      "isPrimary": true
+    }
+  ],
+  "addresses": [
+    {
+      "addressLine1": "1 Centerpiece Blvd.",
+      "addressLine2": "P.O. Box 15550",
+      "city": "New Castle",
+      "stateRegion": "DE",
+      "zipCode": "19720-5550",
+      "country": "USA",
+      "categories": [],
+      "language": "English",
+      "isPrimary": true
+    }
+  ],
+  "urls": [
+    {
+      "value": "https://www.amazon.com",
+      "description": "main website",
+      "language": "en-us",
+      "categories": [],
+      "notes": "",
+      "isPrimary": true
+    }
+  ],
+  "categories": []
+}
