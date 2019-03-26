@@ -45,7 +45,7 @@ public class TenantSampleDataTest extends TestBase{
   public void sampleDataTests() throws MalformedURLException {
     try {
       logger.info("-- create a tenant with no sample data --");
-      prepareTenant(ANOTHER_TENANT_HEADER, true);
+      prepareTenant(ANOTHER_TENANT_HEADER, false);
       logger.info("-- upgrade the tenant with sample data, so that it will be inserted now --");
       upgradeTenantWithSampleDataLoad();
       logger.info("-- upgrade the tenant again with no sample data, so the previously inserted data stays in tact --");

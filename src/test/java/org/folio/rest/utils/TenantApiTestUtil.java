@@ -25,10 +25,10 @@ public class TenantApiTestUtil {
     JsonArray parameterArray = new JsonArray();
     parameterArray.add(new JsonObject().put("key", "loadSample").put("value", isLoadSampleData));
     JsonObject jsonBody = new JsonObject();
-    jsonBody.put("module_to", "mod-orders-storage-1.0.0");
+    jsonBody.put("module_to", "mod-vendors-storage-1.0.0");
     jsonBody.put("parameters", parameterArray);
     if(isUpgrade)
-      jsonBody.put("module_from", "mod-orders-storage-1.0.0");
+      jsonBody.put("module_from", "mod-vendors-storage-1.0.0");
     return jsonBody;
   }
 
