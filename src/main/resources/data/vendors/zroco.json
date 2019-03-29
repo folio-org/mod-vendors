@@ -53,54 +53,7 @@
     }
   ],
   "contacts": [
-    {
-      "language": "English",
-      "prefix": "",
-      "first_name": "Dana",
-      "last_name": "Clark",
-      "notes": "",
-      "phone_numbers": [
-        {
-          "phone_number": "1-415-332-6471",
-          "categories": [],
-          "language": "English",
-          "isPrimary": true
-        }
-      ],
-      "emails": [
-        {
-          "value": "info@rocofilms.com",
-          "description": "initial contact address",
-          "categories": [],
-          "language": "English",
-          "isPrimary": true
-        }
-      ],
-      "addresses": [
-        {
-          "addressLine1": "80 LIBERTY SHIP WAY7",
-          "addressLine2": "SUITE 5",
-          "city": "SAUSALITO",
-          "stateRegion": "CA",
-          "zipCode": "94965",
-          "country": "USA",
-          "categories": [],
-          "language": "English",
-          "isPrimary": true
-        }
-      ],
-      "urls": [
-        {
-          "value": "http://www.rocofilms.com/",
-          "description": "main website",
-          "language": "English",
-          "categories": [],
-          "notes": "",
-          "isPrimary": true
-        }
-      ],
-      "categories": []
-    }
+    "14fb6608-cdf1-11e8-a8d5-f2801f1b9fd1"
   ],
   "agreements": [
     {

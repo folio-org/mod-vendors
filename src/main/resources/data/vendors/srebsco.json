@@ -53,54 +53,7 @@
     }
   ],
   "contacts": [
-    {
-      "language": "en-us",
-      "prefix": "",
-      "first_name": "Josh",
-      "last_name": "Beck",
-      "notes": "",
-      "phone_numbers": [
-        {
-          "phone_number": "1-800-653-2726",
-          "categories": [],
-          "language": "en-us",
-          "isPrimary": true
-        }
-      ],
-      "emails": [
-        {
-          "value": "jbeck@ebsco.com",
-          "description": "Customer Service Rep",
-          "categories": [],
-          "language": "en-us",
-          "isPrimary": true
-        }
-      ],
-      "addresses": [
-        {
-          "addressLine1": "10 ESTES ST",
-          "addressLine2": "PO BOX 682",
-          "city": "Ipswich",
-          "stateRegion": "MA",
-          "zipCode": "01938",
-          "country": "USA",
-          "categories": [],
-          "language": "en",
-          "isPrimary": true
-        }
-      ],
-      "urls": [
-        {
-          "value": "http://www.ebsco.com",
-          "description": "main website",
-          "language": "en-us",
-          "categories": [],
-          "notes": "",
-          "isPrimary": true
-        }
-      ],
-      "categories": []
-    }
+    "50fb6ae0-cdf1-11e8-a8d5-f2801f1b9fd1"
   ],
   "agreements": [
     {

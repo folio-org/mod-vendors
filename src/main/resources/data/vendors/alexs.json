@@ -53,54 +53,7 @@
     }
   ],
   "contacts": [
-    {
-      "language": "English",
-      "prefix": "Mr.",
-      "first_name": "David",
-      "last_name": "Grohl",
-      "notes": "",
-      "phone_numbers": [
-        {
-          "phone_number": "1-800-889-5937",
-          "categories": [],
-          "language": "English",
-          "isPrimary": true
-        }
-      ],
-      "emails": [
-        {
-          "value": "customerservice@alexanderstreet.com",
-          "description": "main customer service email",
-          "categories": [],
-          "language": "English",
-          "isPrimary": true
-        }
-      ],
-      "addresses": [
-        {
-          "addressLine1": "3212 Duke Street",
-          "addressLine2": "",
-          "city": "Alexandria",
-          "stateRegion": "VA",
-          "zipCode": "22314",
-          "country": "USA",
-          "categories": [],
-          "language": "English",
-          "isPrimary": true
-        }
-      ],
-      "urls": [
-        {
-          "value": "https://alexanderstreet.com/",
-          "description": "main website",
-          "language": "en-us",
-          "categories": [],
-          "notes": "",
-          "isPrimary": true
-        }
-      ],
-      "categories": []
-    }
+    "11fb627a-cdf1-11e8-a8d5-f2801f1b9fd1"
   ],
   "agreements": [
     {
